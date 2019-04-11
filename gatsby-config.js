@@ -1,13 +1,22 @@
 module.exports = {
   siteMetadata: {
-    title: 'ex_personal',
+    title: 'ėxpersonal',
     description: '..',
     author: '@andrasai',
   },
   plugins: [
     'gatsby-plugin-react-helmet',
     'gatsby-plugin-styled-components',
-    'gatsby-plugin-eslint',
+    {
+      resolve: 'gatsby-plugin-eslint',
+      options: {
+        options: {
+          emitWarning: true,
+          failOnError: false,
+          failOnWarning: false,
+        },
+      },
+    },
     {
       resolve: 'gatsby-source-filesystem',
       options: {
