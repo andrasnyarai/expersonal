@@ -36,7 +36,6 @@ const shade = keyframes`
 const Blob = styled.div`
   pointer-events: none;
   position: absolute;
-  cursor: pointer;
   width: 15vw;
   height: 15vw;
   max-width: 135px;
@@ -46,10 +45,8 @@ const Blob = styled.div`
   transform-origin: 50% 50%;
   transform-style: preserve-3d;
   transition: 2s all ease;
-  perspective: 1000px;
   box-shadow: inset 0px -20px 100px rgba(255, 255, 255, 0.6);
   transform: translateX(calc(-15vw / 2));
-  mix-blend-mode: color-burn;
   animation: ${morph} 0.5s ease-in-out infinite both alternate, ${shade} 60s linear infinite both,
     ${float} 25s linear infinite both, ${blur} 15s linear infinite both;
   @media screen and (orientation: landscape) {

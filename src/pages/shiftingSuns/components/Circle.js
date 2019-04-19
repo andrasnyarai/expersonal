@@ -29,7 +29,6 @@ const Circle = styled.div`
     max-height: 750px;
   }
   animation: ${saturate} 10s ease infinite, ${hueRotate} 15s ease infinite;
-  background: transparent;
 `
 
 export default Circle
