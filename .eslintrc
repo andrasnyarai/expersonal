@@ -1,7 +1,8 @@
 {
     "parser": "babel-eslint",
     "globals": {
-      "localStorage": "readonly"
+      "localStorage": "readonly",
+      "window": "readonly"
     },
     "rules": {
       "strict": 0,
