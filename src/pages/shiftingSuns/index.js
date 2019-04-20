@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Helmet from 'react-helmet'
 import { useGesture } from 'react-with-gesture'
 
-import SEO from '../../components/seo'
+import SEO from '../../globalComponents/seo'
 
 import '../../style/webGradients.css'
 

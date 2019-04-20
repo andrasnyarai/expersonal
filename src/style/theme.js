@@ -1,12 +1,14 @@
 export default {
   dark: {
     colors: {
-      header: '#004175',
+      header: '#fff',
+      background: '#111',
     },
   },
   light: {
     colors: {
-      header: '#007ce0',
+      header: '#111',
+      background: '#fff',
     },
   },
 }

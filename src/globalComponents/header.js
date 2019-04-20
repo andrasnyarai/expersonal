@@ -1,27 +1,47 @@
 import { Link } from 'gatsby'
 import React from 'react'
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import { color } from 'styled-system'
 import { useSpring, config, animated } from 'react-spring'
+import Image from './Image'
+
+const clipPathCircleMorph = keyframes`{
+  0%, 100% {
+    clip-path: circle(40%);
+  }
+  50% {
+    clip-path: circle(80%);
+  }
+}`
+
+const P = styled(animated.p)`
+  clip-path: circle(40%);
+  animation: ${clipPathCircleMorph} ease 5s infinite;
+`
 
 const HeaderContainer = styled.header`
   display: flex;
   height: 200px;
+  position: relative;
 `
 
 const H1 = styled.h1`
-  left: 15px;
+  left: 9px;
   position: absolute;
-  top: 15px;
+  top: 9px;
+  font-weight: 200;
 `
 
 const ThemeSwitcher = styled.div`
-  width: 50px;
-  height: 50px;
-  right: 15px;
+  cursor: pointer;
+  perspective: 100px;
+  width: 125px;
+  height: 125px;
+  right: 9px;
   position: absolute;
-  top: 15px;
-  ${color}
+  top: 9px;
+  clip-path: circle(40%);
+  animation: ${clipPathCircleMorph} ease 5s infinite;
 `
 
 const LightSwitch = styled(animated.div)`
@@ -29,7 +49,8 @@ const LightSwitch = styled(animated.div)`
   width: 100%;
   height: 100%;
   position: absolute;
-  direction: rtl;
+  display: flex;
+  justify-content: center;
 `
 
 const DarkSwitch = styled(animated.div)`
@@ -38,17 +59,21 @@ const DarkSwitch = styled(animated.div)`
   width: 100%;
   height: 100%;
   position: absolute;
+  display: flex;
+  justify-content: center;
 `
 
 const StyledLink = styled(Link)`
-  ${color}
+  ${color};
+  text-decoration: none;
 `
 
 export default function Header({ siteTitle, setTheme, currentTheme }) {
   const { transform } = useSpring({
-    transform: `rotateY(${currentTheme === 'light' ? 0 : 180}deg)`,
+    transform: `rotateY(${currentTheme !== 'light' ? 0 : 180}deg)`,
     config: config.slow,
   })
+
   return (
     <HeaderContainer>
       <H1>
@@ -56,12 +81,15 @@ export default function Header({ siteTitle, setTheme, currentTheme }) {
           {siteTitle}
         </StyledLink>
       </H1>
+      <div style={{ width: '100px', filter: currentTheme === 'light' ? null : 'invert(1)' }}>
+        <Image imageName={'expr.png'} />
+      </div>
       <ThemeSwitcher onClick={() => setTheme(theme => (theme === 'light' ? 'dark' : 'light'))}>
         <LightSwitch style={{ transform }}>
-          <animated.p style={{ transform }}>light</animated.p>
+          <P style={{ margin: 'auto', width: '25%', height: '25%', backgroundColor: 'white' }} />
         </LightSwitch>
         <DarkSwitch style={{ transform }}>
-          <animated.p style={{ transform, backFaceVisibility: 'hidden' }}>dark</animated.p>
+          <P style={{ margin: 'auto', width: '25%', height: '25%', backgroundColor: 'black' }} />
         </DarkSwitch>
       </ThemeSwitcher>
     </HeaderContainer>
