@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 
+const windowGlobal = typeof window !== 'undefined' && window
+
 const useScrollPosition = () => {
   const [scrollPosition, setScrollPosition] = useState(0)
 
@@ -10,7 +12,7 @@ const useScrollPosition = () => {
       last_known_scroll_position = window.scrollY
 
       if (!ticking) {
-        window.requestAnimationFrame(function() {
+        windowGlobal.requestAnimationFrame(function() {
           setScrollPosition(last_known_scroll_position)
           ticking = false
         })
@@ -18,9 +20,9 @@ const useScrollPosition = () => {
         ticking = true
       }
     }
-    window.addEventListener('scroll', handleScroll)
+    windowGlobal.addEventListener('scroll', handleScroll)
     return () => {
-      window.removeEventListener('scroll', handleScroll)
+      windowGlobal.removeEventListener('scroll', handleScroll)
     }
   })
 

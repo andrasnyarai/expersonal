@@ -8,6 +8,8 @@ import { backgroundColor } from 'styled-system'
 
 import './../fonts/Inter/inter.css'
 
+const localStorageCheck = typeof localStorage !== 'undefined'
+
 const GlobalStyle = createGlobalStyle`
   body {
     font-family: 'Inter', sans-serif;
@@ -29,9 +31,9 @@ const Background = styled.div`
 `
 
 export default function Layout({ children }) {
-  const [currentTheme, setTheme] = useState(localStorage.getItem('theme') || 'light')
+  const [currentTheme, setTheme] = useState((localStorageCheck && localStorage.getItem('theme')) || 'light')
   useEffect(() => {
-    localStorage.setItem('theme', currentTheme)
+    localStorageCheck && localStorage.setItem('theme', currentTheme)
   }, [currentTheme])
 
   return (
