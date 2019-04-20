@@ -3,7 +3,7 @@ import React from 'react'
 import styled, { keyframes } from 'styled-components'
 import { color } from 'styled-system'
 import { useSpring, config, animated } from 'react-spring'
-import Image from './Image'
+import Image from './image'
 
 const clipPathCircleMorph = keyframes`{
   0%, 100% {
