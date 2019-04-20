@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { StaticQuery, graphql } from 'gatsby'
 import { ThemeProvider } from 'styled-components'
 import Header from './header'
-import theme from './../style/theme'
+import theme from '../style/theme'
 import styled, { createGlobalStyle } from 'styled-components'
 import { backgroundColor } from 'styled-system'
 
