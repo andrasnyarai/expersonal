@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { StaticQuery, graphql } from 'gatsby'
-// import { ThemeProvider } from 'styled-components'
 import Header from './header'
-// import themes from '../style/theme'
 import styled, { createGlobalStyle } from 'styled-components'
-// import { backgroundColor } from 'styled-system'
 
 import './../fonts/Inter/inter.css'
 
@@ -68,7 +65,6 @@ export default function Layout({ children }) {
         }
       `}
       render={data => (
-        // <ThemeProvider theme={t}>
         <Background className="background">
           <MainWrapper>
             <GlobalStyle />
@@ -78,7 +74,6 @@ export default function Layout({ children }) {
             </div>
           </MainWrapper>
         </Background>
-        // </ThemeProvider>
       )}
     />
   )

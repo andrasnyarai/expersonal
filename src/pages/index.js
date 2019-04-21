@@ -9,7 +9,6 @@ import SEO from '../globalComponents/seo'
 import useScrollPosition from './../lib/useScrollPosition'
 
 import styled from 'styled-components'
-import { color } from 'styled-system'
 
 const cards = [
   { backgroundColor: 'mediumvioletred', link: '/shiftingSuns/', title: 'Shifting Suns', imageName: 'shiftingSuns.png' },

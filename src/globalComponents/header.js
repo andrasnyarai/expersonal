@@ -1,7 +1,6 @@
 import { Link } from 'gatsby'
 import React from 'react'
 import styled, { keyframes } from 'styled-components'
-import { color } from 'styled-system'
 import { useSpring, config, animated } from 'react-spring'
 import Image from './image'
 
@@ -14,7 +13,11 @@ const clipPathCircleMorph = keyframes`{
   }
 }`
 
-const P = styled(animated.p)`
+const Pointer = styled(animated.div)`
+  margin: auto;
+  width: 25%;
+  height: 25%;
+  background-color: ${({ backgroundColor }) => backgroundColor};
   clip-path: circle(40%);
   animation: ${clipPathCircleMorph} ease 5s infinite;
 `
@@ -48,8 +51,7 @@ const ThemeSwitcher = styled.div`
   animation: ${clipPathCircleMorph} ease 5s infinite;
 `
 
-const LightSwitch = styled(animated.div)`
-  background-color: #50ade3;
+const Switch = styled(animated.div)`
   width: 100%;
   height: 100%;
   position: absolute;
@@ -57,18 +59,16 @@ const LightSwitch = styled(animated.div)`
   justify-content: center;
 `
 
-const DarkSwitch = styled(animated.div)`
+const LightSwitch = styled(Switch)`
+  background-color: #50ade3;
+`
+
+const DarkSwitch = styled(Switch)`
   background-color: #ff5252;
   backface-visibility: hidden;
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  display: flex;
-  justify-content: center;
 `
 
 const StyledLink = styled(Link)`
-  ${color};
   text-decoration: none;
 `
 
@@ -90,10 +90,10 @@ export default function Header({ siteTitle, setTheme, currentTheme }) {
       </LogoWrapper>
       <ThemeSwitcher onClick={() => setTheme(theme => (theme === 'light' ? 'dark' : 'light'))}>
         <LightSwitch style={{ transform }}>
-          <P style={{ margin: 'auto', width: '25%', height: '25%', backgroundColor: 'white' }} />
+          <Pointer backgroundColor="white" />
         </LightSwitch>
         <DarkSwitch style={{ transform }}>
-          <P style={{ margin: 'auto', width: '25%', height: '25%', backgroundColor: 'black' }} />
+          <Pointer backgroundColor="black" />
         </DarkSwitch>
       </ThemeSwitcher>
     </HeaderContainer>
