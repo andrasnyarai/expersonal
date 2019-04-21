@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useLayoutEffect } from 'react'
 import { StaticQuery, graphql } from 'gatsby'
 import { ThemeProvider } from 'styled-components'
 import Header from './header'
@@ -32,7 +32,7 @@ const Background = styled.div`
 
 export default function Layout({ children }) {
   const [currentTheme, setTheme] = useState((localStorageCheck && localStorage.getItem('theme')) || 'light')
-  useEffect(() => {
+  useLayoutEffect(() => {
     localStorageCheck && localStorage.setItem('theme', currentTheme)
   }, [currentTheme])
 
