@@ -32,8 +32,10 @@ const Background = styled.div`
 
 export default function Layout({ children }) {
   const [currentTheme, setTheme] = useState((localStorageCheck && localStorage.getItem('theme')) || 'light')
+  const [t, sT] = useState(themes[currentTheme])
   useLayoutEffect(() => {
     localStorageCheck && localStorage.setItem('theme', currentTheme)
+    sT(themes[currentTheme])
   }, [currentTheme])
 
   return (
@@ -48,7 +50,7 @@ export default function Layout({ children }) {
         }
       `}
       render={data => (
-        <ThemeProvider theme={{ ...themes[currentTheme] }}>
+        <ThemeProvider theme={t}>
           <Background>
             <MainWrapper>
               <GlobalStyle />
