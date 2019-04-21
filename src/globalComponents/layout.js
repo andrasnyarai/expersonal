@@ -25,7 +25,7 @@ const MainWrapper = styled.div`
 `
 
 const Background = styled.div`
-  ${backgroundColor};
+  background-color: ${({ theme }) => theme.colors.background};
   transition: all 0.5s ease;
   overflow: hidden;
 `
@@ -49,7 +49,7 @@ export default function Layout({ children }) {
       `}
       render={data => (
         <ThemeProvider theme={theme[currentTheme]}>
-          <Background backgroundColor={'background'}>
+          <Background>
             <MainWrapper>
               <GlobalStyle />
               <Header siteTitle={data.site.siteMetadata.title} setTheme={setTheme} currentTheme={currentTheme} />

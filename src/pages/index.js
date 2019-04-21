@@ -72,7 +72,7 @@ const CardLink = styled(Link)`
 `
 
 const CardTitle = styled.div`
-  ${color}
+  color: ${({ theme }) => theme.colors.header};
   position: absolute;
   top: -15px;
   text-decoration: none;
@@ -102,7 +102,7 @@ export default function IndexPage() {
                 }}
               >
                 <CardLink to={link}>
-                  <CardTitle color={'header'}>{title}</CardTitle>
+                  <CardTitle>{title}</CardTitle>
                 </CardLink>
                 <ImageContainer>{imageName && <Image imageName={imageName} />}</ImageContainer>
               </Card>
