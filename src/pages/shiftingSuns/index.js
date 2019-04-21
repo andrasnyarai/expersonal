@@ -4,6 +4,8 @@ import { useGesture } from 'react-with-gesture'
 
 import SEO from '../../globalComponents/seo'
 
+import useScrollLock from './../../lib/useScrollLock'
+
 import '../../style/webGradients.css'
 
 import OuterContainer from './components/OuterContainer'
@@ -532,6 +534,8 @@ export default function ShiftingSuns() {
   const [innerBackground, setInnerBackground] = useState(planeColors[0])
   const [mixBlendMode, setMixBlendMode] = useState('multiply')
 
+  useScrollLock()
+
   useEffect(() => {
     const [x, y] = xy
     const activeColumnNumber = activatePanel(x)
@@ -548,15 +552,6 @@ export default function ShiftingSuns() {
   return (
     <div {...handlers()}>
       <Helmet
-        script={[
-          {
-            type: 'text/javascript',
-            innerHTML: `
-            document.addEventListener('touchmove', (e) => {
-                e.preventDefault();
-            }, { passive:false });`,
-          },
-        ]}
         style={[
           {
             cssText: `
