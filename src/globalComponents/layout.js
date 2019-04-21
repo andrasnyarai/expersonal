@@ -2,7 +2,7 @@ import React, { useState, useLayoutEffect } from 'react'
 import { StaticQuery, graphql } from 'gatsby'
 import { ThemeProvider } from 'styled-components'
 import Header from './header'
-import theme from '../style/theme'
+import themes from '../style/theme'
 import styled, { createGlobalStyle } from 'styled-components'
 import { backgroundColor } from 'styled-system'
 
@@ -48,7 +48,7 @@ export default function Layout({ children }) {
         }
       `}
       render={data => (
-        <ThemeProvider theme={theme[currentTheme]}>
+        <ThemeProvider theme={{ ...themes[currentTheme] }}>
           <Background>
             <MainWrapper>
               <GlobalStyle />
