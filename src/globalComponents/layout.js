@@ -1,19 +1,39 @@
-import React, { useState, useLayoutEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { StaticQuery, graphql } from 'gatsby'
-import { ThemeProvider } from 'styled-components'
+// import { ThemeProvider } from 'styled-components'
 import Header from './header'
-import themes from '../style/theme'
+// import themes from '../style/theme'
 import styled, { createGlobalStyle } from 'styled-components'
-import { backgroundColor } from 'styled-system'
+// import { backgroundColor } from 'styled-system'
 
 import './../fonts/Inter/inter.css'
 
 const localStorageCheck = typeof localStorage !== 'undefined'
+const documentCheck = typeof document !== 'undefined'
 
 const GlobalStyle = createGlobalStyle`
   body {
     font-family: 'Inter', sans-serif;
     margin: 0;
+  }
+  .light {
+    .background {
+      background-color: #fff;
+    }
+    .siteTitle, .cardTitle {
+      color: #111;
+    }
+  }
+  .dark {
+    .background {
+      background-color: #111;
+    }
+    .siteTitle, .cardTitle {
+      color: #fff;
+    }
+    .logoWrapper {
+      filter: invert(1);
+    }
   }
 `
 
@@ -25,17 +45,15 @@ const MainWrapper = styled.div`
 `
 
 const Background = styled.div`
-  background-color: ${({ theme }) => theme.colors.background};
   transition: all 0.5s ease;
   overflow: hidden;
 `
 
 export default function Layout({ children }) {
   const [currentTheme, setTheme] = useState((localStorageCheck && localStorage.getItem('theme')) || 'light')
-  const [t, sT] = useState(themes[currentTheme])
-  useLayoutEffect(() => {
+  useEffect(() => {
     localStorageCheck && localStorage.setItem('theme', currentTheme)
-    sT(themes[currentTheme])
+    documentCheck && (document.getElementById('___gatsby').classList = currentTheme)
   }, [currentTheme])
 
   return (
@@ -50,17 +68,17 @@ export default function Layout({ children }) {
         }
       `}
       render={data => (
-        <ThemeProvider theme={t}>
-          <Background>
-            <MainWrapper>
-              <GlobalStyle />
-              <Header siteTitle={data.site.siteMetadata.title} setTheme={setTheme} currentTheme={currentTheme} />
-              <div>
-                <main>{children}</main>
-              </div>
-            </MainWrapper>
-          </Background>
-        </ThemeProvider>
+        // <ThemeProvider theme={t}>
+        <Background className="background">
+          <MainWrapper>
+            <GlobalStyle />
+            <Header siteTitle={data.site.siteMetadata.title} setTheme={setTheme} currentTheme={currentTheme} />
+            <div>
+              <main>{children}</main>
+            </div>
+          </MainWrapper>
+        </Background>
+        // </ThemeProvider>
       )}
     />
   )

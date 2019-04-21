@@ -25,6 +25,10 @@ const HeaderContainer = styled.header`
   position: relative;
 `
 
+const LogoWrapper = styled.div`
+  width: 100px;
+`
+
 const H1 = styled.h1`
   left: 9px;
   position: absolute;
@@ -77,13 +81,13 @@ export default function Header({ siteTitle, setTheme, currentTheme }) {
   return (
     <HeaderContainer>
       <H1>
-        <StyledLink to="/" color={'header'}>
+        <StyledLink to="/" className="siteTitle">
           {siteTitle}
         </StyledLink>
       </H1>
-      <div style={{ width: '100px', filter: currentTheme === 'light' ? null : 'invert(1)' }}>
+      <LogoWrapper className="logoWrapper">
         <Image imageName={'expr.png'} />
-      </div>
+      </LogoWrapper>
       <ThemeSwitcher onClick={() => setTheme(theme => (theme === 'light' ? 'dark' : 'light'))}>
         <LightSwitch style={{ transform }}>
           <P style={{ margin: 'auto', width: '25%', height: '25%', backgroundColor: 'white' }} />
