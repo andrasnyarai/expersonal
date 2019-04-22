@@ -5,16 +5,8 @@ import styled, { createGlobalStyle } from 'styled-components'
 
 import './../fonts/Inter/inter.css'
 
-const windowCheck = typeof window !== 'undefined'
 const localStorageCheck = typeof localStorage !== 'undefined'
 const documentCheck = typeof document !== 'undefined'
-
-// windowCheck &&
-//   (window.__setThemeClass = theme => {
-//     documentCheck && (document.getElementById('___gatsby').classList = theme)
-//   })
-
-// windowCheck && window.__setThemeClass(localStorage.getItem('theme'))
 
 const GlobalStyle = createGlobalStyle`
   body {

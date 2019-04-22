@@ -21,7 +21,7 @@ export default function HTML(props) {
         <script
           dangerouslySetInnerHTML={{
             __html: `
-              (document.getElementById('___gatsby').classList = localStorage.getItem('theme') || 'light')()
+              document.getElementById('___gatsby').classList = localStorage.getItem('theme') || 'light'
             `,
           }}
         />
