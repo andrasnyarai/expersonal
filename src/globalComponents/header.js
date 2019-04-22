@@ -17,7 +17,7 @@ const Pointer = styled(animated.div)`
   margin: auto;
   width: 25%;
   height: 25%;
-  background-color: ${({ backgroundColor }) => backgroundColor};
+  background-color: ${({ backgroundcolor }) => backgroundcolor};
   clip-path: circle(40%);
   animation: ${clipPathCircleMorph} ease 5s infinite;
 `
@@ -90,10 +90,10 @@ export default function Header({ siteTitle, setTheme, currentTheme }) {
       </LogoWrapper>
       <ThemeSwitcher onClick={() => setTheme(theme => (theme === 'light' ? 'dark' : 'light'))}>
         <LightSwitch style={{ transform }}>
-          <Pointer backgroundColor="white" />
+          <Pointer backgroundcolor="white" />
         </LightSwitch>
         <DarkSwitch style={{ transform }}>
-          <Pointer backgroundColor="black" />
+          <Pointer backgroundcolor="black" />
         </DarkSwitch>
       </ThemeSwitcher>
     </HeaderContainer>
