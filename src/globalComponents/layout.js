@@ -9,12 +9,12 @@ const windowCheck = typeof window !== 'undefined'
 const localStorageCheck = typeof localStorage !== 'undefined'
 const documentCheck = typeof document !== 'undefined'
 
-windowCheck &&
-  (window.__setThemeClass = theme => {
-    documentCheck && (document.getElementById('___gatsby').classList = theme)
-  })
+// windowCheck &&
+//   (window.__setThemeClass = theme => {
+//     documentCheck && (document.getElementById('___gatsby').classList = theme)
+//   })
 
-windowCheck && window.__setThemeClass(localStorage.getItem('theme'))
+// windowCheck && window.__setThemeClass(localStorage.getItem('theme'))
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -58,7 +58,7 @@ export default function Layout({ children }) {
   const [currentTheme, setTheme] = useState((localStorageCheck && localStorage.getItem('theme')) || 'light')
   useEffect(() => {
     localStorageCheck && localStorage.setItem('theme', currentTheme)
-    windowCheck && window.__setThemeClass(currentTheme)
+    documentCheck && (document.getElementById('___gatsby').classList = currentTheme)
   }, [currentTheme])
 
   return (
