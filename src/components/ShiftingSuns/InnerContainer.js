@@ -1,23 +1,5 @@
 import styled, { keyframes } from 'styled-components'
-
-const mixBlendModes = [
-  'normal',
-  'multiply',
-  'screen',
-  'overlay',
-  'darken',
-  'lighten',
-  'color-dodge',
-  'color-burn',
-  'hard-light',
-  'soft-light',
-  'difference',
-  'exclusion',
-  'hue',
-  'saturation',
-  'color',
-  'luminosity',
-]
+import mixBlendModes from '../../constants/mixBlendModes'
 
 const mixBlendModeRotate = keyframes`
 {

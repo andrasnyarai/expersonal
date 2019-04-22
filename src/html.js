@@ -1,8 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-const localStorageCheck = typeof localStorage !== 'undefined'
-
 export default function HTML(props) {
   return (
     <html {...props.htmlAttributes}>
