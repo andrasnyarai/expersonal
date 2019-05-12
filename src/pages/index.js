@@ -28,7 +28,10 @@ export default function IndexPage() {
 
   return (
     <Layout>
-      <SEO title="Home" keywords={[`gatsby`, `application`, `react`]} />
+      <SEO
+        title="Expersonal"
+        keywords={['gatsby', 'react', 'visual', 'experiments', 'css', 'perspective', 'dashboard']}
+      />
       <Scene style={{ perspectiveOrigin: `center ${scrollPosition}px` }}>
         <CardsContainer style={{ transform: props.scrollPosition.interpolate(rotateIntoView) }}>
           {cards.map(({ backgroundColor, link = '/', title = '{...}', imageName }, i) => {
