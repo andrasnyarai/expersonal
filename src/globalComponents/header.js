@@ -37,6 +37,8 @@ const H1 = styled.h1`
   position: absolute;
   top: 9px;
   font-weight: 200;
+  mix-blend-mode: difference;
+  z-index: 1;
 `
 
 const ThemeSwitcher = styled.div`
@@ -70,6 +72,7 @@ const DarkSwitch = styled(Switch)`
 
 const StyledLink = styled(Link)`
   text-decoration: none;
+  color: var(--white);
 `
 
 export default function Header({ siteTitle, setTheme, currentTheme }) {
@@ -81,9 +84,7 @@ export default function Header({ siteTitle, setTheme, currentTheme }) {
   return (
     <HeaderContainer>
       <H1>
-        <StyledLink to="/" className="siteTitle">
-          {siteTitle}
-        </StyledLink>
+        <StyledLink to="/">{siteTitle}</StyledLink>
       </H1>
       <LogoWrapper className="logoWrapper">
         <Image imageName={'expr.png'} />

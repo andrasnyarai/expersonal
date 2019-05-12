@@ -20,7 +20,7 @@ const GlobalStyle = createGlobalStyle`
     .background {
       background-color: var(--white);
     }
-    .siteTitle, .cardTitle {
+    .cardTitle {
       color: var(--black);
     }
   }
@@ -28,7 +28,7 @@ const GlobalStyle = createGlobalStyle`
     .background {
       background-color: var(--black);
     }
-    .siteTitle, .cardTitle {
+    .cardTitle {
       color: var(--white);
     }
     .logoWrapper {
