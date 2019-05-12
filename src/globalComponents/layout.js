@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { StaticQuery, graphql } from 'gatsby'
 import Header from './header'
+import Footer from './footer'
 import styled, { createGlobalStyle } from 'styled-components'
 
 import './../fonts/Inter/inter.css'
@@ -12,24 +13,29 @@ const GlobalStyle = createGlobalStyle`
   body {
     font-family: 'Inter', sans-serif;
     margin: 0;
+    --black: #111;
+    --white: #fff
   }
   .light {
     .background {
-      background-color: #fff;
+      background-color: var(--white);
     }
     .siteTitle, .cardTitle {
-      color: #111;
+      color: var(--black);
     }
   }
   .dark {
     .background {
-      background-color: #111;
+      background-color: var(--black);
     }
     .siteTitle, .cardTitle {
-      color: #fff;
+      color: var(--white);
     }
     .logoWrapper {
       filter: invert(1);
+    }
+    .footerIcons {
+      filter: invert(1) contrast(5)
     }
   }
 `
@@ -72,6 +78,7 @@ export default function Layout({ children }) {
             <div>
               <main>{children}</main>
             </div>
+            <Footer />
           </MainWrapper>
         </Background>
       )}
