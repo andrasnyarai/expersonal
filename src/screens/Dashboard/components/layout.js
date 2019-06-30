@@ -4,8 +4,6 @@ import Header from './header'
 import Footer from './footer'
 import styled, { createGlobalStyle } from 'styled-components'
 
-import './../fonts/Inter/inter.css'
-
 const localStorageCheck = typeof localStorage !== 'undefined'
 const documentCheck = typeof document !== 'undefined'
 

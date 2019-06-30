@@ -1,5 +1,5 @@
 import styled, { keyframes } from 'styled-components'
-import mixBlendModes from '../../constants/mixBlendModes'
+import mixBlendModes from '../constants/mixBlendModes'
 
 const mixBlendModeRotate = keyframes`
 {
