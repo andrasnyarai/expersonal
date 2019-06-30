@@ -1,5 +1,6 @@
 let maxIterations
 const dimensions = { xPlane: [-2.5, 1], yPlane: [-1.75, 1.75] }
+const cache = {}
 
 // ƒc(z) = z² + c
 function iterate(iteration, a, b, ca, cb) {
@@ -23,6 +24,12 @@ function map(value, [minFrom, maxFrom], [minTo, maxTo]) {
 export function drawMandelbrotSet(ctx, width, depth) {
   maxIterations = Math.floor(map(depth, [1, 10], [5, 100]))
   const canvasImage = ctx.getImageData(0, 0, width, width)
+  const cacheKey = `${width}-${maxIterations}`
+
+  if (cache[cacheKey]) {
+    ctx.putImageData(cache[cacheKey], 0, 0)
+    return
+  }
 
   let x = 0
   let y = 0
@@ -52,6 +59,6 @@ export function drawMandelbrotSet(ctx, width, depth) {
     canvasImage.data[idx + 2] = brightness
     canvasImage.data[idx + 3] = 255
   }
-
   ctx.putImageData(canvasImage, 0, 0)
+  cache[cacheKey] = canvasImage
 }
