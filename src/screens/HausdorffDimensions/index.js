@@ -109,7 +109,7 @@ export default function HausdorffDimensions() {
       <GlobalStyle />
       <Container className="grid" ref={resizeRef}>
         <CanvasWrapper className="a" width={width} height={width}>
-          <Canvas id="canvas" ref={canvasRef} width={width} height={width} />
+          <Canvas ref={canvasRef} width={width} height={width} />
         </CanvasWrapper>
         <Selector className="b" current={state.currentFractalName} dispatch={dispatch} />
         <Slider
