@@ -7,7 +7,7 @@ const notifier = createNotifier()
 notifier.registerEvent(DRAW_FINISH)
 
 let working = false
-let worker = new DrawWorker()
+let worker = typeof window !== 'undefined' && new DrawWorker()
 
 const cache = {}
 
