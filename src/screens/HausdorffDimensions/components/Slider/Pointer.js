@@ -30,7 +30,6 @@ const Weight = styled.div`
   background-color: red;
   opacity: 0.7;
   bottom: -33px;
-  position: absolute;
   border-radius: 50%;
 `
 

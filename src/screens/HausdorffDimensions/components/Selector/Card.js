@@ -5,7 +5,7 @@ import fractals from '../../fractals'
 import { SET_FRACTAL_NAME } from '../../constants/actionNames'
 import { CARD_SIZE } from './constants'
 
-const pixelManipulated = ['Mandelbrot Set']
+const imageCheck = typeof Image !== 'undefined'
 
 const CardBody = styled.div`
   border: 0.5px dotted black;
@@ -66,8 +66,20 @@ function drawToCardsCanvas(ref) {
     context.translate(-30, -30)
 
     const { width: canvasSize } = canvas.getBoundingClientRect()
-    const depth = pixelManipulated.includes(fractalName) ? 1 : 5
-    fractals[fractalName].draw(context, canvasSize, depth)
+
+    const fractalDefinition = fractals[fractalName]
+    const readyMadeCard = fractalDefinition.readyMadeCard
+
+    if (readyMadeCard) {
+      const image = imageCheck && new Image()
+      image.onload = () => {
+        context.drawImage(image, canvasSize / 2, canvasSize / 2)
+      }
+      image.src = readyMadeCard.base64
+      return
+    }
+    const depth = 5
+    fractalDefinition.draw(context, canvasSize, depth)
   }
 }
 
@@ -89,7 +101,7 @@ export default function Card({ dispatch, current, name }) {
       <canvas
         ref={ref}
         id={name}
-        {...(pixelManipulated.includes(name)
+        {...(fractals[name].pixelManipulated
           ? {
               width: 50,
               height: 50,

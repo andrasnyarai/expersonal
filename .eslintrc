@@ -1,9 +1,13 @@
 {
     "parser": "babel-eslint",
+    "parserOptions": { "ecmaVersion": 6 },
+    "env": { "es6": true },
     "globals": {
       "localStorage": "readonly",
       "document": "readonly",
-      "window": "readonly"
+      "Image": "readonly",
+      "window": "readonly",
+      "self": "readonly"
     },
     "rules": {
       "strict": 0,

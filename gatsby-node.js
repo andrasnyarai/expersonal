@@ -1,7 +1,12 @@
-/**
- * Implement Gatsby's Node APIs in this file.
- *
- * See: https://www.gatsbyjs.org/docs/node-apis/
- */
+exports.onCreateWebpackConfig = ({ actions: { replaceWebpackConfig }, getConfig }) => {
+  const config = getConfig()
 
-// You can delete this file if you're not using it
+  config.module.rules.push({
+    test: /\.worker\.js$/,
+    use: { loader: 'worker-loader' },
+  })
+
+  config.output.globalObject = 'this'
+
+  replaceWebpackConfig(config)
+}

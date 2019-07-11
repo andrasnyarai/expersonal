@@ -1,8 +1,9 @@
 import React, { useEffect, useReducer, useRef } from 'react'
+
 import styled, { createGlobalStyle } from 'styled-components'
 import useResizeObserver from 'use-resize-observer'
 
-import { Selector, Slider } from './components'
+import { Selector, Slider, Spinner } from './components'
 import fractals from './fractals'
 
 import { MEDIUM, LARGE } from './constants/mediaQueries'
@@ -56,6 +57,7 @@ const Container = styled.div`
 
 const CanvasWrapper = styled.div`
   display: flex;
+  position: relative;
   width: 100%;
   max-width: 600px;
   max-height: 600px;
@@ -83,12 +85,21 @@ function canvasSetup(context, width) {
   context.strokeStyle = 'rgba(0,0,0,0.5)'
 }
 
-function draw(canvasRef, width, depth, fractalName) {
+async function draw(canvasRef, width, depth, fractalName, spinnerRef) {
   const canvas = canvasRef.current
+  const spinner = spinnerRef.current
   if (canvas.getContext) {
     const context = canvas.getContext('2d')
-    canvasSetup(context, width)
-    fractals[fractalName].draw(context, width, Number(depth))
+    const fractalDefinition = fractals[fractalName]
+
+    if (fractalDefinition.pixelManipulated) {
+      spinner.style.display = 'block'
+    } else {
+      canvasSetup(context, width)
+    }
+
+    await fractalDefinition.draw(context, width, Number(depth))
+    spinner.style.display = 'none'
   }
 }
 
@@ -96,19 +107,21 @@ export default function HausdorffDimensions() {
   const [state, dispatch] = useReducer(reducer, initialState)
   const [resizeRef, width] = useResizeObserver()
   const canvasRef = useRef()
+  const spinnerRef = useRef()
 
   useEffect(() => {
     const { calculating, currentFractalName, currentDepth } = state
     if (!calculating) {
-      draw(canvasRef, width, currentDepth, currentFractalName)
+      draw(canvasRef, width, currentDepth, currentFractalName, spinnerRef)
     }
-  }, [width, state, canvasRef])
+  }, [width, state, canvasRef, spinnerRef])
 
   return (
     <>
       <GlobalStyle />
       <Container className="grid" ref={resizeRef}>
-        <CanvasWrapper className="a" width={width} height={width}>
+        <CanvasWrapper className="a">
+          <Spinner ref={spinnerRef} />
           <Canvas ref={canvasRef} width={width} height={width} />
         </CanvasWrapper>
         <Selector className="b" current={state.currentFractalName} dispatch={dispatch} />
