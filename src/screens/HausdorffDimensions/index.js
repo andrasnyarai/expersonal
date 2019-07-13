@@ -49,6 +49,7 @@ const GlobalStyle = createGlobalStyle`
 const Container = styled.div`
   display: grid;
   position: absolute;
+  height: calc(100% - 10px);
   top: 5px;
   bottom: 5px;
   left: 5px;
