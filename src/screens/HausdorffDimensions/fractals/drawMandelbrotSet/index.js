@@ -2,25 +2,31 @@ import DrawWorker from './mandelbrot.worker'
 import { map } from './../lib'
 import { createNotifier } from './createNotifier'
 
+const cache = {}
 const DRAW_FINISH = 'drawFinish'
 const notifier = createNotifier()
 notifier.registerEvent(DRAW_FINISH)
 
-let working = false
 let worker = typeof window !== 'undefined' && new DrawWorker()
 
-const cache = {}
-
-function setupWorker(worker, context, cacheKey) {
+function startWorker(worker, context, cacheKey) {
   worker.onmessage = event => {
     const { canvasImage } = event.data
     context.putImageData(canvasImage, 0, 0)
-    working = false
+    worker.isWorking = false
     cache[cacheKey] = canvasImage
     notifier.dispatchEvent(DRAW_FINISH)
   }
-  working = true
+  worker.isWorking = true
   return worker
+}
+
+export function refreshWorker() {
+  if (worker.isWorking) {
+    worker.terminate()
+    worker = new DrawWorker()
+    worker.isWorking = false
+  }
 }
 
 export async function drawMandelbrotSet(ctx, width, depth) {
@@ -28,17 +34,14 @@ export async function drawMandelbrotSet(ctx, width, depth) {
   const canvasImage = ctx.getImageData(0, 0, width, width)
   const cacheKey = `${width}-${maxIterations}`
 
-  if (working) {
-    worker.terminate()
-    worker = new DrawWorker()
-  }
+  refreshWorker()
 
   if (cache[cacheKey]) {
     ctx.putImageData(cache[cacheKey], 0, 0)
     return
   }
 
-  setupWorker(worker, ctx, cacheKey).postMessage({ canvasImage, width, maxIterations })
+  startWorker(worker, ctx, cacheKey).postMessage({ canvasImage, width, maxIterations })
 
   return new Promise(resolve => {
     notifier.addEventListener(DRAW_FINISH, resolve)
