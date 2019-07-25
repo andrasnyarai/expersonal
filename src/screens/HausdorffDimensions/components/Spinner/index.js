@@ -64,10 +64,12 @@ const SpinnerBody = styled.div`
   }
 `
 
-export default React.forwardRef(function Spinner(props, ref) {
+function Spinner(props, ref) {
   return (
     <SpinnerWrapper ref={ref}>
       <SpinnerBody />
     </SpinnerWrapper>
   )
-})
+}
+
+export default React.forwardRef(Spinner)
