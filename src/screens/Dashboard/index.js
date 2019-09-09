@@ -20,7 +20,7 @@ const cards = [
     title: 'Shifting Suns',
     imageName: 'shiftingSuns.png',
   },
-  { backgroundColor: 'mediumblue' },
+  { backgroundColor: 'mediumblue', link: '/lindenmayerSystem/', title: 'Lindenmayer System', imageName: '' },
   { backgroundColor: 'mediumorchid' },
   { backgroundColor: 'mediumpurple' },
   { backgroundColor: 'mediumseagreen' },
