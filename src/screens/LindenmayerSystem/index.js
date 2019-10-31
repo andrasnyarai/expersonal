@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import useResizeObserver from 'use-resize-observer'
 
 import curves from './spaceFillingCurves'
-let offset = 0
+
 const Canvas = styled.canvas`
   display: block;
   background-color: white;
@@ -63,9 +63,10 @@ const CanvasWrapper = styled.div`
   ); */
 `
 
-let degree = curves['cesaro'].degree
-let axiom = curves['cesaro'].axiom
-let productionRules = curves['cesaro'].rules
+let degree = curves['hilbert'].degree
+let axiom = curves['hilbert'].axiom
+let productionRules = curves['hilbert'].rules
+let startingPosition = curves['hilbert'].calculateStartingPosition
 
 function iterateSymbols(depth, instructionSymbols) {
   if (depth === 0) {
@@ -83,28 +84,18 @@ function iterateSymbols(depth, instructionSymbols) {
     .join('')
 
   depth -= 1
-  // console.log(nextInstructionSymbols)
   return iterateSymbols(depth, nextInstructionSymbols)
 }
 
-// function calculatePoints(x, y, length, angles) {
-//     let lastX = x
-//     let lastY = y
-//     return angles.map(angle => {
-//       const nextX = lastX + length * Math.cos(radians(angle))
-//       const nextY = lastY + length * Math.sin(radians(angle))
-//       lastX = nextX
-//       lastY = nextY
-//       return [nextX, nextY]
-//     })
-//   }
+let a = 0
+let aStep = (degree * Math.PI) / 180
 
-let maxYPosition = 0
-let maxXPosition = 0
-// const cubicRatio = 0
-let directions = ['e', 's', 'w', 'n']
-let currentDirectionIndex = 0
-let direction = directions[0]
+let maxX = 0
+let minX = 0
+let maxY = 0
+let minY = 0
+
+let point = { x: 0, y: 0 }
 
 function canvasSetup(context, width) {
   context.fillStyle = 'rgba(255,255,255, 1)'
@@ -123,102 +114,86 @@ export default function LindenmayerSystem() {
     if (width > 1 && canvas.getContext) {
       const context = canvas.getContext('2d')
 
-      maxYPosition = 0
-      maxXPosition = 0
-      currentDirectionIndex = 0
-      direction = directions[0]
+      a = 0
+      maxX = 0
+      minX = 0
+      maxY = 0
+      minY = 0
+      point = { x: 0, y: 0 }
 
       context.resetTransform()
       canvasSetup(context, width)
 
       // context.moveTo(0, width)
       // context.translate(0, width)
-      context.beginPath()
-      context.moveTo(width / 2, width / 2)
-      context.translate(width / 2, width / 2)
 
-      iterateSymbols(depth, axiom)
+      const points = iterateSymbols(depth, axiom)
         .split('')
         .map(symbol => {
           if (symbol === 'F') {
-            if (direction === 'e') {
-              maxXPosition += 1
-            }
-            if (direction === 'n') {
-              maxYPosition += 1
-            }
-            //---
-            if (direction === 'w') {
-              maxXPosition -= 1
-            }
-            if (direction === 's') {
-              maxYPosition -= 1
-            }
+            point.x += Number(Math.cos(a).toFixed(5))
+            point.y += Number(Math.sin(a).toFixed(5))
+            maxX = Math.max(point.x, maxX)
+            minX = Math.min(point.x, minX)
+            maxY = Math.max(point.y, maxY)
+            minY = Math.min(point.y, minY)
+
+            return { ...point }
           }
           if (symbol === '-') {
-            currentDirectionIndex = (currentDirectionIndex - 1 + directions.length) % directions.length
-            direction = directions[currentDirectionIndex]
+            a -= aStep
+          }
+          if (symbol === '|') {
+            a -= Math.PI
           }
           if (symbol === '+') {
-            // on this direction its maybe dont neeeded!?
-            currentDirectionIndex = (currentDirectionIndex + 1 + directions.length) % directions.length
-            direction = directions[currentDirectionIndex]
+            a += aStep
           }
-          return symbol
+          return null
         })
-        .forEach((symbol, i, finalAxiom) => {
-          if (symbol === 'F') {
-            function draw() {
-              const fromOrigo = finalAxiom.slice(0, i + 1).filter(a => /F/.test(a))
-              const di = fromOrigo.length
-              const r = 50
-              const g = 0
-              const b = di * 10
-              const a = 1
+        .filter(Boolean)
 
-              context.beginPath()
-              context.moveTo(0, 0)
-              context.lineTo(25, 0)
-              context.translate(25, 0)
-              const t = `rgb(${[255, g, b].join(',')})`
-              // console.log(t)
-              context.strokeStyle = t
+      const segmentLength = width / (maxX - minX) // this will be true only for square like structures
+      const { x: startX, y: startY } = startingPosition(width, depth, segmentLength)
+      context.beginPath()
+      context.moveTo(startX, startY)
+      context.translate(startX, startY)
 
-              // context.lineDashOffset = -offset
-              context.setLineDash([4, 2])
-              // context.lineTo(width / maxXPosition, 0)
-              // context.translate(width / maxXPosition, 0)
-              context.lineWidth = Math.tan(di)
-              context.stroke()
-            }
+      points.forEach((point, i) => {
+        function draw() {
+          const di = i
+          const r = 255
+          const g = 0
+          const b = di * 10
 
-            // function march() {
-            //   offset++
-            //   if (offset > 16) {
-            //     offset = 0
-            //   }
-            // draw()
-            // setTimeout(march, 20)
-            // }
+          var xRatio = width / (maxX - minX)
+          var yRatio = width / (maxY - minY)
 
-            draw()
-            // setTimeout(draw, 1000)
-            // }
-            // if (offset > 16) {
-            //   offset = 0
-            // }
+          let x = point.x * xRatio
+          let y = point.y * yRatio
+
+          if (i > 0) {
+            const prevPoint = points[i - 1]
+            console.log(prevPoint)
+            //context.translate(prevPoint.x, prevPoint.y)
+            context.beginPath()
+            context.moveTo(prevPoint.x * xRatio, prevPoint.y * yRatio)
           }
-          if (symbol === 'b') {
-            context.moveTo(25, 0)
-            context.translate(25, 0)
-          }
-          if (symbol === '-') {
-            context.rotate((-degree * Math.PI) / 180)
-          }
-          if (symbol === '+') {
-            context.rotate((degree * Math.PI) / 180)
-          }
-        })
+
+          context.lineTo(x, y)
+
+          context.strokeStyle = `rgb(${[r, g, b].join(',')})`
+
+          //context.setLineDash([4, 2])
+
+          context.lineWidth = 5 //Math.log(Math.tan(di))
+          context.stroke()
+          //context.stroke()
+        }
+
+        // do RaF
+        setTimeout(draw, 10 * i)
+      })
     }
   }, [width, canvasRef, depth])
 
@@ -227,14 +202,25 @@ export default function LindenmayerSystem() {
       <CanvasWrapper ref={resizeRef}>
         <Canvas ref={canvasRef} height={width} width={width} />
       </CanvasWrapper>
-      <input type="range" min={1} max={3} step={1} value={depth} onChange={e => setDepth(Number(e.target.value))} />
+      <input
+        type="range"
+        min={1}
+        max={3}
+        step={1}
+        value={depth}
+        onChange={e => {
+          setDepth(Number(e.target.value))
+        }}
+      />
       <select
         onChange={e => {
           const selected = e.target.value
 
           degree = curves[selected].degree
+          aStep = (degree * Math.PI) / 180
           axiom = curves[selected].axiom
           productionRules = curves[selected].rules
+          startingPosition = curves[selected].calculateStartingPosition
         }}
       >
         {Object.keys(curves).map(curve => (
