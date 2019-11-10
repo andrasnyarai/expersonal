@@ -43,3 +43,5 @@ export const compositeOperations = [
   'color',
   'luminosity',
 ]
+
+export const lineCaps = ['butt', 'round', 'square']

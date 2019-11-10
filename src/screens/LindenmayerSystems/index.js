@@ -5,18 +5,21 @@ import curves from './spaceFillingCurves'
 import { CanvasWrapper, Canvas } from './style'
 import { reducer, initialState } from './reducer'
 import { SET_GENERATION, SET_CURVE } from './actions'
-import { padding, gradients, compositeOperations } from './constants'
-import { drawSegment, calculateCurve, clearCanvas } from './utils'
+import { padding, gradients, compositeOperations, lineCaps } from './constants'
+import { drawSegment, calculateCurve, clearCanvas, lineWidthStyleMap } from './utils'
 
-let selectedGradientName = gradients[0] // maybe mpove to useState as well
+let selectedGradientName = gradients[0]
+let selectedLineWidthStyle = 'default'
 
-// context.lineCap = 'round' //butt round square
-// tangens log
-// resize
+// clear style: black white, halfopaque, fullopaque
+
 // filter down operations
-// set timing?
 
+// neon drawatonce
+
+// structure controls meaningful to each other!
 // pressets ?
+// have a loading indicator ?
 
 export default function LindenmayerSystems() {
   const canvasRef = useRef()
@@ -25,6 +28,7 @@ export default function LindenmayerSystems() {
   const [state, dispatch] = useReducer(reducer, initialState)
 
   const [operation, setOperation] = useState(compositeOperations[0])
+  const [lineCap, setLineCap] = useState(lineCaps[0])
 
   const [clearBeforeDraw, setClearBeforeDraw] = useState(true)
   const [clearRemainingTimeouts, setClearRemainingTimeouts] = useState(true)
@@ -37,6 +41,14 @@ export default function LindenmayerSystems() {
       context.globalCompositeOperation = operation
     }
   }, [width, canvasRef, operation])
+
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (width > 1 && canvas.getContext) {
+      const context = canvas.getContext('2d')
+      context.lineCap = lineCap
+    }
+  }, [width, canvasRef, lineCap])
 
   useEffect(() => {
     const timeouts = []
@@ -60,9 +72,14 @@ export default function LindenmayerSystems() {
 
       for (let i = 0; i < points.length; i++) {
         if (drawFull) {
-          drawSegment(context, points, i, xRatio, yRatio, selectedGradientName)
+          drawSegment(context, points, i, xRatio, yRatio, selectedGradientName, selectedLineWidthStyle)
         } else {
-          timeouts.push(setTimeout(() => drawSegment(context, points, i, xRatio, yRatio, selectedGradientName), i * 10))
+          timeouts.push(
+            setTimeout(
+              () => drawSegment(context, points, i, xRatio, yRatio, selectedGradientName, selectedLineWidthStyle),
+              i * 10
+            )
+          )
         }
       }
     }
@@ -106,6 +123,16 @@ export default function LindenmayerSystems() {
       </select>
       <select
         onChange={e => {
+          const lineCap = e.target.value
+          setLineCap(lineCap)
+        }}
+      >
+        {lineCaps.map(lineCap => (
+          <option key={lineCap}>{lineCap}</option>
+        ))}
+      </select>
+      <select
+        onChange={e => {
           selectedGradientName = e.target.value
         }}
       >
@@ -114,6 +141,15 @@ export default function LindenmayerSystems() {
         ))}
       </select>
       {state.generation}
+      <select
+        onChange={e => {
+          selectedLineWidthStyle = e.target.value
+        }}
+      >
+        {Object.keys(lineWidthStyleMap).map(l => (
+          <option key={l}>{l}</option>
+        ))}
+      </select>
       <input
         type="checkbox"
         checked={clearBeforeDraw}

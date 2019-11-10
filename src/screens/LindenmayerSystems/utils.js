@@ -46,12 +46,25 @@ function getGradientSegment(normalizedIndex, gradientName) {
   }
 }
 
-function setSegmentStyle(context, i, pointsLength, gradientName) {
+export const lineWidthStyleMap = {
+  default: () => 3,
+  tan: Math.tan,
+  log: i => Math.log(Math.tan(i)),
+  fround: Math.fround,
+  sqrt: Math.sqrt,
+  exp: Math.exp,
+  big: () => 32,
+}
+
+function getLineWidth(lineWidthStyle, i) {
+  return lineWidthStyleMap[lineWidthStyle](i)
+}
+
+function setSegmentStyle(context, i, pointsLength, gradientName, lineWidthStyle) {
   const normalizedIndex = map(i, [0, pointsLength], [0, 200])
   const [r, g, b] = getGradientSegment(normalizedIndex, gradientName)
-
   context.strokeStyle = `rgb(${[r, g, b].join(',')})`
-  context.lineWidth = 3 //Math.tan(i) // onoff + log
+  context.lineWidth = getLineWidth(lineWidthStyle, i)
 }
 
 function calculatePointPosition(point, xRatio, yRatio) {
@@ -59,7 +72,7 @@ function calculatePointPosition(point, xRatio, yRatio) {
   return { x: x * xRatio, y: y * yRatio }
 }
 
-export function drawSegment(context, points, i, xRatio, yRatio, gradientName) {
+export function drawSegment(context, points, i, xRatio, yRatio, gradientName, lineWidthStyle) {
   const path = new Path2D()
   const currentPoint = points[i]
   const previousPoint = i === 0 ? { x: 0, y: 0 } : points[i - 1]
@@ -67,10 +80,18 @@ export function drawSegment(context, points, i, xRatio, yRatio, gradientName) {
   const { x: prevX, y: prevY } = calculatePointPosition(previousPoint, xRatio, yRatio)
   const { x, y } = calculatePointPosition(currentPoint, xRatio, yRatio)
 
-  path.moveTo(prevX, prevY)
-  path.lineTo(x, y)
-  setSegmentStyle(context, i, points.length, gradientName)
-  context.stroke(path)
+  setSegmentStyle(context, i, points.length, gradientName, lineWidthStyle)
+
+  const drawAtOnce = false //neon
+  if (drawAtOnce) {
+    context.moveTo(prevX, prevY)
+    context.lineTo(x, y)
+    context.stroke()
+  } else {
+    path.moveTo(prevX, prevY)
+    path.lineTo(x, y)
+    context.stroke(path)
+  }
 }
 
 // split this two
@@ -140,6 +161,7 @@ export function calculateCurve(generation, curve) {
 }
 
 export function clearCanvas(context, width) {
-  context.fillStyle = 'rgb(255,255,255)'
-  context.fillRect(0, 0, width, width)
+  context.fillStyle = 'rgba(0,0,0)' // rgba?
+  //context.fillStyle = 'rgba(255,255,255,1)' // rgba?
+  context.clearRect(0, 0, width, width) // black as well
 }
