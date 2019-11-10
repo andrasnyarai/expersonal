@@ -43,7 +43,7 @@ function Delimiter({ leftOffset, on }) {
     measuredRef.current.style.left = `${leftOffset}%`
   }, [leftOffset])
   return (
-    <DiamondWrapper ref={measuredRef} on={on}>
+    <DiamondWrapper ref={measuredRef} on={on ? 1 : 0}>
       <Diamond />
     </DiamondWrapper>
   )
