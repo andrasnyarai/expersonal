@@ -1,14 +1,7 @@
 {
     "parser": "babel-eslint",
     "parserOptions": { "ecmaVersion": 6 },
-    "env": { "es6": true },
-    "globals": {
-      "localStorage": "readonly",
-      "document": "readonly",
-      "Image": "readonly",
-      "window": "readonly",
-      "self": "readonly"
-    },
+    "env": { "es6": true, "node":true, "browser": true },
     "rules": {
       "strict": 0,
       "react/prop-types": 0,
