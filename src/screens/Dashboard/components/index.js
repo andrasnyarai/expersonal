@@ -32,12 +32,12 @@ const Card = styled.div`
   top: 10px;
   transition: filter 0.5s ease;
   cursor: pointer;
-  &:hover {
+  &:hover a {
     filter: saturate(3);
   }
 `
 const ImageContainer = styled.div`
-  width: 70%;
+  width: 100%;
   overflow: hidden;
   mix-blend-mode: hard-light;
 `

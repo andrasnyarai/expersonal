@@ -9,6 +9,12 @@ import { Scene, CardsContainer, Card, ImageContainer, CardLink, CardTitle } from
 
 const cards = [
   {
+    backgroundColor: 'mediumorchid',
+    link: '/lindenmayerSystems/',
+    title: 'Lindenmayer Systems',
+    imageName: 'lindenmayerSystems.png',
+  },
+  {
     backgroundColor: 'mediumaquamarine',
     link: '/hausdorffDimensions/',
     title: 'Hausdorff Dimensions',
@@ -20,8 +26,7 @@ const cards = [
     title: 'Shifting Suns',
     imageName: 'shiftingSuns.png',
   },
-  { backgroundColor: 'mediumblue', link: '/lindenmayerSystem/', title: 'Lindenmayer System', imageName: '' },
-  { backgroundColor: 'mediumorchid' },
+  { backgroundColor: 'mediumblue' },
   { backgroundColor: 'mediumpurple' },
   { backgroundColor: 'mediumseagreen' },
   { backgroundColor: 'mediumslateblue' },

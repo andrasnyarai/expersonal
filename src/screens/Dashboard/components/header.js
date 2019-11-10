@@ -40,9 +40,6 @@ const H1 = styled.h1`
   font-weight: 200;
   mix-blend-mode: difference;
   z-index: 1;
-  &:hover + div {
-    transform: translateX(50%);
-  }
 `
 
 const ThemeSwitcher = styled.div`
