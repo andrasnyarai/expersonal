@@ -1,24 +1,22 @@
-import React, { useEffect, useRef, useReducer, useState } from 'react'
+import React, { useEffect, useRef, useReducer, useState, useCallback } from 'react'
 import useResizeObserver from 'use-resize-observer'
 
-import curves from './spaceFillingCurves'
+import curves from './control/spaceFillingCurves'
 import { CanvasWrapper, Canvas } from './style'
-import { reducer, initialState } from './reducer'
-import { SET_GENERATION, SET_CURVE } from './actions'
-import { padding, gradients, compositeOperations, lineCaps } from './constants'
-import { drawSegment, calculateCurve, clearCanvas, lineWidthStyleMap } from './utils'
+import { reducer, initialState } from './state/reducer'
+import { SET_GENERATION, SET_CURVE } from './state/actions'
+import { padding, gradientNames, compositeOperations, lineCaps } from './control/constants'
+import { drawSegment, calculateCurve, clearCanvas, lineWidthStyleMap } from './logic/utils'
+import Helmet from 'react-helmet'
+import Slider from '../../globalComponents/Slider'
 
-let selectedGradientName = gradients[0]
+let selectedGradientName = gradientNames[0]
 let selectedLineWidthStyle = 'default'
 
-// clear style: black white, halfopaque, fullopaque
-
-// filter down operations
-
-// neon drawatonce
-
-// structure controls meaningful to each other!
-// pressets ?
+// fonts: Playfair Display, poppins -- google
+// filter down composite operations
+// workerize comlink?
+// finger selector
 // have a loading indicator ?
 
 export default function LindenmayerSystems() {
@@ -54,13 +52,15 @@ export default function LindenmayerSystems() {
     const timeouts = []
     const canvas = canvasRef.current
 
-    if (width > 1 && canvas.getContext) {
+    if (width > 1 && canvas.getContext && !state.calculating) {
       const context = canvas.getContext('2d')
 
       context.resetTransform()
       if (clearBeforeDraw) {
         clearCanvas(context, width)
       }
+
+      // refact
 
       const { points, boundaries } = calculateCurve(state.generation, state.curve)
       const xRatio = (width - padding * 2) / (boundaries.maxX - boundaries.minX)
@@ -86,21 +86,36 @@ export default function LindenmayerSystems() {
     return () => clearRemainingTimeouts && timeouts.forEach(timeout => clearTimeout(timeout))
   }, [width, canvasRef, state, clearBeforeDraw, clearRemainingTimeouts, drawFull])
 
+  const dispatchPosition = useCallback(position => dispatch({ type: SET_GENERATION, payload: position }), [])
+
   return (
     <>
+      <Helmet
+        style={[
+          {
+            cssText: `
+            html, body {
+              margin: 0;
+              height: 100%;
+              width: 100%;
+              position: fixed;
+              overflow: hidden;
+            }`,
+          },
+        ]}
+      />
       <CanvasWrapper ref={resizeRef}>
         <Canvas ref={canvasRef} height={width} width={width} />
       </CanvasWrapper>
-      <input
-        type="range"
-        min={1}
-        max={state.curve.maxGeneration}
-        step={1}
-        value={state.generation}
-        onChange={e => {
-          dispatch({ type: SET_GENERATION, payload: Number(e.target.value) })
-        }}
+      <Slider
+        compact={true}
+        // className="c"
+        current={state.generation}
+        cb={dispatchPosition}
+        maxRange={state.curve.maxGeneration}
+        entityName={state.curveName}
       />
+
       <select
         onChange={e => {
           const curveName = e.target.value
@@ -136,11 +151,10 @@ export default function LindenmayerSystems() {
           selectedGradientName = e.target.value
         }}
       >
-        {gradients.map(c => (
+        {gradientNames.map(c => (
           <option key={c}>{c}</option>
         ))}
       </select>
-      {state.generation}
       <select
         onChange={e => {
           selectedLineWidthStyle = e.target.value

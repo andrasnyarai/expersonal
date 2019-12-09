@@ -49,16 +49,16 @@ function Delimiter({ leftOffset, on }) {
   )
 }
 
-function createDelimiters(total, currentDepth) {
+function createDelimiters(total, current) {
   return Array(total)
     .fill()
     .map((_, i) => {
       const leftOffset = calculateFromLeftPercent(total, i)
-      const on = i < currentDepth
+      const on = i < current
       return <Delimiter key={i} leftOffset={leftOffset} on={on} />
     })
 }
 
-export default function Tracker({ maxRange, currentDepth }) {
-  return <TrackerBody>{createDelimiters(maxRange, currentDepth)}</TrackerBody>
+export default function Tracker({ maxRange, current }) {
+  return <TrackerBody>{createDelimiters(maxRange, current)}</TrackerBody>
 }

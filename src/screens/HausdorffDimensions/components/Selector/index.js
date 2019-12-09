@@ -7,7 +7,7 @@ import OptionsContainer from './OptionsContainer'
 import Card from './Card'
 import { MEDIUM, LARGE } from '../../constants/mediaQueries'
 import { CARD_SIZE } from './constants'
-import { SLIDER_HEIGHT } from './../Slider/constants'
+import { SLIDER_HEIGHT } from '../../../../globalComponents/Slider/constants'
 
 const fractalNames = Object.keys(fractals)
 const gradientString = '#eea2a2 0%, #bbc1bf 19%, #57c6e1 42%, #b49fda 79%, #7ac5d8 100%'

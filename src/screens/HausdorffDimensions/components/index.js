@@ -1,4 +1,4 @@
-import Slider from './Slider'
+import Slider from '../../../globalComponents/Slider'
 import Selector from './Selector'
 import Spinner from './Spinner'
 

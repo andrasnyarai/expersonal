@@ -15,7 +15,7 @@ const PointerBody = styled(animated.div)`
 
 const Marker = styled.div`
   width: 10px;
-  height: 70px;
+  height: ${({ compact }) => (compact ? 50 : 70)}px;
   position: absolute;
   background-color: black;
   bottom: -15px;
@@ -61,12 +61,12 @@ const SpiralWrapper = styled(Spiral)`
   }
 `
 
-export default function Pointer({ left }) {
+export default function Pointer({ left, compact }) {
   return (
     <PointerBody style={{ left }}>
-      <Marker />
-      <Weight />
-      <SpiralWrapper />
+      <Marker compact={compact} />
+      {!compact && <Weight />}
+      {!compact && <SpiralWrapper />}
     </PointerBody>
   )
 }

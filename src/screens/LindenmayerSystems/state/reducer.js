@@ -1,9 +1,13 @@
-import curves from './spaceFillingCurves'
+import curves from '../control/spaceFillingCurves'
 import { SET_CURVE, SET_GENERATION } from './actions'
 
+const [initialCurveName] = Object.keys(curves)
+
 const initialState = {
-  curve: curves['Hilbert curve'],
+  curve: curves[initialCurveName],
+  curveName: initialCurveName,
   generation: 2,
+  calculating: false,
 }
 
 function reducer(state, action) {
@@ -14,12 +18,14 @@ function reducer(state, action) {
       return {
         ...state,
         curve: nextCurve,
+        curveName,
         generation: nextCurve.maxGeneration <= state.generation ? nextCurve.maxGeneration : state.generation,
+        calculating: true,
       }
     }
     case SET_GENERATION: {
       const generation = action.payload
-      return { ...state, generation }
+      return { ...state, generation, calculating: false }
     }
     default:
       throw new Error()

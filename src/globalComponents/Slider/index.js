@@ -6,11 +6,10 @@ import { useSpring, config } from 'react-spring'
 import Tracker from './Tracker'
 import Pointer from './Pointer'
 import { HUNDRED_PERCENT, POINTER_WIDTH_PERCENT, SLIDER_HEIGHT } from './constants'
-import { SET_DEPTH } from './../../constants/actionNames'
 
 const Container = styled.div`
   background-color: white;
-  height: ${SLIDER_HEIGHT}px;
+  height: ${({ compact }) => (compact ? 70 : SLIDER_HEIGHT)}px;
   display: flex;
   align-items: center;
   position: relative;
@@ -35,14 +34,15 @@ function calculateXPercent(xy, containerRef) {
   return xRelativeToPointer
 }
 
-function calculateDepth(currentXPercent, maxRange) {
+function calculateTrackerPosition(currentXPercent, maxRange) {
   const quadrant = (HUNDRED_PERCENT - POINTER_WIDTH_PERCENT) / (maxRange - 1)
   const activationFineBalance = 0.02
   return Math.ceil(currentXPercent / quadrant + activationFineBalance)
 }
 
-export default function Slider({ className, currentDepth, dispatch, maxRange, fractalName }) {
+export default function Slider({ className, current, cb, maxRange, entityName, compact = false }) {
   const containerRef = useRef()
+  const entityNameTemp = useRef(entityName)
   const [handlers, { xy }] = useGesture()
   const [currentXPercent, setCurrentXPercent] = useState(0)
   const [props, setLeft] = useSpring(() => ({
@@ -57,14 +57,21 @@ export default function Slider({ className, currentDepth, dispatch, maxRange, fr
   }, [xy, setLeft])
 
   useEffect(() => {
-    const depth = calculateDepth(currentXPercent, maxRange)
-    dispatch({ type: SET_DEPTH, payload: depth })
-  }, [currentXPercent, maxRange, fractalName, dispatch, setLeft])
+    const position = calculateTrackerPosition(currentXPercent, maxRange)
+
+    const positionChanged = position !== current
+    const entityNameChanged = entityNameTemp.current !== entityName
+
+    if (positionChanged || entityNameChanged) {
+      entityNameTemp.current = entityName
+      cb(position)
+    }
+  }, [currentXPercent, maxRange, entityName, setLeft, cb, current])
 
   return (
-    <Container className={className} ref={containerRef} {...handlers()}>
-      <Tracker maxRange={maxRange} currentDepth={currentDepth} />
-      <Pointer left={props.left} />
+    <Container compact={compact} className={className} ref={containerRef} {...handlers()}>
+      <Tracker maxRange={maxRange} current={current} />
+      <Pointer compact={compact} left={props.left} />
     </Container>
   )
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useRef } from 'react'
+import React, { useEffect, useReducer, useRef, useCallback } from 'react'
 
 import styled, { createGlobalStyle } from 'styled-components'
 import useResizeObserver from 'use-resize-observer'
@@ -7,6 +7,7 @@ import { Selector, Slider, Spinner } from './components'
 import fractals from './fractals'
 
 import { MEDIUM, LARGE } from './constants/mediaQueries'
+import { SET_DEPTH } from './constants/actionNames'
 import { reducer, initialState } from './reducer'
 
 const GlobalStyle = createGlobalStyle`
@@ -117,6 +118,8 @@ export default function HausdorffDimensions() {
     }
   }, [width, state, canvasRef, spinnerRef])
 
+  const dispatchPosition = useCallback(position => dispatch({ type: SET_DEPTH, payload: position }), [])
+
   return (
     <>
       <GlobalStyle />
@@ -128,10 +131,10 @@ export default function HausdorffDimensions() {
         <Selector className="b" current={state.currentFractalName} dispatch={dispatch} />
         <Slider
           className="c"
-          currentDepth={state.currentDepth}
-          dispatch={dispatch}
+          current={state.currentDepth}
+          cb={dispatchPosition}
           maxRange={fractals[state.currentFractalName].maxDepth}
-          fractalName={state.currentFractalName}
+          entityName={state.currentFractalName}
         />
       </Container>
     </>

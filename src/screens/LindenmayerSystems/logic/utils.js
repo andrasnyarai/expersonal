@@ -1,49 +1,8 @@
-import { map } from '../HausdorffDimensions/fractals/lib' // move to shared math utils
+import { map } from '../../HausdorffDimensions/fractals/lib' // move to shared math utils
+import { easeGradients } from '../control/constants'
 
 function getGradientSegment(normalizedIndex, gradientName) {
-  const ascendingChannel = 55 + normalizedIndex
-  const descendingChannel = 255 - normalizedIndex
-  const halvingChannel = normalizedIndex / 2
-  const doublingChannel = Math.max(255, normalizedIndex * 2)
-
-  switch (gradientName) {
-    case 'polarShift': {
-      return [descendingChannel, halvingChannel, ascendingChannel]
-    }
-    case 'forest': {
-      return [15, halvingChannel, 45]
-    }
-    case 'ice': {
-      return [halvingChannel, descendingChannel, descendingChannel]
-    }
-    case 'noir': {
-      return [ascendingChannel - 55, ascendingChannel - 55, ascendingChannel - 55]
-    }
-    case 'mesmered': {
-      return [descendingChannel, 25, 24]
-    }
-    case 'crystal': {
-      return [descendingChannel - 20, doublingChannel * 0.7, doublingChannel]
-    }
-    case 'emerald': {
-      return [doublingChannel * 0.5, halvingChannel * 1.6, ascendingChannel + 20]
-    }
-    case 'winterScape': {
-      return [descendingChannel - 125, ascendingChannel / 2.5, halvingChannel + 5]
-    }
-    case 'sunBurst': {
-      return [doublingChannel, ascendingChannel, halvingChannel]
-    }
-    case 'leaf': {
-      return [50, ascendingChannel, halvingChannel]
-    }
-    case 'dreamHaze': {
-      return [ascendingChannel, halvingChannel, halvingChannel]
-    }
-    case 'sealike': {
-      return [halvingChannel * 0.2, ascendingChannel, descendingChannel]
-    }
-  }
+  return easeGradients(normalizedIndex)[gradientName]
 }
 
 export const lineWidthStyleMap = {
@@ -82,16 +41,9 @@ export function drawSegment(context, points, i, xRatio, yRatio, gradientName, li
 
   setSegmentStyle(context, i, points.length, gradientName, lineWidthStyle)
 
-  const drawAtOnce = false //neon
-  if (drawAtOnce) {
-    context.moveTo(prevX, prevY)
-    context.lineTo(x, y)
-    context.stroke()
-  } else {
-    path.moveTo(prevX, prevY)
-    path.lineTo(x, y)
-    context.stroke(path)
-  }
+  path.moveTo(prevX, prevY)
+  path.lineTo(x, y)
+  context.stroke(path)
 }
 
 // split this two
@@ -161,7 +113,5 @@ export function calculateCurve(generation, curve) {
 }
 
 export function clearCanvas(context, width) {
-  context.fillStyle = 'rgba(0,0,0)' // rgba?
-  //context.fillStyle = 'rgba(255,255,255,1)' // rgba?
-  context.clearRect(0, 0, width, width) // black as well
+  context.clearRect(0, 0, width, width)
 }

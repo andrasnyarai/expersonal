@@ -154,7 +154,7 @@ export default {
     productionRules: { X: 'X+YF++YF-FX--FXFX-YF+', Y: '-FX+YFYF++YF+FX--FX-Y' },
     degree: 60,
     maxGeneration: 6,
-    calculateStartingPosition: (w, g, l) => {
+    calculateStartingPosition: (w, g) => {
       const adjustMap = {
         1: { x: 0.3, y: padding },
         2: { x: 0.36, y: padding },
