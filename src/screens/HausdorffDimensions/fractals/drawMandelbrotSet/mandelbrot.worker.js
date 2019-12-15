@@ -1,4 +1,4 @@
-import { map } from './../lib'
+import { map } from '../../../../math/utils'
 
 const selfCheck = typeof self !== 'undefined'
 

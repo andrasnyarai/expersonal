@@ -1,5 +1,5 @@
 import DrawWorker from './mandelbrot.worker'
-import { map } from './../lib'
+import { map } from '../../../../math/utils'
 import { createNotifier } from './createNotifier'
 
 const cache = {}

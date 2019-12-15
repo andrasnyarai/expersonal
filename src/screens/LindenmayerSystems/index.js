@@ -1,30 +1,24 @@
-import React, { useEffect, useRef, useReducer, useState, useCallback } from 'react'
+import React, { useRef, useReducer, useState, useCallback } from 'react'
 import useResizeObserver from 'use-resize-observer'
+import Helmet from 'react-helmet'
 
 import curves from './control/spaceFillingCurves'
+import Slider from '../../globalComponents/Slider'
 import { CanvasWrapper, Canvas } from './style'
 import { reducer, initialState } from './state/reducer'
 import { SET_GENERATION, SET_CURVE } from './state/actions'
-import { padding, gradientNames, compositeOperations, lineCaps } from './control/constants'
-import { drawSegment, calculateCurve, clearCanvas, lineWidthStyleMap } from './logic/utils'
-import Helmet from 'react-helmet'
-import Slider from '../../globalComponents/Slider'
-
-let selectedGradientName = gradientNames[0]
-let selectedLineWidthStyle = 'default'
-
-// fonts: Playfair Display, poppins -- google
-// filter down composite operations
-// workerize comlink?
-// finger selector
-// have a loading indicator ?
+import { gradientNames, compositeOperations, lineCaps } from './control/constants'
+import { lineWidthStyleMap } from './control/constants'
+import { useCanvasContextChange, useSpaceFillingCurveDraw } from './control/hooks'
 
 export default function LindenmayerSystems() {
-  const canvasRef = useRef()
   const [resizeRef, width] = useResizeObserver()
+  const canvasRef = useRef()
 
   const [state, dispatch] = useReducer(reducer, initialState)
 
+  const selectedGradientNameRef = useRef(gradientNames[0])
+  const selectedLineWidthStyleRef = useRef('default')
   const [operation, setOperation] = useState(compositeOperations[0])
   const [lineCap, setLineCap] = useState(lineCaps[0])
 
@@ -32,59 +26,19 @@ export default function LindenmayerSystems() {
   const [clearRemainingTimeouts, setClearRemainingTimeouts] = useState(true)
   const [drawFull, setDrawFull] = useState(true)
 
-  useEffect(() => {
-    const canvas = canvasRef.current
-    if (width > 1 && canvas.getContext) {
-      const context = canvas.getContext('2d')
-      context.globalCompositeOperation = operation
-    }
-  }, [width, canvasRef, operation])
+  useCanvasContextChange(width, canvasRef, operation, 'globalCompositeOperation')
+  useCanvasContextChange(width, canvasRef, lineCap, 'lineCap')
 
-  useEffect(() => {
-    const canvas = canvasRef.current
-    if (width > 1 && canvas.getContext) {
-      const context = canvas.getContext('2d')
-      context.lineCap = lineCap
-    }
-  }, [width, canvasRef, lineCap])
-
-  useEffect(() => {
-    const timeouts = []
-    const canvas = canvasRef.current
-
-    if (width > 1 && canvas.getContext && !state.calculating) {
-      const context = canvas.getContext('2d')
-
-      context.resetTransform()
-      if (clearBeforeDraw) {
-        clearCanvas(context, width)
-      }
-
-      // refact
-
-      const { points, boundaries } = calculateCurve(state.generation, state.curve)
-      const xRatio = (width - padding * 2) / (boundaries.maxX - boundaries.minX)
-      const yRatio = (width - padding * 2) / (boundaries.maxY - boundaries.minY)
-
-      const calculateStartingPosition = state.curve.calculateStartingPosition
-      const { x: startX, y: startY } = calculateStartingPosition(width, state.generation, xRatio)
-      context.translate(startX, startY)
-
-      for (let i = 0; i < points.length; i++) {
-        if (drawFull) {
-          drawSegment(context, points, i, xRatio, yRatio, selectedGradientName, selectedLineWidthStyle)
-        } else {
-          timeouts.push(
-            setTimeout(
-              () => drawSegment(context, points, i, xRatio, yRatio, selectedGradientName, selectedLineWidthStyle),
-              i * 10
-            )
-          )
-        }
-      }
-    }
-    return () => clearRemainingTimeouts && timeouts.forEach(timeout => clearTimeout(timeout))
-  }, [width, canvasRef, state, clearBeforeDraw, clearRemainingTimeouts, drawFull])
+  useSpaceFillingCurveDraw(
+    width,
+    canvasRef,
+    state,
+    clearBeforeDraw,
+    drawFull,
+    clearRemainingTimeouts,
+    selectedGradientNameRef,
+    selectedLineWidthStyleRef
+  )
 
   const dispatchPosition = useCallback(position => dispatch({ type: SET_GENERATION, payload: position }), [])
 
@@ -109,7 +63,6 @@ export default function LindenmayerSystems() {
       </CanvasWrapper>
       <Slider
         compact={true}
-        // className="c"
         current={state.generation}
         cb={dispatchPosition}
         maxRange={state.curve.maxGeneration}
@@ -148,7 +101,7 @@ export default function LindenmayerSystems() {
       </select>
       <select
         onChange={e => {
-          selectedGradientName = e.target.value
+          selectedGradientNameRef.current = e.target.value
         }}
       >
         {gradientNames.map(c => (
@@ -157,7 +110,7 @@ export default function LindenmayerSystems() {
       </select>
       <select
         onChange={e => {
-          selectedLineWidthStyle = e.target.value
+          selectedLineWidthStyleRef.current = e.target.value
         }}
       >
         {Object.keys(lineWidthStyleMap).map(l => (

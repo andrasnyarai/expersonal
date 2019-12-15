@@ -1,5 +1,15 @@
 export const padding = 15
 
+export const lineWidthStyleMap = {
+  default: () => 3,
+  tan: Math.tan,
+  log: i => Math.log(Math.tan(i)),
+  fround: Math.fround,
+  sqrt: Math.sqrt,
+  exp: Math.exp,
+  big: () => 32,
+}
+
 export const easeGradients = index => {
   const ascendingChannel = 55 + index
   const descendingChannel = 255 - index
@@ -25,14 +35,10 @@ export const easeGradients = index => {
 export const gradientNames = Object.keys(easeGradients())
 
 export const compositeOperations = [
-  'source-over', // filter down
-  'source-in',
-  'source-out',
+  'source-over', // maybe only show when clearBeforeDraw is off?
   'source-atop',
   'destination-over',
-  'destination-in',
   'destination-out',
-  'destination-atop',
   'lighter',
   'copy',
   'xor',
