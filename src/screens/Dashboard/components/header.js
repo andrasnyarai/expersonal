@@ -45,8 +45,8 @@ const H1 = styled.h1`
 const ThemeSwitcher = styled.div`
   cursor: pointer;
   perspective: 100px;
-  width: 125px;
-  height: 125px;
+  width: 75px;
+  height: 75px;
   right: 9px;
   position: absolute;
   top: 9px;

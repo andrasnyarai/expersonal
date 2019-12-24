@@ -18,7 +18,7 @@ export default function LindenmayerSystems() {
   const [state, dispatch] = useReducer(reducer, initialState)
 
   const selectedGradientNameRef = useRef(gradientNames[0])
-  const selectedLineWidthStyleRef = useRef('default')
+  const selectedLineWidthStyleRef = useRef(Object.keys(lineWidthStyleMap)[0])
   const [operation, setOperation] = useState(compositeOperations[0])
   const [lineCap, setLineCap] = useState(lineCaps[0])
 

@@ -6,7 +6,6 @@ export const lineWidthStyleMap = {
   log: i => Math.log(Math.tan(i)),
   fround: Math.fround,
   sqrt: Math.sqrt,
-  exp: Math.exp,
   big: () => 32,
 }
 
@@ -35,7 +34,7 @@ export const easeGradients = index => {
 export const gradientNames = Object.keys(easeGradients())
 
 export const compositeOperations = [
-  'source-over', // maybe only show when clearBeforeDraw is off?
+  'source-over',
   'source-atop',
   'destination-over',
   'destination-out',

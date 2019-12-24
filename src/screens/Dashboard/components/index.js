@@ -2,41 +2,27 @@ import { Link } from 'gatsby'
 import { animated } from 'react-spring'
 import styled from 'styled-components'
 
-const Scene = styled.div`
-  position: relative;
-  width: 210px;
-  height: 105vh;
-  margin: 0 auto;
-  perspective: 500px;
-  @media (max-width: 515px) {
-    transform: scale(0.7) translateY(-200px);
-  }
-
-  @media (orientation: landscape) and (max-width: 825px) {
-    transform: scale(0.7) translateY(-200px);
-  }
-`
-
 const CardsContainer = styled(animated.article)`
-  position: absolute;
-  transform-style: preserve-3d;
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  grid-gap: 10px;
+
+  @media (max-width: 515px) {
+    grid-template-columns: repeat(1, auto);
+  }
 `
 
 const Card = styled.div`
+  position: relative;
   background-color: ${({ backgroundColor }) => backgroundColor};
   display: flex;
-  opacity: 0.5;
-  width: 190px;
-  height: 120px;
-  left: 10px;
-  top: 10px;
   transition: filter 0.5s ease;
   cursor: pointer;
-  &:hover a {
+  &:hover {
     filter: saturate(3);
   }
 `
-const ImageContainer = styled.div`
+const VideoContainer = styled.div`
   width: 100%;
   overflow: hidden;
   mix-blend-mode: hard-light;
@@ -56,4 +42,10 @@ const CardTitle = styled.div`
   letter-spacing: 2px;
 `
 
-export { Scene, CardsContainer, Card, ImageContainer, CardLink, CardTitle }
+const Video = styled.video`
+  width: 100%;
+  height: 100%;
+  transform: scale(1.1);
+`
+
+export { CardsContainer, Card, VideoContainer, CardLink, CardTitle, Video }

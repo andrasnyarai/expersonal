@@ -4,6 +4,7 @@ import Image from './image'
 
 const FooterWrapper = styled.div`
   display: flex;
+  margin-top: 50px;
   padding-right: 15px;
   justify-content: flex-end;
 `
