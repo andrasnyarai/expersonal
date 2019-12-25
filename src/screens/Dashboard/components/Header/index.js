@@ -1,18 +1,10 @@
-import React, { useState, useCallback, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import Image from '../image'
 import { ThemeSwitcher } from './ThemeSwitcher'
 import { HeaderContainer, H1, StyledLink, LogoWrapper } from './style'
-function useForceUpdate() {
-  const [, setTick] = useState(0)
-  const update = useCallback(() => {
-    setTick(tick => tick + 1)
-  }, [])
-  return update
-}
 
 export default function Header({ siteTitle, setTheme, currentTheme }) {
-  const [shine, setShine] = useState(currentTheme === 'light')
-  const [forceRender, setForceRender] = useState(false)
+  const [shine, setShine] = useState(true) // default to 'light' due to ssr
 
   const switchTheme = () => {
     setTheme(theme => (theme === 'light' ? 'dark' : 'light'))
@@ -20,10 +12,10 @@ export default function Header({ siteTitle, setTheme, currentTheme }) {
   }
 
   useEffect(() => {
-    if (window !== undefined) {
-      setForceRender(true)
+    if (currentTheme === 'dark') {
+      setShine(false)
     }
-  }, [])
+  }, []) // eslint-disable-line
 
   return (
     <HeaderContainer>
@@ -34,7 +26,7 @@ export default function Header({ siteTitle, setTheme, currentTheme }) {
         <Image imageName={'expr.png'} />
       </LogoWrapper>
 
-      <ThemeSwitcher forceRender={forceRender} shine={shine} switchTheme={switchTheme} />
+      <ThemeSwitcher shine={shine} switchTheme={switchTheme} />
     </HeaderContainer>
   )
 }
