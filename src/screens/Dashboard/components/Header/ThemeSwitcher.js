@@ -63,20 +63,20 @@ const MoonMask = styled.div`
 `
 
 export const ThemeSwitcher = ({ shine, switchTheme }) => {
-  const [, forceUpdate] = useState(false)
+  const [reShine, forceUpdate] = useState(shine)
 
   useEffect(() => {
-    forceUpdate()
-  }, [forceUpdate])
+    forceUpdate(shine)
+  }, [forceUpdate, shine])
 
   return (
-    <ThemeSwitcherBody shine={shine}>
+    <ThemeSwitcherBody shine={reShine}>
       <Sun onClick={switchTheme}>
         {[...new Array(numberOfBeams).keys()].map(i => (
-          <SunBeam shine={shine} key={i} i={i} />
+          <SunBeam shine={reShine} key={i} i={i} />
         ))}
       </Sun>
-      <MoonMask shine={shine} />
+      <MoonMask shine={reShine} />
     </ThemeSwitcherBody>
   )
 }
