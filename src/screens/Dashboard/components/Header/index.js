@@ -10,22 +10,18 @@ function useForceUpdate() {
   return update
 }
 
-export default function Header({ siteTitle, setTheme, currentTheme, ...rest }) {
+export default function Header({ siteTitle, setTheme, currentTheme }) {
   const [shine, setShine] = useState(currentTheme === 'light')
-  const [firstRender, setFirstRender] = useState(true)
+  const [forceRender, setForceRender] = useState(false)
 
   const switchTheme = () => {
     setTheme(theme => (theme === 'light' ? 'dark' : 'light'))
     setShine(s => !s)
   }
 
-  const forceUpdate = useForceUpdate()
-  //   console.log(rest)
   useEffect(() => {
     if (window !== undefined) {
-      //   setFirstRender(false)
-      console.log('sajt')
-      forceUpdate()
+      setForceRender(true)
     }
   }, [])
 
@@ -38,7 +34,7 @@ export default function Header({ siteTitle, setTheme, currentTheme, ...rest }) {
         <Image imageName={'expr.png'} />
       </LogoWrapper>
 
-      <ThemeSwitcher shine={shine} switchTheme={switchTheme} />
+      <ThemeSwitcher forceRender={forceRender} shine={shine} switchTheme={switchTheme} />
     </HeaderContainer>
   )
 }

@@ -62,9 +62,8 @@ const MoonMask = styled.div`
   will-change: width, height;
 `
 
-export const ThemeSwitcher = ({ shine, switchTheme }) => {
-  //   useEffect(, [])
-
+export const ThemeSwitcher = ({ shine, switchTheme, forceRender }) => {
+  console.log(forceRender, '__forceRender')
   return (
     <ThemeSwitcherBody shine={shine}>
       <Sun onClick={switchTheme}>
