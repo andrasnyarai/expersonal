@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import styled from 'styled-components'
 
 const sunSize = 50
@@ -62,21 +62,29 @@ const MoonMask = styled.div`
   will-change: width, height;
 `
 
-export const ThemeSwitcher = ({ shine, switchTheme }) => {
-  const [reShine, forceUpdate] = useState(shine)
+function useForceUpdate() {
+  const [tick, setTick] = useState(0)
+  const update = useCallback(() => {
+    setTick(tick => tick + 1)
+  }, [])
+  return [tick, update]
+}
 
-  useEffect(() => {
-    forceUpdate(shine)
-  }, [forceUpdate, shine])
+export const ThemeSwitcher = ({ shine, switchTheme }) => {
+  const [tick, forceUpdate] = useForceUpdate()
+  if (!shine) {
+    console.log(tick, '___tick')
+    forceUpdate()
+  }
 
   return (
-    <ThemeSwitcherBody shine={reShine}>
+    <ThemeSwitcherBody shine={shine}>
       <Sun onClick={switchTheme}>
         {[...new Array(numberOfBeams).keys()].map(i => (
-          <SunBeam shine={reShine} key={i} i={i} />
+          <SunBeam shine={shine} key={i} i={i} />
         ))}
       </Sun>
-      <MoonMask shine={reShine} />
+      <MoonMask shine={shine} />
     </ThemeSwitcherBody>
   )
 }
