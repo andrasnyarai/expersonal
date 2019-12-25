@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 
 const sunSize = 50
@@ -63,6 +63,12 @@ const MoonMask = styled.div`
 `
 
 export const ThemeSwitcher = ({ shine, switchTheme }) => {
+  const [, forceUpdate] = useState(false)
+
+  useEffect(() => {
+    forceUpdate()
+  }, [forceUpdate])
+
   return (
     <ThemeSwitcherBody shine={shine}>
       <Sun onClick={switchTheme}>
