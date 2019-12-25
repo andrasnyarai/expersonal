@@ -19,11 +19,10 @@ function calculateSunBeamPosition({ i, shine }) {
 }
 
 const ThemeSwitcherBody = styled.div`
-  cursor: pointer;
   background-color: var(--bgColor);
   border-radius: 50%;
-  filter: blur(2px) contrast(10);
-  mix-blend-mode: ${({ shine }) => (shine ? 'unset' : 'difference')};
+  filter: ${({ shine }) => `blur(${shine ? 2 : 1}px) contrast(10);`};
+  mix-blend-mode: ${({ shine }) => (shine ? 'inherit' : 'lighten')};
   transition: all 0.1s ease;
   width: 95px;
   height: 95px;
@@ -33,6 +32,7 @@ const ThemeSwitcherBody = styled.div`
 `
 
 const Sun = styled.div`
+  cursor: pointer;
   width: ${sunSize}px;
   height: ${sunSize}px;
   border-radius: 50%;
@@ -44,11 +44,10 @@ const Sun = styled.div`
 const SunBeam = styled.div`
   width: ${sunBeamWidth}px;
   height: ${sunBeamHeight}px;
-  background-color: black;
   position: absolute;
   transform: ${calculateSunBeamPosition};
-  transition: transform 0.8s cubic-bezier(0.81, 1.16, 0.31, 1.15);
-  background-color: var(--accentColor);
+  transition: ${({ shine }) => `transform ${shine ? 0.8 : 0.1}s cubic-bezier(0.81, 1.16, 0.31, 1.15)`};
+  background-color: ${({ shine }) => (shine ? 'var(--accentColor)' : 'transparent')};
 `
 
 const MoonMask = styled.div`
@@ -58,8 +57,8 @@ const MoonMask = styled.div`
   background-color: ${({ shine }) => (shine ? 'var(--accentColor)' : 'var(--bgColor)')};
   position: absolute;
   top: calc(50% - ${moonMaskSize / 2}px);
-  left: calc(50% - 5px);
-  transition: ${({ shine }) => `all ${shine ? 0.3 : 0.65}s cubic-bezier(0.39, 1.03, 0, 0.4)`};
+  left: calc(50% - 7px);
+  transition: ${({ shine }) => `all ${shine ? 0.3 : 0.65}s cubic-bezier(0.22, 0.82, 0.29, 0.99)`};
   will-change: width, height;
 `
 
