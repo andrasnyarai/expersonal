@@ -63,19 +63,17 @@ const MoonMask = styled.div`
 `
 
 function useForceUpdate() {
-  const [tick, setTick] = useState(0)
+  const [, setTick] = useState(0)
   const update = useCallback(() => {
     setTick(tick => tick + 1)
   }, [])
-  return [tick, update]
+  return update
 }
 
 export const ThemeSwitcher = ({ shine, switchTheme }) => {
-  const [tick, forceUpdate] = useForceUpdate()
-  if (!shine) {
-    console.log(tick, '___tick')
-    forceUpdate()
-  }
+  const forceUpdate = useForceUpdate()
+
+  useEffect(forceUpdate, [])
 
   return (
     <ThemeSwitcherBody shine={shine}>
