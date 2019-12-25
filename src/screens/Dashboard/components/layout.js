@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { StaticQuery, graphql } from 'gatsby'
-import Header from './header'
+import Header from './Header'
 import Footer from './footer'
 import styled, { createGlobalStyle } from 'styled-components'
 
@@ -12,28 +12,31 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'Inter', sans-serif;
     margin: 0;
     --black: #111;
-    --white: #fff
+    --white: #fff;
   }
+
+  .background {
+    background-color: var(--bgColor);
+  }
+
+  .cardTitle {
+    color: var(--accentColor);
+  }
+
   .light {
-    .background {
-      background-color: var(--white);
-    }
-    .cardTitle {
-      color: var(--black);
-    }
+    --bgColor: var(--white);
+    --accentColor: var(--black);
   }
+
   .dark {
-    .background {
-      background-color: var(--black);
-    }
-    .cardTitle {
-      color: var(--white);
-    }
+    --bgColor: var(--black);
+    --accentColor: var(--white);
+
     .logoWrapper {
       filter: invert(1);
     }
     .footerIcons {
-      filter: invert(1) contrast(5)
+      filter: invert(1) contrast(0.4);
     }
     video {
       filter: invert(1);
