@@ -6,7 +6,7 @@ import lindenmayerSystemsShowcase from '../../images/lindenmayerSystemsShowcase.
 import hausdorffDimensionsShowcase from '../../images/hausdorffDimensionsShowcase.mp4'
 import shiftingSunsShowcase from '../../images/shiftingSunsShowcase.mp4'
 
-import { CardsContainer, Card, VideoContainer, CardLink, CardTitle, Video } from './components'
+import { CardsContainer, Card, VideoContainer, CardLink, CardTitle, Video, ContentSkeleton } from './components'
 
 const cards = [
   {
@@ -39,10 +39,13 @@ export default function Dashboard() {
               <CardLink to={link}>
                 <CardTitle className="cardTitle">{title}</CardTitle>
               </CardLink>
+
               <VideoContainer>
-                <Video autoPlay muted loop playsInline>
-                  <source src={videoSrc} type="video/mp4" />
-                </Video>
+                <ContentSkeleton>
+                  <Video autoPlay muted loop playsInline>
+                    <source src={videoSrc} type="video/mp4" />
+                  </Video>
+                </ContentSkeleton>
               </VideoContainer>
             </Card>
           )
