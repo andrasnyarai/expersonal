@@ -25,7 +25,7 @@ export default function SEO({ description, lang = 'en', meta = [], keywords = []
         lang,
       }}
       title={title}
-      titleTemplate={'%s | ${site.siteMetadata.title}'}
+      titleTemplate={`%s | ${site.siteMetadata.title}`}
       meta={[
         {
           name: 'description',
