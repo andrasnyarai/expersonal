@@ -2,11 +2,12 @@ import React from 'react'
 import SEO from '../globalComponents/seo'
 import LindenmayerSystemsScreen from '../screens/LindenmayerSystems'
 import './../fonts/Inter/inter.css'
+import ogImageUrl from '../images/lindenmayerSystems.png'
 
 export default function LindenmayerSystems() {
   return (
     <>
-      <SEO title="Lindenmayer System" />
+      <SEO title="Lindenmayer System" ogImageUrl={ogImageUrl} />
       <LindenmayerSystemsScreen />
     </>
   )
