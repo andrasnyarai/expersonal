@@ -15,8 +15,8 @@ const socialIcons = [
     iconComponent: createInnerHtml(github),
   },
   {
-    href: 'https://hu.linkedin.com/in/andras-nyarai',
-    iconComponent: createInnerHtml(linkedin),
+    href: 'https://www.instagram.com/andandandras',
+    iconComponent: createInnerHtml(instagram),
   },
   {
     href: 'https://dev.to/andrasnyarai',
@@ -27,8 +27,8 @@ const socialIcons = [
     ),
   },
   {
-    href: 'https://www.instagram.com/andandandras',
-    iconComponent: createInnerHtml(instagram),
+    href: 'https://hu.linkedin.com/in/andras-nyarai',
+    iconComponent: createInnerHtml(linkedin),
   },
   {
     href: 'https://twitter.com/andrasai',
