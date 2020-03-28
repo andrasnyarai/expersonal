@@ -3,6 +3,8 @@ import { drawSegment, clearCanvas } from '../logic/draw'
 import { calculateCurve } from '../logic/curve'
 import { padding } from './constants'
 
+const windowGlobal = typeof window !== 'undefined' && window
+
 function setCanvasContextProperty(context, value, drawPropertyName) {
   context[drawPropertyName] = value
 }
@@ -23,12 +25,13 @@ export function useSpaceFillingCurveDraw(
   state,
   clearBeforeDraw,
   drawFull,
-  clearRemainingTimeouts,
+  clearRemainingAnimations,
   selectedGradientNameRef,
   selectedLineWidthStyleRef
 ) {
   useEffect(() => {
-    const timeouts = []
+    let requestId
+    let referenceIndex = 0
     const canvas = canvasRef.current
 
     if (width > 1 && canvas.getContext && !state.calculating) {
@@ -48,36 +51,36 @@ export function useSpaceFillingCurveDraw(
 
       context.translate(startX, startY)
 
-      for (let i = 0; i < points.length; i++) {
-        if (drawFull) {
-          drawSegment(
-            context,
-            points,
-            i,
-            xRatio,
-            yRatio,
-            selectedGradientNameRef.current,
-            selectedLineWidthStyleRef.current
-          )
-        } else {
-          timeouts.push(
-            setTimeout(
-              () =>
-                drawSegment(
-                  context,
-                  points,
-                  i,
-                  xRatio,
-                  yRatio,
-                  selectedGradientNameRef.current,
-                  selectedLineWidthStyleRef.current
-                ),
-              i * 10
-            )
-          )
+      /* eslint-disable no-inner-declarations */
+      function drawSegmentAtIndex(index) {
+        drawSegment(
+          context,
+          points,
+          index,
+          xRatio,
+          yRatio,
+          selectedGradientNameRef.current,
+          selectedLineWidthStyleRef.current
+        )
+      }
+
+      function step() {
+        drawSegmentAtIndex(referenceIndex)
+        referenceIndex += 1
+        if (referenceIndex < points.length) {
+          requestId = windowGlobal.requestAnimationFrame(step)
         }
       }
+      /* eslint-enable no-inner-declarations */
+
+      if (drawFull) {
+        for (let i = 0; i < points.length; i++) {
+          drawSegmentAtIndex(i)
+        }
+      } else {
+        requestId = windowGlobal.requestAnimationFrame(step)
+      }
     }
-    return () => clearRemainingTimeouts && timeouts.forEach(timeout => clearTimeout(timeout))
-  }, [width, canvasRef, state, clearBeforeDraw, clearRemainingTimeouts, drawFull]) // eslint-disable-line react-hooks/exhaustive-deps
+    return () => clearRemainingAnimations && windowGlobal.cancelAnimationFrame(requestId)
+  }, [width, canvasRef, state, clearBeforeDraw, clearRemainingAnimations, drawFull]) // eslint-disable-line react-hooks/exhaustive-deps
 }

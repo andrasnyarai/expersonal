@@ -11,6 +11,12 @@ import { gradientNames, compositeOperations, lineCaps } from './control/constant
 import { lineWidthStyleMap } from './control/constants'
 import { useCanvasContextChange, useSpaceFillingCurveDraw } from './control/hooks'
 
+// -messenger selector
+// -layout tablet desktop
+// -comlink
+// -loading indicator
+// -use requestAnimationFrame
+
 export default function LindenmayerSystems() {
   const [resizeRef, width] = useResizeObserver()
   const canvasRef = useRef()
@@ -23,7 +29,7 @@ export default function LindenmayerSystems() {
   const [lineCap, setLineCap] = useState(lineCaps[0])
 
   const [clearBeforeDraw, setClearBeforeDraw] = useState(true)
-  const [clearRemainingTimeouts, setClearRemainingTimeouts] = useState(true)
+  const [clearRemainingAnimations, setClearRemainingAnimations] = useState(true)
   const [drawFull, setDrawFull] = useState(true)
 
   useCanvasContextChange(width, canvasRef, operation, 'globalCompositeOperation')
@@ -35,7 +41,7 @@ export default function LindenmayerSystems() {
     state,
     clearBeforeDraw,
     drawFull,
-    clearRemainingTimeouts,
+    clearRemainingAnimations,
     selectedGradientNameRef,
     selectedLineWidthStyleRef
   )
@@ -126,9 +132,9 @@ export default function LindenmayerSystems() {
       />
       <input
         type="checkbox"
-        checked={clearRemainingTimeouts}
+        checked={clearRemainingAnimations}
         onChange={e => {
-          setClearRemainingTimeouts(e.target.checked)
+          setClearRemainingAnimations(e.target.checked)
         }}
       />
       <input
