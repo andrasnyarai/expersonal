@@ -19,16 +19,7 @@ export function useCanvasContextChange(width, canvasRef, value, drawPropertyName
   }, [width, canvasRef, value, drawPropertyName])
 }
 
-export function useSpaceFillingCurveDraw(
-  width,
-  canvasRef,
-  state,
-  clearBeforeDraw,
-  drawFull,
-  clearRemainingAnimations,
-  selectedGradientNameRef,
-  selectedLineWidthStyleRef
-) {
+export function useSpaceFillingCurveDraw(width, canvasRef, state) {
   useEffect(() => {
     let requestId
     let referenceIndex = 0
@@ -38,7 +29,7 @@ export function useSpaceFillingCurveDraw(
       const context = canvas.getContext('2d')
 
       context.resetTransform()
-      if (clearBeforeDraw) {
+      if (state.graphicOptions.clearBeforeDraw) {
         clearCanvas(context, width)
       }
 
@@ -59,8 +50,8 @@ export function useSpaceFillingCurveDraw(
           index,
           xRatio,
           yRatio,
-          selectedGradientNameRef.current,
-          selectedLineWidthStyleRef.current
+          state.graphicOptions.gradientName,
+          state.graphicOptions.lineWidthStyle,
         )
       }
 
@@ -73,7 +64,7 @@ export function useSpaceFillingCurveDraw(
       }
       /* eslint-enable no-inner-declarations */
 
-      if (drawFull) {
+      if (state.graphicOptions.drawFull) {
         for (let i = 0; i < points.length; i++) {
           drawSegmentAtIndex(i)
         }
@@ -81,6 +72,6 @@ export function useSpaceFillingCurveDraw(
         requestId = windowGlobal.requestAnimationFrame(step)
       }
     }
-    return () => clearRemainingAnimations && windowGlobal.cancelAnimationFrame(requestId)
-  }, [width, canvasRef, state, clearBeforeDraw, clearRemainingAnimations, drawFull]) // eslint-disable-line react-hooks/exhaustive-deps
+    return () => state.graphicOptions.clearRemainingAnimations && windowGlobal.cancelAnimationFrame(requestId)
+  }, [width, canvasRef, state])
 }

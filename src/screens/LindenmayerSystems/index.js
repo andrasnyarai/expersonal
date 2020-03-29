@@ -1,4 +1,4 @@
-import React, { useRef, useReducer, useState, useCallback } from 'react'
+import React, { useRef, useReducer, useCallback } from 'react'
 import useResizeObserver from 'use-resize-observer'
 import Helmet from 'react-helmet'
 
@@ -6,16 +6,25 @@ import curves from './control/spaceFillingCurves'
 import Slider from '../../globalComponents/Slider'
 import { CanvasWrapper, Canvas } from './style'
 import { reducer, initialState } from './state/reducer'
-import { SET_GENERATION, SET_CURVE } from './state/actions'
-import { gradientNames, compositeOperations, lineCaps } from './control/constants'
-import { lineWidthStyleMap } from './control/constants'
+import {
+  SET_CURVE,
+  SET_GENERATION,
+  SET_GRADIENT_NAME,
+  SET_LINE_WIDTH_STYLE,
+  SET_COMPOSITE_OPERATION,
+  SET_LINE_CAPS,
+  SET_CLEAR_BEFORE_DRAW,
+  SET_CLEAR_REMAINING_ANIMATIONS,
+  SET_DRAW_FULL,
+} from './state/actions'
+import { gradientNames, compositeOperations, lineCaps, lineWidthStyleMap } from './control/constants'
+
 import { useCanvasContextChange, useSpaceFillingCurveDraw } from './control/hooks'
+// import { SimpleSelector } from './components/SimpleSelector'
 
 // -messenger selector
 // -layout tablet desktop
-// -comlink
 // -loading indicator
-// -use requestAnimationFrame
 
 export default function LindenmayerSystems() {
   const [resizeRef, width] = useResizeObserver()
@@ -23,28 +32,10 @@ export default function LindenmayerSystems() {
 
   const [state, dispatch] = useReducer(reducer, initialState)
 
-  const selectedGradientNameRef = useRef(gradientNames[0])
-  const selectedLineWidthStyleRef = useRef(Object.keys(lineWidthStyleMap)[0])
-  const [operation, setOperation] = useState(compositeOperations[0])
-  const [lineCap, setLineCap] = useState(lineCaps[0])
+  useCanvasContextChange(width, canvasRef, state.graphicOptions.compositeOperation, 'globalCompositeOperation')
+  useCanvasContextChange(width, canvasRef, state.graphicOptions.lineCaps, 'lineCap')
 
-  const [clearBeforeDraw, setClearBeforeDraw] = useState(true)
-  const [clearRemainingAnimations, setClearRemainingAnimations] = useState(true)
-  const [drawFull, setDrawFull] = useState(true)
-
-  useCanvasContextChange(width, canvasRef, operation, 'globalCompositeOperation')
-  useCanvasContextChange(width, canvasRef, lineCap, 'lineCap')
-
-  useSpaceFillingCurveDraw(
-    width,
-    canvasRef,
-    state,
-    clearBeforeDraw,
-    drawFull,
-    clearRemainingAnimations,
-    selectedGradientNameRef,
-    selectedLineWidthStyleRef
-  )
+  useSpaceFillingCurveDraw(width, canvasRef, state)
 
   const dispatchPosition = useCallback(position => dispatch({ type: SET_GENERATION, payload: position }), [])
 
@@ -68,7 +59,7 @@ export default function LindenmayerSystems() {
         <Canvas ref={canvasRef} height={width} width={width} />
       </CanvasWrapper>
       <Slider
-        compact={true}
+        compact
         current={state.generation}
         cb={dispatchPosition}
         maxRange={state.curve.maxGeneration}
@@ -87,8 +78,7 @@ export default function LindenmayerSystems() {
       </select>
       <select
         onChange={e => {
-          const operation = e.target.value
-          setOperation(operation)
+          dispatch({ type: SET_COMPOSITE_OPERATION, payload: e.target.value })
         }}
       >
         {compositeOperations.map(operation => (
@@ -97,8 +87,7 @@ export default function LindenmayerSystems() {
       </select>
       <select
         onChange={e => {
-          const lineCap = e.target.value
-          setLineCap(lineCap)
+          dispatch({ type: SET_LINE_CAPS, payload: e.target.value })
         }}
       >
         {lineCaps.map(lineCap => (
@@ -107,7 +96,7 @@ export default function LindenmayerSystems() {
       </select>
       <select
         onChange={e => {
-          selectedGradientNameRef.current = e.target.value
+          dispatch({ type: SET_GRADIENT_NAME, payload: e.target.value })
         }}
       >
         {gradientNames.map(c => (
@@ -116,7 +105,7 @@ export default function LindenmayerSystems() {
       </select>
       <select
         onChange={e => {
-          selectedLineWidthStyleRef.current = e.target.value
+          dispatch({ type: SET_LINE_WIDTH_STYLE, payload: e.target.value })
         }}
       >
         {Object.keys(lineWidthStyleMap).map(l => (
@@ -125,23 +114,23 @@ export default function LindenmayerSystems() {
       </select>
       <input
         type="checkbox"
-        checked={clearBeforeDraw}
+        checked={state.graphicOptions.clearBeforeDraw}
         onChange={e => {
-          setClearBeforeDraw(e.target.checked)
+          dispatch({ type: SET_CLEAR_BEFORE_DRAW, payload: e.target.checked })
         }}
       />
       <input
         type="checkbox"
-        checked={clearRemainingAnimations}
+        checked={state.graphicOptions.clearRemainingAnimations}
         onChange={e => {
-          setClearRemainingAnimations(e.target.checked)
+          dispatch({ type: SET_CLEAR_REMAINING_ANIMATIONS, payload: e.target.checked })
         }}
       />
       <input
         type="checkbox"
-        checked={drawFull}
+        checked={state.graphicOptions.drawFull}
         onChange={e => {
-          setDrawFull(e.target.checked)
+          dispatch({ type: SET_DRAW_FULL, payload: e.target.checked })
         }}
       />
     </>
