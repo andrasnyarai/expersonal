@@ -14,7 +14,15 @@ const actionNameToStatePropertyName = {
 const Wrapper = styled.div`
   display: grid;
   grid-template-columns: 9fr 1fr;
+  max-width: 850px;
+  margin: 0 10vw 0 10vw;
   align-self: center;
+`
+
+const CheckboxWrapper = styled.div`
+  display: grid;
+  grid-template-columns: minmax(50px, 150px) minmax(50px, 150px);
+  grid-gap: 2.5px;
 `
 
 export const TopController = ({ state, dispatchGeneration, dispatch }) => {
@@ -28,18 +36,20 @@ export const TopController = ({ state, dispatchGeneration, dispatch }) => {
         maxRange={state.curve.maxGeneration}
         entityName={state.curveName}
       />
-      <div>
+      <CheckboxWrapper>
         {Object.entries(actionNameToStatePropertyName).map(([actionName, statePropertyName]) => (
-          <input
-            type="checkbox"
-            key={actionName}
-            checked={state[statePropertyName]}
-            onChange={e => {
-              dispatch({ type: actionName, payload: e.target.checked })
-            }}
-          />
+          <div key={actionName} style={{ overflow: 'hidden' }}>
+            <input
+              type="checkbox"
+              checked={state[statePropertyName]}
+              onChange={e => {
+                dispatch({ type: actionName, payload: e.target.checked })
+              }}
+            />
+            <div>{actionName}</div>
+          </div>
         ))}
-      </div>
+      </CheckboxWrapper>
     </Wrapper>
   )
 }

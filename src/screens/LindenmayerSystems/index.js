@@ -9,12 +9,8 @@ import { SET_GENERATION } from './state/actions'
 import { reducer, initialState } from './state/reducer'
 import { useCanvasContextChange, useSpaceFillingCurveDraw } from './control/hooks'
 
-// black fine tune
-// scroll snaps
-// when selector is scrollable it should be visible
-
-// icons/mini-canvases/drawings
-// checkboxes -> info
+// - icons/mini-canvases/drawings/fonts
+// - checkboxes -> overlay with fonts and animation
 
 const windowGlobal = typeof window !== 'undefined' && window
 
