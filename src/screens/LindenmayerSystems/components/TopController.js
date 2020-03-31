@@ -2,7 +2,14 @@ import React from 'react'
 import styled from 'styled-components'
 
 import Slider from '../../../globalComponents/Slider'
-import { SET_CLEAR_BEFORE_DRAW, SET_CLEAR_REMAINING_ANIMATIONS, SET_DRAW_FULL } from '../state/actions'
+import { SET_CLEAR_BEFORE_DRAW, SET_CLEAR_REMAINING_ANIMATIONS, SET_DRAW_FULL, SET_DARK_MODE } from '../state/actions'
+
+const actionNameToStatePropertyName = {
+  [SET_CLEAR_BEFORE_DRAW]: 'clearBeforeDraw',
+  [SET_CLEAR_REMAINING_ANIMATIONS]: 'clearRemainingAnimations',
+  [SET_DRAW_FULL]: 'drawFull',
+  [SET_DARK_MODE]: 'darkMode',
+}
 
 const Wrapper = styled.div`
   display: grid;
@@ -10,7 +17,7 @@ const Wrapper = styled.div`
   align-self: center;
 `
 
-export const TopController = ({ state, dispatchGeneration, dispatch, isDarkMode, setIsDarkMode }) => {
+export const TopController = ({ state, dispatchGeneration, dispatch }) => {
   return (
     <Wrapper>
       <Slider
@@ -22,34 +29,16 @@ export const TopController = ({ state, dispatchGeneration, dispatch, isDarkMode,
         entityName={state.curveName}
       />
       <div>
-        <input
-          type="checkbox"
-          checked={state.clearBeforeDraw}
-          onChange={e => {
-            dispatch({ type: SET_CLEAR_BEFORE_DRAW, payload: e.target.checked })
-          }}
-        />
-        <input
-          type="checkbox"
-          checked={state.clearRemainingAnimations}
-          onChange={e => {
-            dispatch({ type: SET_CLEAR_REMAINING_ANIMATIONS, payload: e.target.checked })
-          }}
-        />
-        <input
-          type="checkbox"
-          checked={state.drawFull}
-          onChange={e => {
-            dispatch({ type: SET_DRAW_FULL, payload: e.target.checked })
-          }}
-        />
-        <input
-          type="checkbox"
-          checked={isDarkMode}
-          onChange={e => {
-            setIsDarkMode(e.target.checked)
-          }}
-        />
+        {Object.entries(actionNameToStatePropertyName).map(([actionName, statePropertyName]) => (
+          <input
+            type="checkbox"
+            key={actionName}
+            checked={state[statePropertyName]}
+            onChange={e => {
+              dispatch({ type: actionName, payload: e.target.checked })
+            }}
+          />
+        ))}
       </div>
     </Wrapper>
   )

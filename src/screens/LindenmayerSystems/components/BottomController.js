@@ -61,7 +61,7 @@ const graphicsSettings = {
   [SET_LINE_CAPS]: { statePropertyName: 'lineCaps', options: lineCaps },
 }
 
-const ACTION_NAMES = Object.keys(graphicsSettings)
+const actionNames = Object.keys(graphicsSettings)
 
 function getGraphicsSettings(actionName) {
   return graphicsSettings[actionName]
@@ -85,7 +85,7 @@ export const BottomController = ({ shouldRenderStackedControls, state, dispatch 
   return shouldRenderStackedControls ? (
     <StackedControlPanel>
       <GraphicsPanel>
-        {ACTION_NAMES.map(actionName => (
+        {actionNames.map(actionName => (
           <SelectorActivator
             key={actionName}
             isCurrent={actionName === activeGraphicsSettings.actionName}
@@ -109,7 +109,7 @@ export const BottomController = ({ shouldRenderStackedControls, state, dispatch 
     </StackedControlPanel>
   ) : (
     <FullControlPanel>
-      {ACTION_NAMES.map(actionName => {
+      {actionNames.map(actionName => {
         return (
           <SimpleSelector
             current={state[getGraphicsSettingsStatePropertyName(actionName)]}

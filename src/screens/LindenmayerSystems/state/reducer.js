@@ -1,5 +1,4 @@
 import curves from '../control/spaceFillingCurves'
-import { gradientNames, compositeOperations, lineCaps, lineWidthStyleMap } from '../control/constants'
 import {
   SET_CURVE,
   SET_GENERATION,
@@ -10,6 +9,7 @@ import {
   SET_CLEAR_BEFORE_DRAW,
   SET_CLEAR_REMAINING_ANIMATIONS,
   SET_DRAW_FULL,
+  SET_DARK_MODE,
 } from './actions'
 
 const [initialCurveName] = Object.keys(curves)
@@ -28,6 +28,7 @@ const initialState = {
   clearBeforeDraw: true,
   clearRemainingAnimations: false,
   drawFull: false,
+  darkMode: true,
 }
 
 function reducer(state, action) {
@@ -67,6 +68,9 @@ function reducer(state, action) {
     }
     case SET_DRAW_FULL: {
       return { ...state, drawFull: action.payload }
+    }
+    case SET_DARK_MODE: {
+      return { ...state, darkMode: action.payload }
     }
     default:
       throw new Error()
