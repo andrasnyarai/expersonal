@@ -17,17 +17,17 @@ const [initialCurveName] = Object.keys(curves)
 const initialState = {
   curve: curves[initialCurveName],
   curveName: initialCurveName,
-  generation: 2,
+  generation: 0,
   calculating: false,
-  graphicOptions: {
-    gradientName: gradientNames[0],
-    lineWidthStyle: Object.keys(lineWidthStyleMap)[0],
-    compositeOperation: compositeOperations[0],
-    lineCaps: lineCaps[0],
-    clearBeforeDraw: true,
-    clearRemainingAnimations: true,
-    drawFull: true,
-  },
+
+  gradientName: 'Jungle paw',
+  lineWidthStyle: 'default',
+  compositeOperation: 'source-over',
+  lineCaps: 'butt',
+
+  clearBeforeDraw: true,
+  clearRemainingAnimations: false,
+  drawFull: false,
 }
 
 function reducer(state, action) {
@@ -48,25 +48,25 @@ function reducer(state, action) {
       return { ...state, generation, calculating: false }
     }
     case SET_GRADIENT_NAME: {
-      return { ...state, graphicOptions: { ...state.graphicOptions, gradientName: action.payload } }
+      return { ...state, gradientName: action.payload }
     }
     case SET_LINE_WIDTH_STYLE: {
-      return { ...state, graphicOptions: { ...state.graphicOptions, lineWidthStyle: action.payload } }
+      return { ...state, lineWidthStyle: action.payload }
     }
     case SET_COMPOSITE_OPERATION: {
-      return { ...state, graphicOptions: { ...state.graphicOptions, compositeOperation: action.payload } }
+      return { ...state, compositeOperation: action.payload }
     }
     case SET_LINE_CAPS: {
-      return { ...state, graphicOptions: { ...state.graphicOptions, lineCaps: action.payload } }
+      return { ...state, lineCaps: action.payload }
     }
     case SET_CLEAR_BEFORE_DRAW: {
-      return { ...state, graphicOptions: { ...state.graphicOptions, clearBeforeDraw: action.payload } }
+      return { ...state, clearBeforeDraw: action.payload }
     }
     case SET_CLEAR_REMAINING_ANIMATIONS: {
-      return { ...state, graphicOptions: { ...state.graphicOptions, clearRemainingAnimations: action.payload } }
+      return { ...state, clearRemainingAnimations: action.payload }
     }
     case SET_DRAW_FULL: {
-      return { ...state, graphicOptions: { ...state.graphicOptions, drawFull: action.payload } }
+      return { ...state, drawFull: action.payload }
     }
     default:
       throw new Error()

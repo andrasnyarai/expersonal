@@ -15,3 +15,8 @@ export const CanvasWrapper = styled.div`
   align-self: center;
   justify-self: center;
 `
+
+export const SceneWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`

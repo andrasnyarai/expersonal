@@ -29,7 +29,7 @@ export function useSpaceFillingCurveDraw(width, canvasRef, state) {
       const context = canvas.getContext('2d')
 
       context.resetTransform()
-      if (state.graphicOptions.clearBeforeDraw) {
+      if (state.clearBeforeDraw) {
         clearCanvas(context, width)
       }
 
@@ -44,15 +44,7 @@ export function useSpaceFillingCurveDraw(width, canvasRef, state) {
 
       /* eslint-disable no-inner-declarations */
       function drawSegmentAtIndex(index) {
-        drawSegment(
-          context,
-          points,
-          index,
-          xRatio,
-          yRatio,
-          state.graphicOptions.gradientName,
-          state.graphicOptions.lineWidthStyle,
-        )
+        drawSegment(context, points, index, xRatio, yRatio, state.gradientName, state.lineWidthStyle)
       }
 
       function step() {
@@ -64,7 +56,7 @@ export function useSpaceFillingCurveDraw(width, canvasRef, state) {
       }
       /* eslint-enable no-inner-declarations */
 
-      if (state.graphicOptions.drawFull) {
+      if (state.drawFull) {
         for (let i = 0; i < points.length; i++) {
           drawSegmentAtIndex(i)
         }
@@ -72,6 +64,6 @@ export function useSpaceFillingCurveDraw(width, canvasRef, state) {
         requestId = windowGlobal.requestAnimationFrame(step)
       }
     }
-    return () => state.graphicOptions.clearRemainingAnimations && windowGlobal.cancelAnimationFrame(requestId)
+    return () => state.clearRemainingAnimations && windowGlobal.cancelAnimationFrame(requestId)
   }, [width, canvasRef, state])
 }

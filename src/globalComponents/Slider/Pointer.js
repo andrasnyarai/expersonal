@@ -15,10 +15,10 @@ const PointerBody = styled(animated.div)`
 
 const Marker = styled.div`
   width: 10px;
-  height: ${({ compact }) => (compact ? 50 : 70)}px;
+  height: ${({ compact }) => (compact ? 45 : 70)}px;
   position: absolute;
   background-color: black;
-  bottom: -15px;
+  bottom: ${({ compact }) => (compact ? -10 : -15)}px;
   position: absolute;
   clip-path: polygon(50% 0%, 85% 85%, 50% 100%, 15% 85%);
 `

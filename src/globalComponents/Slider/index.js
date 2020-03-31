@@ -40,21 +40,21 @@ function calculateTrackerPosition(currentXPercent, maxRange) {
   return Math.ceil(currentXPercent / quadrant + activationFineBalance)
 }
 
-export default function Slider({ className, current, cb, maxRange, entityName, compact = false }) {
+export default function Slider({ className, current, cb, maxRange, entityName, compact = false, defaultXPercent = 0 }) {
   const containerRef = useRef()
   const entityNameTemp = useRef(entityName)
-  const [handlers, { xy }] = useGesture()
-  const [currentXPercent, setCurrentXPercent] = useState(0)
+
+  const [currentXPercent, setCurrentXPercent] = useState(defaultXPercent)
   const [props, setLeft] = useSpring(() => ({
     left: `calc(${currentXPercent}%)`,
     config: config.stiff,
   }))
 
-  useEffect(() => {
+  const bind = useGesture(({ xy }) => {
     const newXPercent = calculateXPercent(xy, containerRef)
     setCurrentXPercent(newXPercent)
     setLeft({ left: `calc(${newXPercent}%)` })
-  }, [xy, setLeft])
+  })
 
   useEffect(() => {
     const position = calculateTrackerPosition(currentXPercent, maxRange)
@@ -69,7 +69,7 @@ export default function Slider({ className, current, cb, maxRange, entityName, c
   }, [currentXPercent, maxRange, entityName, setLeft, cb, current])
 
   return (
-    <Container compact={compact} className={className} ref={containerRef} {...handlers()}>
+    <Container compact={compact} className={className} ref={containerRef} {...bind()}>
       <Tracker maxRange={maxRange} current={current} />
       <Pointer compact={compact} left={props.left} />
     </Container>
