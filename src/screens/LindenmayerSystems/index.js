@@ -9,6 +9,15 @@ import { SET_GENERATION } from './state/actions'
 import { reducer, initialState } from './state/reducer'
 import { useCanvasContextChange, useSpaceFillingCurveDraw } from './control/hooks'
 
+// black fine tune
+// scroll snaps
+// when selector is scrollable it should be visible
+
+// icons/mini-canvases/drawings
+// checkboxes -> info
+
+const windowGlobal = typeof window !== 'undefined' && window
+
 export default function LindenmayerSystems() {
   const [resizeRef, width] = useResizeObserver()
   const canvasRef = useRef()
@@ -21,7 +30,7 @@ export default function LindenmayerSystems() {
 
   const dispatchGeneration = useCallback(generation => dispatch({ type: SET_GENERATION, payload: generation }), [])
 
-  const shouldRenderStackedControls = window.innerHeight < 760
+  const shouldRenderStackedControls = windowGlobal.innerHeight < 760
 
   return (
     <>
