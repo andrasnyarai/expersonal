@@ -15,5 +15,5 @@ export const Tile = ({ graphicSettingsStatePropertyName, optionName }) => {
     drawToCardsCanvas(ref, graphicSettingsStatePropertyName, optionName)
   }, [ref, optionName, graphicSettingsStatePropertyName])
 
-  return <canvas ref={ref} id={name} width={55} height={55} />
+  return <canvas ref={ref} width={55} height={55} />
 }
