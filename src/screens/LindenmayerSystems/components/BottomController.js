@@ -102,6 +102,7 @@ export const BottomController = ({ shouldRenderStackedControls, state, dispatch 
       </GraphicsPanel>
 
       <FloatingSimpleSelector
+        graphicSettingsStatePropertyName={activeGraphicsSettings.statePropertyName}
         current={state[activeGraphicsSettings.statePropertyName]}
         options={activeGraphicsSettings.options}
         onSelect={optionName => dispatch({ type: activeGraphicsSettings.actionName, payload: optionName })}
@@ -110,9 +111,11 @@ export const BottomController = ({ shouldRenderStackedControls, state, dispatch 
   ) : (
     <FullControlPanel>
       {actionNames.map(actionName => {
+        const graphicSettingsStatePropertyName = getGraphicsSettingsStatePropertyName(actionName)
         return (
           <SimpleSelector
-            current={state[getGraphicsSettingsStatePropertyName(actionName)]}
+            graphicSettingsStatePropertyName={graphicSettingsStatePropertyName}
+            current={state[graphicSettingsStatePropertyName]}
             key={actionName}
             options={getGraphicsSettingsOptions(actionName)}
             onSelect={optionName => dispatch({ type: actionName, payload: optionName })}

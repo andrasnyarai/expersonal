@@ -1,10 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
+import { Tile } from './Tile'
 
 const Rail = styled.div`
   height: 50px;
   max-width: 80vw;
-  margin: 0 5px 5px 5px;
+  margin: 0 5px 4px 5px;
   border-radius: 5px;
   align-self: center;
   overflow-x: scroll;
@@ -28,13 +29,18 @@ const Scroller = styled.div`
 `
 
 const Button = styled.div`
+  display: flex;
   box-sizing: border-box;
   border: #ccc solid 1px;
   border-radius: 5px;
   box-shadow: 0 0.5px 0.5px rgba(0, 0, 0, 0.15);
+  position: relative;
+
   width: 55px;
   overflow: hidden;
   cursor: pointer;
+
+  justify-content: center;
 
   &:active {
     box-shadow: inset -0.5px 0.5px 1px 0px rgba(0, 0, 0, 0.15);
@@ -43,14 +49,26 @@ const Button = styled.div`
   ${({ isCurrent }) => (isCurrent ? 'background-color: #dcdcdc;' : '')}
 `
 
-export const SimpleSelector = ({ className, options, current, onSelect }) => (
-  <Rail className={className}>
-    <Scroller n={options.length}>
-      {options.map(optionName => (
-        <Button key={optionName} isCurrent={current === optionName} onClick={() => onSelect(optionName)}>
-          {optionName}
-        </Button>
-      ))}
-    </Scroller>
-  </Rail>
-)
+const Title = styled.div`
+  word-break: break-all;
+  position: absolute;
+  background-color: white;
+  opacity: 0.7;
+  height: 100%;
+  width: 100%;
+`
+
+export const SimpleSelector = ({ className, options, current, onSelect, graphicSettingsStatePropertyName }) => {
+  return (
+    <Rail className={className}>
+      <Scroller n={options.length}>
+        {options.map(optionName => (
+          <Button key={optionName} isCurrent={current === optionName} onClick={() => onSelect(optionName)}>
+            {current === optionName && <Title>{optionName}</Title>}
+            <Tile optionName={optionName} graphicSettingsStatePropertyName={graphicSettingsStatePropertyName} />
+          </Button>
+        ))}
+      </Scroller>
+    </Rail>
+  )
+}
