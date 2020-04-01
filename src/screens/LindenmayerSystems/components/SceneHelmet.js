@@ -15,7 +15,7 @@ export const SceneHelmet = ({ shouldRenderStackedControls, isDarkMode }) => {
             }
             html {
                 font-family: 'Inter',sans-serif;
-                font-size: 14px;
+                font-size: 13px;
                 font-weight: 400;
                 background-color: white;
                 ${isDarkMode ? 'filter: invert(1);' : ''}
