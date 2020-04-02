@@ -8,49 +8,39 @@ import {
   SET_COMPOSITE_OPERATION,
   SET_LINE_CAPS,
 } from '../state/actions'
-import { SimpleSelector } from './SimpleSelector'
 import curves from '../control/spaceFillingCurves'
 import { gradientNames, compositeOperations, lineCaps, lineWidthStyleMap } from '../control/constants'
+import { SimpleSelector } from './SimpleSelector'
+import { TileTitle } from './TileTitle'
 
-const FullControlPanel = styled.div`
+const ControlPanel = styled.div`
   display: flex;
   flex-direction: column;
-`
-
-const StackedControlPanel = styled.div`
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  ${({ isStacked }) =>
+    isStacked
+      ? `
+        align-items: center;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        `
+      : ''};
 `
 
 const GraphicsPanel = styled.div``
 
 const SelectorActivator = styled.div`
+  box-sizing: border-box;
   background-color: #f5f5f5;
+  border: #c5c5c5 solid 0.5px;
   border-radius: 10px;
-  box-shadow: 0 0.5px 0.5px rgba(0, 0, 0, 0.15);
-  display: inline-block;
   width: 55px;
   height: 55px;
   margin: 1px;
-
+  display: inline-block;
   overflow: hidden;
-
-  &:active {
-    box-shadow: inset -0.5px 0.5px 1px 0px rgba(0, 0, 0, 0.15);
-  }
-
-  ${({ isCurrent }) => (isCurrent ? 'background-color: #dcdcdc;' : '')}
-`
-
-const FloatingSimpleSelector = styled(SimpleSelector)`
-  position: absolute;
-  transform: translateY(-10vh);
-  max-width: 75vw;
+  position: relative;
 `
 
 const graphicsSettings = {
@@ -82,46 +72,44 @@ export const BottomController = ({ shouldRenderStackedControls, state, dispatch 
     options: [],
   })
 
-  return shouldRenderStackedControls ? (
-    <StackedControlPanel>
-      <GraphicsPanel>
-        {actionNames.map(actionName => (
-          <SelectorActivator
-            key={actionName}
-            isCurrent={actionName === activeGraphicsSettings.actionName}
-            onClick={() => {
-              setActiveGraphicsSettings({
-                actionName,
-                ...getGraphicsSettings(actionName),
-              })
-            }}
-          >
-            {actionName}
-          </SelectorActivator>
-        ))}
-      </GraphicsPanel>
-
-      <FloatingSimpleSelector
-        graphicSettingsStatePropertyName={activeGraphicsSettings.statePropertyName}
-        current={state[activeGraphicsSettings.statePropertyName]}
-        options={activeGraphicsSettings.options}
-        onSelect={optionName => dispatch({ type: activeGraphicsSettings.actionName, payload: optionName })}
-      />
-    </StackedControlPanel>
-  ) : (
-    <FullControlPanel>
+  return (
+    <ControlPanel isStacked={shouldRenderStackedControls}>
+      {shouldRenderStackedControls ? (
+        <GraphicsPanel>
+          {actionNames.map(actionName => {
+            const isCurrent = actionName === activeGraphicsSettings.actionName
+            return (
+              <SelectorActivator
+                key={actionName}
+                isCurrent={isCurrent}
+                onClick={() => {
+                  setActiveGraphicsSettings({
+                    actionName,
+                    ...getGraphicsSettings(actionName),
+                  })
+                }}
+              >
+                <TileTitle isVisible={!isCurrent}>{state[getGraphicsSettingsStatePropertyName(actionName)]}</TileTitle>
+              </SelectorActivator>
+            )
+          })}
+        </GraphicsPanel>
+      ) : null}
       {actionNames.map(actionName => {
         const graphicSettingsStatePropertyName = getGraphicsSettingsStatePropertyName(actionName)
+        const isVisisble = shouldRenderStackedControls ? activeGraphicsSettings.actionName === actionName : true
         return (
           <SimpleSelector
+            isFloating={shouldRenderStackedControls}
+            key={actionName}
+            isVisible={isVisisble}
             graphicSettingsStatePropertyName={graphicSettingsStatePropertyName}
             current={state[graphicSettingsStatePropertyName]}
-            key={actionName}
             options={getGraphicsSettingsOptions(actionName)}
             onSelect={optionName => dispatch({ type: actionName, payload: optionName })}
           />
         )
       })}
-    </FullControlPanel>
+    </ControlPanel>
   )
 }

@@ -10,10 +10,8 @@ import { reducer, initialState } from './state/reducer'
 import { useCanvasContextChange, useSpaceFillingCurveDraw } from './control/hooks'
 
 // - checkboxes -> overlay with fonts and animation
-// bottom-panel
-
-// remember scroll posisiton
-// or create them all ?
+// simpleselector: try images!
+// remember scroll posisiton >
 
 const windowGlobal = typeof window !== 'undefined' && window
 

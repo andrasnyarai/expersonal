@@ -5,7 +5,7 @@ import { Tile } from './Tile'
 const Rail = styled.div`
   height: 50px;
   max-width: 80vw;
-  margin: 0 5px 4px 5px;
+  ${({ isFloating }) => (isFloating ? '' : 'margin: 0 5px 4px 5px;')};
   border-radius: 5px;
   align-self: center;
   overflow-x: scroll;
@@ -20,6 +20,9 @@ const Rail = styled.div`
   background-color: white;
   background-size: 20px 100%, 20px 100%, 20px 100%, 20px 100%;
   background-attachment: local, local, scroll, scroll;
+
+  ${({ isVisible }) => (isVisible ? 'opacity:1;z-index:1;' : 'opacity:0;z-index:0;')};
+  ${({ isFloating }) => (isFloating ? 'position: absolute;transform: translateY(-9vh);max-width: 75vw;' : '')};
 `
 const Scroller = styled.div`
   height: 100%;
@@ -28,45 +31,26 @@ const Scroller = styled.div`
   grid-template-columns: ${({ n }) => `repeat(${n}, 55px)`};
 `
 
-const Button = styled.div`
-  display: flex;
-  box-sizing: border-box;
-  border: #ccc solid 1px;
-  border-radius: 5px;
-  box-shadow: 0 0.5px 0.5px rgba(0, 0, 0, 0.15);
-  position: relative;
-
-  width: 55px;
-  overflow: hidden;
-  cursor: pointer;
-
-  justify-content: center;
-
-  &:active {
-    box-shadow: inset -0.5px 0.5px 1px 0px rgba(0, 0, 0, 0.15);
-  }
-
-  ${({ isCurrent }) => (isCurrent ? 'background-color: #dcdcdc;' : '')}
-`
-
-const Title = styled.div`
-  word-break: break-all;
-  position: absolute;
-  background-color: white;
-  opacity: 0.7;
-  height: 100%;
-  width: 100%;
-`
-
-export const SimpleSelector = ({ className, options, current, onSelect, graphicSettingsStatePropertyName }) => {
+export const SimpleSelector = ({
+  className,
+  options,
+  current,
+  onSelect,
+  graphicSettingsStatePropertyName,
+  isVisible,
+  isFloating,
+}) => {
   return (
-    <Rail className={className}>
+    <Rail isVisible={isVisible} isFloating={isFloating} className={className}>
       <Scroller n={options.length}>
         {options.map(optionName => (
-          <Button key={optionName} isCurrent={current === optionName} onClick={() => onSelect(optionName)}>
-            {current === optionName && <Title>{optionName}</Title>}
-            <Tile optionName={optionName} graphicSettingsStatePropertyName={graphicSettingsStatePropertyName} />
-          </Button>
+          <Tile
+            key={optionName}
+            optionName={optionName}
+            onClick={() => onSelect(optionName)}
+            isSelected={current === optionName}
+            graphicSettingsStatePropertyName={graphicSettingsStatePropertyName}
+          />
         ))}
       </Scroller>
     </Rail>
