@@ -74,7 +74,7 @@ export const BottomController = ({ shouldRenderStackedControls, state, dispatch 
 
   return (
     <ControlPanel isStacked={shouldRenderStackedControls}>
-      {shouldRenderStackedControls ? (
+      {shouldRenderStackedControls && (
         <GraphicsPanel>
           {actionNames.map(actionName => {
             const isCurrent = actionName === activeGraphicsSettings.actionName
@@ -94,7 +94,7 @@ export const BottomController = ({ shouldRenderStackedControls, state, dispatch 
             )
           })}
         </GraphicsPanel>
-      ) : null}
+      )}
       {actionNames.map(actionName => {
         const graphicSettingsStatePropertyName = getGraphicsSettingsStatePropertyName(actionName)
         const isVisisble = shouldRenderStackedControls ? activeGraphicsSettings.actionName === actionName : true
