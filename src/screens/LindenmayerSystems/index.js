@@ -32,13 +32,14 @@ export default function LindenmayerSystems() {
 
   const dispatchGeneration = useCallback(generation => dispatch({ type: SET_GENERATION, payload: generation }), [])
 
+  const canvasHeight = width > 1 ? width : shouldRenderStackedControls ? windowGlobal.innerWidth : 600
   return (
     <>
       <SceneHelmet shouldRenderStackedControls={shouldRenderStackedControls} isDarkMode={state.darkMode} />
 
       <SceneWrapper>
         <CanvasWrapper ref={resizeRef}>
-          <Canvas ref={canvasRef} height={width > 1 ? width : 600} width={width} />
+          <Canvas ref={canvasRef} height={canvasHeight} width={width} />
         </CanvasWrapper>
 
         <TopController state={state} dispatchGeneration={dispatchGeneration} dispatch={dispatch} />
