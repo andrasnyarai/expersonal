@@ -1,7 +1,7 @@
-import React, { useRef, useReducer, useCallback } from 'react'
+import React, { useState, useEffect, useRef, useReducer, useCallback } from 'react'
 import useResizeObserver from 'use-resize-observer'
 
-import { CanvasWrapper, Canvas, SceneWrapper } from './style'
+import { CanvasWrapper, Canvas, CanvasSkeleton, SceneWrapper } from './style'
 import { TopController } from './components/TopController'
 import { BottomController } from './components/BottomController'
 import { SceneHelmet } from './components/SceneHelmet'
@@ -16,12 +16,18 @@ import { useCanvasContextChange, useSpaceFillingCurveDraw } from './control/hook
 // remember scroll posisiton >
 
 const windowGlobal = typeof window !== 'undefined' && window
-const shouldRenderStackedControls = windowGlobal.innerHeight < 760
 
 export default function LindenmayerSystems() {
   const [resizeRef, width] = useResizeObserver()
 
   const canvasRef = useRef()
+  const [shouldRenderStackedControls, setShouldRenderStackedControls] = useState(true) // default to true due to better loading experience
+
+  useEffect(() => {
+    if (windowGlobal) {
+      setShouldRenderStackedControls(windowGlobal.innerHeight < 760)
+    }
+  }, [])
 
   const [state, dispatch] = useReducer(reducer, initialState)
 
@@ -37,7 +43,7 @@ export default function LindenmayerSystems() {
 
       <SceneWrapper>
         <CanvasWrapper ref={resizeRef}>
-          <div style={{ maxHeight: '600px', width: '100%', height: '100vw' }} />
+          <CanvasSkeleton />
           <Canvas ref={canvasRef} height={width} width={width} />
         </CanvasWrapper>
 

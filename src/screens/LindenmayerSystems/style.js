@@ -25,3 +25,9 @@ export const SceneWrapper = styled.div`
   display: flex;
   flex-direction: column;
 `
+
+export const CanvasSkeleton = styled.div`
+  max-height: 600px;
+  width: 100%;
+  height: 100vw;
+`
