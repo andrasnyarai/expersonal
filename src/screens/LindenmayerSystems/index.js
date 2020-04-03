@@ -18,15 +18,9 @@ import { useCanvasContextChange, useSpaceFillingCurveDraw } from './control/hook
 const windowGlobal = typeof window !== 'undefined' && window
 const shouldRenderStackedControls = windowGlobal.innerHeight < 760
 
-function determineCanvasStartingHeight() {
-  if (!windowGlobal) {
-    return 200
-  }
-  return shouldRenderStackedControls ? windowGlobal.innerWidth : 600
-}
-
 export default function LindenmayerSystems() {
   const [resizeRef, width] = useResizeObserver()
+
   const canvasRef = useRef()
 
   const [state, dispatch] = useReducer(reducer, initialState)
@@ -37,14 +31,14 @@ export default function LindenmayerSystems() {
 
   const dispatchGeneration = useCallback(generation => dispatch({ type: SET_GENERATION, payload: generation }), [])
 
-  const canvasHeight = width > 1 ? width : determineCanvasStartingHeight()
   return (
     <>
       <SceneHelmet shouldRenderStackedControls={shouldRenderStackedControls} isDarkMode={state.darkMode} />
 
       <SceneWrapper>
         <CanvasWrapper ref={resizeRef}>
-          <Canvas ref={canvasRef} height={canvasHeight} width={width} />
+          <div style={{ maxHeight: '600px', width: '100%', height: '100vw' }} />
+          <Canvas ref={canvasRef} height={width} width={width} />
         </CanvasWrapper>
 
         <TopController state={state} dispatchGeneration={dispatchGeneration} dispatch={dispatch} />
