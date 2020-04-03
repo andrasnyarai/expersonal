@@ -9,14 +9,16 @@ import { SET_GENERATION } from './state/actions'
 import { reducer, initialState } from './state/reducer'
 import { useCanvasContextChange, useSpaceFillingCurveDraw } from './control/hooks'
 
+// reload bug on mobile
+
 // checkboxes -> overlay with fonts and animation
-// disallow user select on checkboz text
+// disallow user select on checkbox texts
 
 // simpleselector: try images for performance in tileCanvas
 // remember scroll posisiton >
-// reload bug on mobile
 
 const windowGlobal = typeof window !== 'undefined' && window
+const shouldRenderStackedControls = windowGlobal.innerHeight < 760
 
 export default function LindenmayerSystems() {
   const [resizeRef, width] = useResizeObserver()
@@ -29,8 +31,6 @@ export default function LindenmayerSystems() {
   useSpaceFillingCurveDraw(width, canvasRef, state)
 
   const dispatchGeneration = useCallback(generation => dispatch({ type: SET_GENERATION, payload: generation }), [])
-
-  const shouldRenderStackedControls = windowGlobal.innerHeight < 760
 
   return (
     <>
