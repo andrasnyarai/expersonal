@@ -9,8 +9,6 @@ import { SET_GENERATION } from './state/actions'
 import { reducer, initialState } from './state/reducer'
 import { useCanvasContextChange, useSpaceFillingCurveDraw } from './control/hooks'
 
-// reload bug on mobile
-
 // checkboxes -> overlay with fonts and animation
 // disallow user select on checkbox texts
 
@@ -19,6 +17,13 @@ import { useCanvasContextChange, useSpaceFillingCurveDraw } from './control/hook
 
 const windowGlobal = typeof window !== 'undefined' && window
 const shouldRenderStackedControls = windowGlobal.innerHeight < 760
+
+function determineCanvasStartingHeight() {
+  if (!windowGlobal) {
+    return 200
+  }
+  return shouldRenderStackedControls ? windowGlobal.innerWidth : 600
+}
 
 export default function LindenmayerSystems() {
   const [resizeRef, width] = useResizeObserver()
@@ -32,7 +37,7 @@ export default function LindenmayerSystems() {
 
   const dispatchGeneration = useCallback(generation => dispatch({ type: SET_GENERATION, payload: generation }), [])
 
-  const canvasHeight = width > 1 ? width : shouldRenderStackedControls ? windowGlobal.innerWidth : 600
+  const canvasHeight = width > 1 ? width : determineCanvasStartingHeight()
   return (
     <>
       <SceneHelmet shouldRenderStackedControls={shouldRenderStackedControls} isDarkMode={state.darkMode} />
