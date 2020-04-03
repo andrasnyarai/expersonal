@@ -14,6 +14,11 @@ export const CanvasWrapper = styled.div`
   max-height: 600px;
   align-self: center;
   justify-self: center;
+
+  @media screen and (max-height: 450px) and (orientation: landscape) {
+    max-width: 200px;
+    max-height: 200px;
+  }
 `
 
 export const SceneWrapper = styled.div`

@@ -9,9 +9,12 @@ import { SET_GENERATION } from './state/actions'
 import { reducer, initialState } from './state/reducer'
 import { useCanvasContextChange, useSpaceFillingCurveDraw } from './control/hooks'
 
-// - checkboxes -> overlay with fonts and animation
-// simpleselector: try images!
+// checkboxes -> overlay with fonts and animation
+// disallow user select on checkboz text
+
+// simpleselector: try images for performance in tileCanvas
 // remember scroll posisiton >
+// reload bug on mobile
 
 const windowGlobal = typeof window !== 'undefined' && window
 

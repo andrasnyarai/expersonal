@@ -22,7 +22,11 @@ const Rail = styled.div`
   background-attachment: local, local, scroll, scroll;
 
   ${({ isVisible }) => (isVisible ? 'opacity:1;z-index:1;' : 'opacity:0;z-index:0;')};
-  ${({ isFloating }) => (isFloating ? 'position: absolute;transform: translateY(-9vh);max-width: 75vw;' : '')};
+  ${({ isFloating }) => (isFloating ? 'position: absolute;transform: translateY(-21vh);max-width: 75vw;' : '')};
+
+  @media screen and (max-height: 450px) and (orientation: landscape) {
+    transform: translateY(-15vh);
+  }
 `
 const Scroller = styled.div`
   height: 100%;
