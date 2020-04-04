@@ -13,6 +13,7 @@ export const SceneHelmet = ({ shouldRenderStackedControls, isDarkMode }) => {
                 height: 100%;
                 position: absolute;
                 min-height: 100vh;
+                background-color: white;
                 ${shouldRenderStackedControls ? 'overflow: hidden;' : ''};
             }
 
@@ -20,7 +21,6 @@ export const SceneHelmet = ({ shouldRenderStackedControls, isDarkMode }) => {
                 font-family: 'Inter',sans-serif;
                 font-size: 13px;
                 font-weight: 400;
-                background-color: white;
                 ${isDarkMode ? 'filter: invert(1);' : ''}
             }
             `,

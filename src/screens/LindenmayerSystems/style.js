@@ -22,7 +22,7 @@ export const CanvasWrapper = styled.div`
 `
 
 export const SceneWrapper = styled.div`
-  background-color: white;
+  /* background-color: white; */
   display: flex;
   flex-direction: column;
 `
