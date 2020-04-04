@@ -23,6 +23,10 @@ export const SceneHelmet = ({ shouldRenderStackedControls, isDarkMode }) => {
                 font-weight: 400;
                 ${isDarkMode ? 'filter: invert(1);' : ''}
             }
+
+            #___gatsby {
+                background-color: white;    
+            }
             `,
         },
       ]}
