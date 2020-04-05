@@ -10,6 +10,7 @@ const documentCheck = typeof document !== 'undefined'
 const GlobalStyle = createGlobalStyle`
   body {
     font-family: 'Inter', sans-serif;
+    font-size: 16px;
     margin: 0;
     --black: #111;
     --white: #fff;
