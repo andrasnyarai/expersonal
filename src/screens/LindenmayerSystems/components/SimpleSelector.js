@@ -13,7 +13,7 @@ const Rail = styled.div`
   ${({ isFloating }) => (isFloating ? 'position: absolute;transform: translateY(-21vh);max-width: 75vw;' : '')};
 
   @media screen and (max-height: 450px) and (orientation: landscape) {
-    transform: translateY(-15vh);
+    transform: translateY(-14vh);
   }
 `
 const Scroller = styled.div`

@@ -31,7 +31,7 @@ const ControlPanel = styled.div`
 const GraphicsPanel = styled.div`
   transform: translateY(-12vh);
   @media screen and (max-height: 450px) and (orientation: landscape) {
-    transform: translateY(-1vh);
+    transform: translateY(0vh);
   }
 `
 

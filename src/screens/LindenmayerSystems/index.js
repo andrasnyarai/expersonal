@@ -9,9 +9,6 @@ import { SET_GENERATION } from './state/actions'
 import { reducer, initialState } from './state/reducer'
 import { useCanvasContextChange, useSpaceFillingCurveDraw } from './control/hooks'
 
-// checkboxes -> overlay with fonts and animation
-// disallow user select on checkbox texts
-
 const windowGlobal = typeof window !== 'undefined' && window
 
 export default function LindenmayerSystems() {
@@ -44,7 +41,12 @@ export default function LindenmayerSystems() {
           <Canvas ref={canvasRef} height={width} width={width} />
         </CanvasWrapper>
 
-        <TopController state={state} dispatchGeneration={dispatchGeneration} dispatch={dispatch} />
+        <TopController
+          shouldRenderStackedControls={shouldRenderStackedControls}
+          state={state}
+          dispatchGeneration={dispatchGeneration}
+          dispatch={dispatch}
+        />
 
         <BottomController shouldRenderStackedControls={shouldRenderStackedControls} state={state} dispatch={dispatch} />
       </SceneWrapper>
