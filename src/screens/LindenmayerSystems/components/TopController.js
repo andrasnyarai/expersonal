@@ -60,11 +60,11 @@ const CheckboxContainer = styled(animated.div)`
   padding: 4px 1px 1px 4px;
   box-sizing: border-box;
 
-  cursor: pointer;
   user-select: none;
 
   & input {
     margin: 0;
+    cursor: pointer;
   }
 `
 
