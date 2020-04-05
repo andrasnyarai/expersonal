@@ -8,6 +8,7 @@
     "develop": "gatsby develop -H 0.0.0.0",
     "serve": "gatsby serve",
     "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\"",
+    "type-check": "./node_modules/typescript/bin/tsc --noEmit --skipLibCheck",
     "format": "prettier --write src/**/*.{js,jsx}"
   },
   "dependencies": {
