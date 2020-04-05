@@ -12,9 +12,6 @@ import { useCanvasContextChange, useSpaceFillingCurveDraw } from './control/hook
 // checkboxes -> overlay with fonts and animation
 // disallow user select on checkbox texts
 
-// simpleselector: try images for performance in tileCanvas
-// remember scroll posisiton >
-
 const windowGlobal = typeof window !== 'undefined' && window
 
 export default function LindenmayerSystems() {

@@ -36,7 +36,7 @@ function draw(depth, x0, y0, lineLength, ...angles) {
 export function drawKochSnowflake(ctx, width, depth) {
   context = ctx
   const origo = width / 2
-  let size = (4 * width) / 5
+  const size = (4 * width) / 5
 
   const triangleHeight = size * (Math.sqrt(3) / 2)
   const origoOffset = triangleHeight / 2

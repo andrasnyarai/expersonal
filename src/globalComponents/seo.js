@@ -14,7 +14,7 @@ export default function SEO({ description, lang = 'en', meta = [], keywords = []
           }
         }
       }
-    `
+    `,
   )
 
   const metaDescription = description || site.siteMetadata.description
@@ -74,7 +74,7 @@ export default function SEO({ description, lang = 'en', meta = [], keywords = []
                 name: 'keywords',
                 content: keywords.join(', '),
               }
-            : []
+            : [],
         )
         .concat(meta)}
     />

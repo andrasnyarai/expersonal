@@ -31,6 +31,6 @@ export function drawSierpinskiTriangle(ctx, width, depth) {
     origo - size / 2,
     origo + triangleHeight / 2,
     origo + size / 2,
-    origo + triangleHeight / 2
+    origo + triangleHeight / 2,
   )
 }
