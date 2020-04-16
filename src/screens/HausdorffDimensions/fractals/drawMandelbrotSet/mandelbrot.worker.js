@@ -4,19 +4,19 @@ const selfCheck = typeof self !== 'undefined'
 
 const dimensions = { xPlane: [-2.5, 1], yPlane: [-1.75, 1.75] }
 
+function calculate(real, imaginary) {
+  return [real ** 2 - imaginary ** 2, 2 * real * imaginary]
+}
+
 // ƒc(z) = z² + c
 function iterate(iteration, a, b, ca, cb, maxIterations) {
   const complexNumber = a ** 2 + b ** 2
   if (complexNumber > 16 || iteration === maxIterations) {
     return iteration
   }
-  let [nextA, nextB] = calculate(a, b)
+  const [nextA, nextB] = calculate(a, b)
   iteration += 1
   return iterate(iteration, nextA + ca, nextB + cb, ca, cb, maxIterations)
-}
-
-function calculate(real, imaginary) {
-  return [real ** 2 - imaginary ** 2, 2 * real * imaginary]
 }
 
 function setPixel(canvasImage, idx, value) {
