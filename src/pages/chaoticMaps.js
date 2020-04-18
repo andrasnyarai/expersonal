@@ -1,18 +1,18 @@
 import React from 'react'
 import SEO from '../globalComponents/seo'
-import BifurcationDiagramScreen from '../screens/BifurcationDiagram'
+import ChaoticMapsScreen from '../screens/ChaoticMaps'
 import './../fonts/Inter/inter.css'
 // import ogImageUrl from '../images/lindenmayerSystems.png'
-
-export default function BifurcationDiagram() {
+// update seo
+export default function ChaoticMaps() {
   return (
     <>
       <SEO
         title="Bifurcation diagram"
-        keywords={['Bifurcation diagram', 'Logistic Map', 'chaos', 'Feigenbaum constants']}
+        keywords={['Bifurcation diagram', 'Logistic Map', 'chaotic maps', 'Feigenbaum constants']}
         // ogImageUrl={ogImageUrl}
       />
-      <BifurcationDiagramScreen />
+      <ChaoticMapsScreen />
     </>
   )
 }

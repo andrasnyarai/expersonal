@@ -1,7 +1,7 @@
 import React, { useRef, useReducer } from 'react'
 
 import { reducer, initialState, SET_FRAME } from './reducer'
-import { useBifurcationDraw } from './draw'
+import { useChaoticMapsDraw } from './draw'
 
 const dummyPayload = {
   top: 2,
@@ -10,10 +10,6 @@ const dummyPayload = {
   startLambda: 3.3,
   endLambda: 4.0,
 }
-
-// https://en.wikipedia.org/wiki/Tinkerbell_map
-// https://robert-doerner.de/en/Henon_system/henon_system.html
-// https://en.wikipedia.org/wiki/Ikeda_map
 
 // add windowcheck
 // zoom & revert
@@ -24,12 +20,14 @@ const dummyPayload = {
 // add to dashboard
 // experiment with color n composite operation
 
-export default function BifurcationDiagram() {
+// change favicon have an ogimage for index as well!!!
+
+export default function ChaoticMaps() {
   const canvasRef = useRef()
 
   const [state, dispatch] = useReducer(reducer, initialState)
 
-  useBifurcationDraw(canvasRef, state)
+  useChaoticMapsDraw(canvasRef, state)
 
   return (
     <div onClick={() => dispatch({ type: SET_FRAME, payload: dummyPayload })}>
