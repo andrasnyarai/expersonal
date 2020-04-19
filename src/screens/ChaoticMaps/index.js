@@ -1,14 +1,14 @@
 import React, { useRef, useReducer } from 'react'
 
-import { reducer, initialState, SET_FRAME } from './reducer'
+import { reducer, initialState, SET_FRAME, SET_MAP } from './reducer'
 import { useChaoticMapsDraw } from './draw'
 
 const dummyPayload = {
   top: 2,
   bottom: -1,
 
-  startLambda: 3.3,
-  endLambda: 4.0,
+  left: 3.3,
+  right: 4.0,
 }
 
 // add windowcheck
@@ -30,8 +30,15 @@ export default function ChaoticMaps() {
   useChaoticMapsDraw(canvasRef, state)
 
   return (
-    <div onClick={() => dispatch({ type: SET_FRAME, payload: dummyPayload })}>
-      <canvas style={{ outline: 'solid' }} ref={canvasRef} width={1600} height={800} />
-    </div>
+    <>
+      <div onClick={() => dispatch({ type: SET_FRAME, payload: dummyPayload })}>
+        <canvas style={{ outline: 'solid' }} ref={canvasRef} width={1600} height={800} />
+      </div>
+      {['logistic', 'gauss', 'tinkerbell', 'henon', 'ikeda', 'de jong', 'clifford'].map(mapName => (
+        <div key={mapName} onClick={() => dispatch({ type: SET_MAP, payload: mapName })}>
+          {mapName}
+        </div>
+      ))}
+    </>
   )
 }
