@@ -1,24 +1,26 @@
+import { plotDefinitions } from './plotDefinitions'
+
 export const SET_FRAME = 'SET_FRAME'
 export const SET_MAP = 'SET_MAP'
 
+const startingName = 'logistic'
+
 export const initialState = {
-  // logistic
-  top: 2,
-  bottom: -1,
-
-  left: -2.0,
-  right: 4.0,
-
-  mapName: 'logistic',
+  mapName: startingName,
+  ...plotDefinitions[startingName],
 }
 
 export function reducer(state, action) {
   switch (action.type) {
     case SET_FRAME: {
-      return { ...state, ...action.payload }
+      return { ...state, dimensions: action.payload }
     }
     case SET_MAP: {
-      return { ...state, mapName: action.payload }
+      const mapName = action.payload
+      return {
+        ...plotDefinitions[mapName],
+        mapName,
+      }
     }
     default:
       throw new Error()
