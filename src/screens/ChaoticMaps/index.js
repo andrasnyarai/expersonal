@@ -3,7 +3,7 @@ import React, { useRef, useReducer } from 'react'
 import { reducer, initialState, SET_MAP, SET_PARAMETER } from './reducer'
 import { useChaoticMapsDraw } from './draw'
 import useResizeObserver from 'use-resize-observer'
-import { usePinchPanScale } from './usePinchPanScale'
+import { usePinchZoom } from './usePinchZoom'
 
 // add windowcheck
 // desktop zoom
@@ -27,7 +27,7 @@ export default function ChaoticMaps() {
 
   useChaoticMapsDraw(canvasRef, state, width, isMediumScreen)
 
-  const [bind, { pinchTransform, newDimensions }] = usePinchPanScale(
+  const [bind, { pinchTransform, newDimensions }] = usePinchZoom(
     state,
     dispatch,
     width,

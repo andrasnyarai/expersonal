@@ -8,10 +8,12 @@ function getDistanceBetweenPoints(pointA, pointB) {
   return Math.sqrt(Math.pow(pointA.y - pointB.y, 2) + Math.pow(pointA.x - pointB.x, 2))
 }
 
-const getMidPoint = (pointA, pointB) => ({
-  x: (pointA.x + pointB.x) / 2,
-  y: (pointA.y + pointB.y) / 2,
-})
+function getMidPoint(pointA, pointB) {
+  return {
+    x: (pointA.x + pointB.x) / 2,
+    y: (pointA.y + pointB.y) / 2,
+  }
+}
 
 function isPinchEvent(event) {
   const [a, b] = event.touches || []
@@ -29,7 +31,7 @@ function createPointsFromPinchEvent(event) {
 const startingPinchInitial = { x: 0, y: 0, distance: 0, midPoint: { x: 0, y: 0 } }
 const startingPinchTransform = { x: 0, y: 0, scale: 1 }
 
-export function usePinchPanScale(state, dispatch, width, height) {
+export function usePinchZoom(state, dispatch, width, height) {
   const [pinchInitials, setPinchInitials] = useState(startingPinchInitial)
   const [pinchTransform, setPinchTransform] = useState(startingPinchTransform)
   const [newDimensions, setNewDimensions] = useState(state.dimensions)
