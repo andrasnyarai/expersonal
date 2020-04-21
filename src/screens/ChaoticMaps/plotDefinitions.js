@@ -18,13 +18,17 @@ export const plotDefinitions = {
     parameters: {
       alpha: 6.2,
     },
+    parametersRange: {
+      alpha: [1, 9.5],
+    },
+    parametersStep: 0.1,
     iterations: 500,
     batchSize: 10,
     dimensions: {
-      top: 2,
+      top: 1.5,
       bottom: -1,
-      left: -2.0,
-      right: 4.0,
+      left: -1.0,
+      right: 1.0,
     },
   },
 
@@ -40,13 +44,20 @@ export const plotDefinitions = {
       c: 2.0,
       d: 0.5,
     },
+    parametersRange: {
+      a: [-1, 1.5],
+      b: [-1, 1],
+      c: [1, 2],
+      d: [0, 1],
+    },
+    parametersStep: 0.01,
     iterations: 100000,
     batchSize: 1000,
     dimensions: {
       top: 1,
       bottom: -2,
       left: -2.0,
-      right: 1.0,
+      right: 1.5,
     },
   },
 
@@ -57,14 +68,19 @@ export const plotDefinitions = {
       y: b * x,
     }),
     parameters: {
-      a: 1.4, // 0.2 x (-4..4) y (-4..4)
-      b: 0.3, // 0.9991
+      a: 1.4,
+      b: 0.3,
     },
-    iterations: 10000,
+    parametersRange: {
+      a: [0.1, 1.5],
+      b: [0.1, 0.9993],
+    },
+    parametersStep: 0.0001,
+    iterations: 40000,
     batchSize: 100,
     dimensions: {
-      top: 0.4,
-      bottom: -0.4,
+      top: 4,
+      bottom: -4,
       left: -3,
       right: 3,
     },
@@ -84,6 +100,10 @@ export const plotDefinitions = {
     parameters: {
       u: 0.918,
     },
+    parametersRange: {
+      u: [0.9, 1],
+    },
+    parametersStep: 0.01,
     iterations: 1000,
     batchSize: 1,
     dimensions: {
@@ -106,11 +126,18 @@ export const plotDefinitions = {
       c: -1.2,
       d: 2,
     },
+    parametersRange: {
+      a: [-5, 5],
+      b: [-5, 5],
+      c: [-5, 5],
+      d: [-5, 5],
+    },
+    parametersStep: 0.1,
     iterations: 500000,
     batchSize: 10000,
     dimensions: {
       top: 2,
-      bottom: -2,
+      bottom: -2.2,
       left: -6,
       right: 6,
     },
@@ -128,6 +155,13 @@ export const plotDefinitions = {
       c: -1.9,
       d: -0.4,
     },
+    parametersRange: {
+      a: [-2, 2],
+      b: [-2, 2],
+      c: [-2, 2],
+      d: [-2, 2],
+    },
+    parametersStep: 0.01,
     iterations: 500000,
     batchSize: 10000,
     dimensions: {
