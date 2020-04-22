@@ -8,7 +8,7 @@ function getDistanceBetweenPoints(pointA, pointB) {
   return Math.sqrt(Math.pow(pointA.y - pointB.y, 2) + Math.pow(pointA.x - pointB.x, 2))
 }
 
-function getMidPoint(pointA, pointB) {
+function getPivot(pointA, pointB) {
   return {
     x: (pointA.x + pointB.x) / 2,
     y: (pointA.y + pointB.y) / 2,
@@ -43,13 +43,13 @@ export function usePinchZoom(state, dispatch, width, height) {
 
       const [a, b] = createPointsFromPinchEvent(event)
       const distance = getDistanceBetweenPoints(a, b)
-      const midPoint = getMidPoint(a, b)
+      const pivot = getPivot(a, b)
 
       setPinchInitials({
         x: a.x,
         y: a.y,
         distance,
-        midPoint,
+        pivot,
       })
     },
     onPinch: ({ event }) => {
@@ -65,11 +65,11 @@ export function usePinchZoom(state, dispatch, width, height) {
 
       const [a, b] = createPointsFromPinchEvent(event)
       const currentDistance = getDistanceBetweenPoints(a, b)
-      const currentMidPoint = getMidPoint(a, b)
+      const currentPivot = getPivot(a, b)
 
-      const { midPoint, distance } = pinchInitials
-      const offsetX = currentMidPoint.x - midPoint.x
-      const offsetY = currentMidPoint.y - midPoint.y
+      const { pivot, distance } = pinchInitials
+      const offsetX = currentPivot.x - pivot.x
+      const offsetY = currentPivot.y - pivot.y
       const scale = currentDistance / distance
 
       const { top, bottom, left, right } = state.dimensions
