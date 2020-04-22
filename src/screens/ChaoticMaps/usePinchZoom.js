@@ -75,9 +75,10 @@ export function usePinchZoom(state, dispatch, width, height) {
   const desktopHandlers = {
     onWheel: ({ movement }) => {
       const [, y] = movement
-      const min = 0.5
+      const min = 0
       const max = 2
-      const scale = clamp(map(y, [-500, 500], [min, max]), min, max)
+      // const scale = clamp(map(y, [-300, 550], [min, max]), min, max)
+      const scale = clamp(map(y, [-500, 500], [min, max]), 0.5, max)
       setPinchTransform({ x: 0, y: 0, scale })
     },
 
