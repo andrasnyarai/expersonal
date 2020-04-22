@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useGesture } from 'react-use-gesture'
 
-import { map, lerp } from '../../math/utils'
+import { map, lerp, clamp } from '../../math/utils'
 import { SET_FRAME } from './reducer'
 
 function getDistanceBetweenPoints(pointA, pointB) {
@@ -28,6 +28,36 @@ function createPointsFromPinchEvent(event) {
   ]
 }
 
+function scaleDimensions(dimensions, scale) {
+  const { top, bottom, left, right } = dimensions
+
+  const scaleOrigo = {
+    x: lerp(0.5, left, right),
+    y: lerp(0.5, bottom, top),
+  }
+
+  return {
+    left: scaleOrigo.x - Math.abs(scaleOrigo.x - left) / scale,
+    right: scaleOrigo.x + Math.abs(scaleOrigo.x - right) / scale,
+    top: scaleOrigo.y + Math.abs(scaleOrigo.y - top) / scale,
+    bottom: scaleOrigo.y - Math.abs(scaleOrigo.y - bottom) / scale,
+  }
+}
+
+function translateDimensions(dimensions, x, y, width, height) {
+  const { top, bottom, left, right } = dimensions
+
+  const xPan = map(Math.abs(x), [0, width], [0, Math.abs(left - right)])
+  const yPan = map(Math.abs(y), [0, height], [0, Math.abs(top - bottom)])
+
+  return {
+    left: x > 0 ? left - xPan : left + xPan,
+    right: x > 0 ? right - xPan : right + xPan,
+    top: y > 0 ? top + yPan : top - yPan,
+    bottom: y > 0 ? bottom + yPan : bottom - yPan,
+  }
+}
+
 const startingPinchTransform = { x: 0, y: 0, scale: 1 }
 
 export function usePinchZoom(state, dispatch, width, height) {
@@ -35,106 +65,120 @@ export function usePinchZoom(state, dispatch, width, height) {
   const [pinchInitials, setPinchInitials] = useState(null)
   const [newDimensions, setNewDimensions] = useState(null)
 
-  const bind = useGesture({
-    onPinchStart: ({ event }) => {
-      if (!isPinchEvent(event)) {
-        return
-      }
+  const resetTransformValues = () => {
+    setTimeout(() => {
+      setPinchInitials(null)
+      setPinchTransform(startingPinchTransform)
+    }, 0)
+  }
 
-      const [a, b] = createPointsFromPinchEvent(event)
-      const distance = getDistanceBetweenPoints(a, b)
-      const pivot = getPivot(a, b)
-
-      setPinchInitials({
-        x: a.x,
-        y: a.y,
-        distance,
-        pivot,
-      })
+  const desktopHandlers = {
+    onWheel: ({ movement }) => {
+      const [, y] = movement
+      const min = 0.5
+      const max = 2
+      const scale = clamp(map(y, [-500, 500], [min, max]), min, max)
+      setPinchTransform({ x: 0, y: 0, scale })
     },
-    onPinch: ({ event }) => {
-      if (!isPinchEvent(event)) {
-        return
-      }
 
-      // if pinchInitials are stale
-      if (!pinchInitials) {
-        setNewDimensions(state.dimensions)
-        return
-      }
-
-      const [a, b] = createPointsFromPinchEvent(event)
-      const currentDistance = getDistanceBetweenPoints(a, b)
-      const currentPivot = getPivot(a, b)
-
-      const { pivot, distance } = pinchInitials
-      const offsetX = currentPivot.x - pivot.x
-      const offsetY = currentPivot.y - pivot.y
-      const scale = currentDistance / distance
-
-      const { top, bottom, left, right } = state.dimensions
-      const scaleOrigo = {
-        x: lerp(0.5, left, right),
-        y: lerp(0.5, bottom, top),
-      }
-
-      const dimensionsScaled = {
-        left: scaleOrigo.x - Math.abs(scaleOrigo.x - left) / scale,
-        right: scaleOrigo.x + Math.abs(scaleOrigo.x - right) / scale,
-        top: scaleOrigo.y + Math.abs(scaleOrigo.y - top) / scale,
-        bottom: scaleOrigo.y - Math.abs(scaleOrigo.y - bottom) / scale,
-      }
-
-      const xPan = map(Math.abs(offsetX), [0, width], [0, Math.abs(dimensionsScaled.left - dimensionsScaled.right)])
-      const yPan = map(Math.abs(offsetY), [0, height], [0, Math.abs(dimensionsScaled.top - dimensionsScaled.bottom)])
-
-      if (offsetX > 0) {
-        dimensionsScaled.left -= xPan
-        dimensionsScaled.right -= xPan
-      } else {
-        dimensionsScaled.left += xPan
-        dimensionsScaled.right += xPan
-      }
-
-      if (offsetY > 0) {
-        dimensionsScaled.top += yPan
-        dimensionsScaled.bottom += yPan
-      } else {
-        dimensionsScaled.top -= yPan
-        dimensionsScaled.bottom -= yPan
-      }
-
-      setPinchTransform({
-        x: offsetX,
-        y: offsetY,
-        scale: scale,
-      })
-
-      setNewDimensions(dimensionsScaled)
-    },
-    onPinchEnd() {
-      // on a trackPad its possible to simulate touch calls
-      // without a valid pinch event
-      if (!newDimensions) {
-        return
-      }
-
+    onWheelEnd: () => {
       dispatch({
         type: SET_FRAME,
-        payload: {
-          top: newDimensions.top,
-          bottom: newDimensions.bottom,
-          left: newDimensions.left,
-          right: newDimensions.right,
-        },
+        payload: scaleDimensions(state.dimensions, pinchTransform.scale),
+      })
+      resetTransformValues()
+    },
+
+    onDrag: ({ movement }) => {
+      const [x, y] = movement
+      setPinchTransform({ x, y, scale: 1 })
+    },
+
+    onDragEnd: () => {
+      dispatch({
+        type: SET_FRAME,
+        payload: translateDimensions(state.dimensions, pinchTransform.x, pinchTransform.y, width, height),
       })
 
-      setTimeout(() => {
-        setPinchInitials(null)
-        setPinchTransform(startingPinchTransform)
-      }, 0)
+      resetTransformValues()
     },
-  })
+  }
+
+  const isTouchDevice = 'ontouchstart' in window
+
+  const bind = useGesture(
+    {
+      ...(!isTouchDevice && desktopHandlers),
+      onPinchStart: ({ event }) => {
+        if (!isPinchEvent(event)) {
+          return
+        }
+
+        const [a, b] = createPointsFromPinchEvent(event)
+        const distance = getDistanceBetweenPoints(a, b)
+        const pivot = getPivot(a, b)
+
+        setPinchInitials({
+          x: a.x,
+          y: a.y,
+          distance,
+          pivot,
+        })
+      },
+
+      onPinch: ({ event }) => {
+        if (!isPinchEvent(event)) {
+          return
+        }
+
+        // if pinchInitials are stale
+        if (!pinchInitials) {
+          setNewDimensions(state.dimensions)
+          return
+        }
+
+        const [a, b] = createPointsFromPinchEvent(event)
+        const currentDistance = getDistanceBetweenPoints(a, b)
+        const currentPivot = getPivot(a, b)
+
+        const { pivot, distance } = pinchInitials
+        const offsetX = currentPivot.x - pivot.x
+        const offsetY = currentPivot.y - pivot.y
+        const scale = currentDistance / distance
+
+        const scaledDimensions = scaleDimensions(state.dimensions, scale)
+        const scaledAndTranslatedDimensions = translateDimensions(scaledDimensions, offsetX, offsetY, width, height)
+
+        setPinchTransform({ x: offsetX, y: offsetY, scale: scale })
+        setNewDimensions(scaledAndTranslatedDimensions)
+      },
+
+      onPinchEnd: () => {
+        // on a trackPad its possible to simulate touch calls
+        // without a valid pinch event
+        if (!newDimensions) {
+          return
+        }
+
+        dispatch({
+          type: SET_FRAME,
+          payload: {
+            top: newDimensions.top,
+            bottom: newDimensions.bottom,
+            left: newDimensions.left,
+            right: newDimensions.right,
+          },
+        })
+
+        resetTransformValues()
+      },
+    },
+    {
+      wheel: {
+        axis: 'y',
+      },
+    },
+  )
 
   return [bind, { pinchTransform, newDimensions }]
 }

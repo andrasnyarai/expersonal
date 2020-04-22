@@ -1,22 +1,21 @@
-import React, { useRef, useReducer } from 'react'
+import React, { useRef, useReducer, useEffect } from 'react'
+import useResizeObserver from 'use-resize-observer'
+import Helmet from 'react-helmet'
 
 import { reducer, initialState, SET_MAP, SET_PARAMETER } from './reducer'
 import { useChaoticMapsDraw } from './draw'
-import useResizeObserver from 'use-resize-observer'
 import { usePinchZoom } from './usePinchZoom'
 
 // add windowcheck
 // desktop zoom
 // mobile size
-// canvas dinamic resize
-// number indicators
 // add to dashboard
-// size them properly
+// shadows
 // parameter sliders
-
 // if medium screen maxbatchsize
-
 // change favicon have an ogimage for index as well!!!
+// change use react gesture
+// neumorphism
 
 export default function ChaoticMaps() {
   const [resizeRef, width] = useResizeObserver()
@@ -31,6 +30,27 @@ export default function ChaoticMaps() {
 
   return (
     <>
+      <Helmet
+        style={[
+          {
+            cssText: `
+            body {
+              overscroll-behavior: none;
+                margin: 0;
+                width: 100%;
+                height: 100%;
+            }
+
+            html {
+                font-family: 'Inter',sans-serif;
+                font-size: 13px;
+                font-weight: 400;
+            }
+            `,
+          },
+        ]}
+      />
+
       <div style={{ touchAction: 'none', overflow: 'hidden', position: 'relative' }} {...bind()} ref={resizeRef}>
         <canvas
           style={{
@@ -42,7 +62,6 @@ export default function ChaoticMaps() {
           ref={canvasRef}
         />
       </div>
-      {pinchTransform.scale}
       {['logistic', 'gauss', 'tinkerbell', 'henon', 'ikeda', 'de jong', 'clifford'].map(mapName => (
         <div key={mapName} onClick={() => dispatch({ type: SET_MAP, payload: mapName })}>
           {mapName}
