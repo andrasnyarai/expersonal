@@ -27,12 +27,7 @@ export default function ChaoticMaps() {
 
   useChaoticMapsDraw(canvasRef, state, width, isMediumScreen)
 
-  const [bind, { pinchTransform, newDimensions }] = usePinchZoom(
-    state,
-    dispatch,
-    width,
-    isMediumScreen ? width : width / 2,
-  )
+  const [bind, { pinchTransform }] = usePinchZoom(state, dispatch, width, isMediumScreen ? width : width / 2)
 
   return (
     <>
@@ -47,7 +42,7 @@ export default function ChaoticMaps() {
           ref={canvasRef}
         />
       </div>
-      {JSON.stringify(newDimensions)}
+      {pinchTransform.scale}
       {['logistic', 'gauss', 'tinkerbell', 'henon', 'ikeda', 'de jong', 'clifford'].map(mapName => (
         <div key={mapName} onClick={() => dispatch({ type: SET_MAP, payload: mapName })}>
           {mapName}

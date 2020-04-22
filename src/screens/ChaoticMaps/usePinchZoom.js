@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useGesture } from 'react-use-gesture'
 
 import { map, lerp } from '../../math/utils'
@@ -28,18 +28,12 @@ function createPointsFromPinchEvent(event) {
   ]
 }
 
-const startingPinchInitial = { x: 0, y: 0, distance: 0, midPoint: { x: 0, y: 0 } }
 const startingPinchTransform = { x: 0, y: 0, scale: 1 }
 
 export function usePinchZoom(state, dispatch, width, height) {
-  const [pinchInitials, setPinchInitials] = useState(startingPinchInitial)
   const [pinchTransform, setPinchTransform] = useState(startingPinchTransform)
-  const [newDimensions, setNewDimensions] = useState(state.dimensions)
-
-  useEffect(() => {
-    setPinchInitials(startingPinchInitial)
-    setPinchTransform(startingPinchTransform)
-  }, [state])
+  const [pinchInitials, setPinchInitials] = useState(null)
+  const [newDimensions, setNewDimensions] = useState(null)
 
   const bind = useGesture({
     onPinchStart: ({ event }) => {
@@ -60,6 +54,12 @@ export function usePinchZoom(state, dispatch, width, height) {
     },
     onPinch: ({ event }) => {
       if (!isPinchEvent(event)) {
+        return
+      }
+
+      // if pinchInitials are stale
+      if (!pinchInitials) {
+        setNewDimensions(state.dimensions)
         return
       }
 
@@ -104,7 +104,12 @@ export function usePinchZoom(state, dispatch, width, height) {
         dimensionsScaled.bottom -= yPan
       }
 
-      setPinchTransform({ x: offsetX, y: offsetY, scale })
+      setPinchTransform({
+        x: offsetX,
+        y: offsetY,
+        scale: scale,
+      })
+
       setNewDimensions(dimensionsScaled)
     },
     onPinchEnd() {
@@ -117,6 +122,11 @@ export function usePinchZoom(state, dispatch, width, height) {
           right: newDimensions.right,
         },
       })
+
+      setTimeout(() => {
+        setPinchInitials(null)
+        setPinchTransform(startingPinchTransform)
+      }, 0)
     },
   })
 
