@@ -113,6 +113,12 @@ export function usePinchZoom(state, dispatch, width, height) {
       setNewDimensions(dimensionsScaled)
     },
     onPinchEnd() {
+      // on a trackPad its possible to simulate touch calls
+      // without a valid pinch event
+      if (!newDimensions) {
+        return
+      }
+
       dispatch({
         type: SET_FRAME,
         payload: {
