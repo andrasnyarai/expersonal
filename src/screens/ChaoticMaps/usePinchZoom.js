@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useGesture } from 'react-use-gesture'
 
 import { map, lerp, clamp } from '../../math/utils'
@@ -64,20 +64,21 @@ export function usePinchZoom(state, dispatch, width, height) {
   const [pinchTransform, setPinchTransform] = useState(startingPinchTransform)
   const [pinchInitials, setPinchInitials] = useState(null)
   const [newDimensions, setNewDimensions] = useState(null)
+  const [isPinching, setIsPinching] = useState(false)
 
-  const resetTransformValues = () => {
-    setTimeout(() => {
+  useEffect(() => {
+    // don't reset state if pinch action is ongoing
+    if (!isPinching) {
       setPinchInitials(null)
       setPinchTransform(startingPinchTransform)
-    }, 0)
-  }
+    }
+  }, [state.dimensions, isPinching])
 
   const desktopHandlers = {
     onWheel: ({ movement }) => {
       const [, y] = movement
       const min = 0
       const max = 2
-      // const scale = clamp(map(y, [-300, 550], [min, max]), min, max)
       const scale = clamp(map(y, [-500, 500], [min, max]), 0.5, max)
       setPinchTransform({ x: 0, y: 0, scale })
     },
@@ -87,7 +88,6 @@ export function usePinchZoom(state, dispatch, width, height) {
         type: SET_FRAME,
         payload: scaleDimensions(state.dimensions, pinchTransform.scale),
       })
-      resetTransformValues()
     },
 
     onDrag: ({ movement }) => {
@@ -100,8 +100,6 @@ export function usePinchZoom(state, dispatch, width, height) {
         type: SET_FRAME,
         payload: translateDimensions(state.dimensions, pinchTransform.x, pinchTransform.y, width, height),
       })
-
-      resetTransformValues()
     },
   }
 
@@ -138,6 +136,8 @@ export function usePinchZoom(state, dispatch, width, height) {
           return
         }
 
+        setIsPinching(true)
+
         const [a, b] = createPointsFromPinchEvent(event)
         const currentDistance = getDistanceBetweenPoints(a, b)
         const currentPivot = getPivot(a, b)
@@ -161,6 +161,7 @@ export function usePinchZoom(state, dispatch, width, height) {
           return
         }
 
+        setIsPinching(false)
         dispatch({
           type: SET_FRAME,
           payload: {
@@ -170,8 +171,6 @@ export function usePinchZoom(state, dispatch, width, height) {
             right: newDimensions.right,
           },
         })
-
-        resetTransformValues()
       },
     },
     {

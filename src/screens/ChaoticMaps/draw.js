@@ -7,8 +7,6 @@ let context
 let width
 let height
 
-const padding = 4
-
 function plotChaoticMap(xPos, state, iterations) {
   const { getInitial, iterate, parameters } = state
   const pointTracker = getInitial({ x: xPos })
@@ -39,7 +37,7 @@ function drawBifurcationDiagram(xAxis, state, animationRefIds) {
     points.slice(skip).forEach(point => {
       const x = map(point.x, [left, right], [0, width])
       const y = map(point.y, [bottom, top], [height, 0])
-      context.fillRect(x + padding, y + padding, 1, 1)
+      context.fillRect(x, y, 1, 1)
     })
   })
 
@@ -58,7 +56,7 @@ function drawAttractor(points, state, animationRefIds) {
   points.slice(0, batchSize).forEach(point => {
     const x = map(point.x, [left, right], [0, width])
     const y = map(point.y, [bottom, top], [height, 0])
-    context.fillRect(x + padding, y + padding, 1, 1)
+    context.fillRect(x, y, 1, 1)
   })
 
   const nextFrame = () => drawAttractor(points.slice(batchSize), state, animationRefIds)
@@ -66,7 +64,7 @@ function drawAttractor(points, state, animationRefIds) {
   animationRefIds.push(animationId)
 }
 
-export function useChaoticMapsDraw(canvasRef, state, canvasWidth, isMediumScreen) {
+export function useChaoticMapsDraw(canvasRef, state, canvasWidth, canvasHeight, isMediumScreen) {
   const animationFrameIdRefs = useRef([])
 
   useEffect(() => {
@@ -75,18 +73,16 @@ export function useChaoticMapsDraw(canvasRef, state, canvasWidth, isMediumScreen
     if (!canvasRef.current || canvasWidth <= 1) {
       return
     }
-    context = canvasRef.current.getContext('2d')
 
-    // context.globalAlpha = 0.2
-    // context.fillStyle = 'rgba(255,255,255, 50)'
-    context.fillStyle = 'white'
+    context = canvasRef.current.getContext('2d')
+    width = canvasWidth
+    height = canvasHeight
+
+    context.globalAlpha = 0.2
+    context.fillStyle = 'rgba(255,255,255, 50)'
+    // context.fillStyle = 'white'
     context.fillRect(0, 0, 1600, 800)
     context.fillStyle = 'black'
-
-    // add padding to everywhere
-    // pass down actual width
-    width = canvasWidth - padding * 2
-    height = isMediumScreen ? canvasWidth : canvasWidth / 2 - padding * 2
 
     if (['logistic', 'gauss'].includes(state.mapName)) {
       const { left, right } = state.dimensions

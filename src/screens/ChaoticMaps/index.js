@@ -1,92 +1,41 @@
-import React, { useRef, useReducer, useEffect } from 'react'
+import React, { useRef, useReducer } from 'react'
 import useResizeObserver from 'use-resize-observer'
-import Helmet from 'react-helmet'
 
-import { reducer, initialState, SET_MAP, SET_PARAMETER } from './reducer'
+import { reducer, initialState } from './reducer'
 import { useChaoticMapsDraw } from './draw'
 import { usePinchZoom } from './usePinchZoom'
+import { Canvas, CanvasWrapper } from './style'
+import { SceneHelmet } from './components/SceneHelmet'
+import { MapSwitcher } from './components/mapSwitcher'
+import { ParameterKnobs } from './components/ParameterKnobs'
 
 // add windowcheck
-// desktop zoom
-// mobile size
-// add to dashboard
 // shadows
 // parameter sliders
-// if medium screen maxbatchsize
-// change favicon have an ogimage for index as well!!!
-// change use react gesture
-// neumorphism
+
+const windowGlobal = typeof window !== 'undefined' && window
 
 export default function ChaoticMaps() {
   const [resizeRef, width] = useResizeObserver()
   const canvasRef = useRef()
-  const isMediumScreen = window.innerWidth < 800
+  const isMediumScreen = windowGlobal && window.innerWidth < 800
+  const height = isMediumScreen ? width : width / 2
 
   const [state, dispatch] = useReducer(reducer, initialState)
 
-  useChaoticMapsDraw(canvasRef, state, width, isMediumScreen)
+  useChaoticMapsDraw(canvasRef, state, width, height, isMediumScreen)
 
   const [bind, { pinchTransform }] = usePinchZoom(state, dispatch, width, isMediumScreen ? width : width / 2)
 
   return (
     <>
-      <Helmet
-        style={[
-          {
-            cssText: `
-            body {
-              overscroll-behavior: none;
-                margin: 0;
-                width: 100%;
-                height: 100%;
-            }
+      <SceneHelmet />
+      <CanvasWrapper style={{ height: height - 3 }} {...bind()} ref={resizeRef}>
+        <Canvas pinchTransform={pinchTransform} width={width} height={height} ref={canvasRef} />
+      </CanvasWrapper>
 
-            html {
-                font-family: 'Inter',sans-serif;
-                font-size: 13px;
-                font-weight: 400;
-            }
-            `,
-          },
-        ]}
-      />
-
-      <div style={{ touchAction: 'none', overflow: 'hidden', position: 'relative' }} {...bind()} ref={resizeRef}>
-        <canvas
-          style={{
-            transform: `translateX(${pinchTransform.x}px) translateY(${pinchTransform.y}px) scale(${pinchTransform.scale})`,
-            outline: 'solid',
-          }}
-          width={width}
-          height={isMediumScreen ? width : width / 2}
-          ref={canvasRef}
-        />
-      </div>
-      {['logistic', 'gauss', 'tinkerbell', 'henon', 'ikeda', 'de jong', 'clifford'].map(mapName => (
-        <div key={mapName} onClick={() => dispatch({ type: SET_MAP, payload: mapName })}>
-          {mapName}
-        </div>
-      ))}
-      {state.parameters &&
-        Object.entries(state.parameters).map(([parameterName, value]) => {
-          const [min, max] = state.parametersRange[parameterName]
-          const step = state.parametersStep
-          // memo these
-          // debounce throttle
-          return (
-            <>
-              <input
-                type="range"
-                step={step}
-                min={min}
-                max={max}
-                value={value}
-                onChange={e => dispatch({ type: SET_PARAMETER, payload: { [parameterName]: e.target.value } })}
-              />
-              {value}
-            </>
-          )
-        })}
+      <MapSwitcher state={state} dispatch={dispatch} />
+      <ParameterKnobs state={state} dispatch={dispatch} />
     </>
   )
 }
