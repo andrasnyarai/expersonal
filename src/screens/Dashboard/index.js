@@ -2,6 +2,7 @@ import React from 'react'
 
 import Layout from './components/layout'
 
+import chaoticMapsShowcase from '../../images/chaoticMapsShowcase.mp4'
 import lindenmayerSystemsShowcase from '../../images/lindenmayerSystemsShowcase.mp4'
 import hausdorffDimensionsShowcase from '../../images/hausdorffDimensionsShowcase.mp4'
 import shiftingSunsShowcase from '../../images/shiftingSunsShowcase.mp4'
@@ -9,6 +10,12 @@ import shiftingSunsShowcase from '../../images/shiftingSunsShowcase.mp4'
 import { CardsContainer, Card, VideoContainer, CardLink, CardTitle, Video, ContentSkeleton } from './components'
 
 const cards = [
+  {
+    backgroundColor: 'mediumslateblue',
+    link: '/chaoticMaps/',
+    title: 'Chaotic Maps & Attractors',
+    videoSrc: chaoticMapsShowcase,
+  },
   {
     backgroundColor: 'mediumblue',
     link: '/lindenmayerSystems/',

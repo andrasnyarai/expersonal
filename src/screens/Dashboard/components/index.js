@@ -51,6 +51,6 @@ export const CardTitle = styled.div`
 export const Video = styled.video`
   width: 100%;
   height: 100%;
-  transform: scale(1.1);
+  transform: scale(1.2);
   position: absolute;
 `
