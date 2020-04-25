@@ -6,7 +6,7 @@ import { useChaoticMapsDraw } from './draw'
 import { usePinchZoom } from './usePinchZoom'
 import { Canvas, CanvasWrapper } from './style'
 import { SceneHelmet } from './components/SceneHelmet'
-import { MapSwitcher } from './components/mapSwitcher'
+import { MapSwitcher } from './components/MapSwitcher'
 import { ParameterKnobs } from './components/ParameterKnobs'
 
 // add windowcheck

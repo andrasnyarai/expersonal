@@ -2,7 +2,7 @@ import React from 'react'
 import SEO from '../globalComponents/seo'
 import ChaoticMapsScreen from '../screens/ChaoticMaps'
 import './../fonts/Inter/inter.css'
-import ogImageUrl from '../images/chaoticMaps.png'
+import ogImageUrl from '../images/chaoticMaps.jpg'
 
 export default function ChaoticMaps() {
   return (
