@@ -8,9 +8,9 @@ export default function ChaoticMaps() {
   return (
     <>
       <SEO
-        title="Bifurcation diagram"
+        title="Chaotic Maps & Attractors"
         keywords={[
-          'Bifurcation diagram',
+          'Bifurcation diagrams',
           'Logistic Map',
           'chaotic maps',
           'Feigenbaum constants',
