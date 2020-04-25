@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { useGesture } from 'react-with-gesture'
+import { useDrag } from 'react-use-gesture'
 import { useSpring, config } from 'react-spring'
 
 import Tracker from './Tracker'
@@ -50,7 +50,7 @@ export default function Slider({ className, current, cb, maxRange, entityName, c
     config: config.stiff,
   }))
 
-  const bind = useGesture(({ xy }) => {
+  const bind = useDrag(({ xy }) => {
     const newXPercent = calculateXPercent(xy, containerRef)
     setCurrentXPercent(newXPercent)
     setLeft({ left: `calc(${newXPercent}%)` })

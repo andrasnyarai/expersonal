@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Helmet from 'react-helmet'
-import { useGesture } from 'react-with-gesture'
+import { useDrag } from 'react-use-gesture'
 
 import { OuterContainer, InnerContainer, Circle, BlobContainer, Blob } from './components'
 import useScrollLock from './lib/useScrollLock'
@@ -47,7 +47,8 @@ const setPlaneValue = (y, callback, stack) => {
 }
 
 export default function ShiftingSuns() {
-  const [handlers, { xy }] = useGesture()
+  const [xy, set] = useState([0, 0])
+  const bind = useDrag(({ xy }) => set(xy))
   const [outerBackground, setOuterBackground] = useState(planeColors[0])
   const [innerBackground, setInnerBackground] = useState(planeColors[0])
   const [mixBlendMode, setMixBlendMode] = useState('multiply')
@@ -68,7 +69,7 @@ export default function ShiftingSuns() {
   }, [xy])
 
   return (
-    <div {...handlers()}>
+    <div {...bind()}>
       <Helmet
         style={[
           {
