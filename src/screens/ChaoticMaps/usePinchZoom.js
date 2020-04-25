@@ -7,7 +7,7 @@ import { SET_FRAME } from './reducer'
 const windowGlobal = typeof window !== 'undefined' && window
 
 function getDistanceBetweenPoints(pointA, pointB) {
-  return Math.sqrt(Math.pow(pointA.y - pointB.y, 2) + Math.pow(pointA.x - pointB.x, 2))
+  return Math.sqrt((pointA.y - pointB.y) ** 2 + (pointA.x - pointB.x) ** 2)
 }
 
 function getPivot(pointA, pointB) {

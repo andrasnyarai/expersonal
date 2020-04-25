@@ -64,7 +64,14 @@ function drawAttractor(points, state, animationRefIds) {
   animationRefIds.push(animationId)
 }
 
-export function useChaoticMapsDraw(canvasRef, state, canvasWidth, canvasHeight, isMediumScreen) {
+export function useChaoticMapsDraw(
+  canvasRef,
+  state,
+  canvasWidth,
+  canvasHeight,
+  isMediumScreen,
+  shouldPreservePrevious,
+) {
   const animationFrameIdRefs = useRef([])
 
   useEffect(() => {
@@ -78,9 +85,8 @@ export function useChaoticMapsDraw(canvasRef, state, canvasWidth, canvasHeight, 
     width = canvasWidth
     height = canvasHeight
 
-    context.globalAlpha = 0.2
-    context.fillStyle = 'rgba(255,255,255, 50)'
-    // context.fillStyle = 'white'
+    context.globalAlpha = shouldPreservePrevious ? 0.2 : 1
+    context.fillStyle = 'white'
     context.fillRect(0, 0, 1600, 800)
     context.fillStyle = 'black'
 
@@ -100,5 +106,5 @@ export function useChaoticMapsDraw(canvasRef, state, canvasWidth, canvasHeight, 
     }
 
     return () => animationRefIds.forEach(id => window.cancelAnimationFrame(id))
-  }, [state, canvasRef, canvasWidth, isMediumScreen])
+  }, [state, canvasRef, canvasWidth, canvasHeight, isMediumScreen, shouldPreservePrevious])
 }
