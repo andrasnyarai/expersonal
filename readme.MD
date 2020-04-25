@@ -4,7 +4,12 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/a6f7430e-1c83-4650-9809-66c53bfb2b01/deploy-status)](https://app.netlify.com/sites/pensive-perlman-4b9984/deploys)
 
 ___
-## Lindenmayer System
+
+## Chaotic Maps & Attractors
+
+An exploration through the abstract world of chaotic maps, attractors and bifurcation diagrams. The initial conditions, constants can be adjusted via knobs, and the canvas can handle zoom, for fine grained details.
+
+## Lindenmayer Systems
 
 A parallel rewriting system for [Space-filling Curves](https://en.wikipedia.org/wiki/Space-filling_curve) and fractals.
 Each geometric structure describes itself as an axiom and production rules,
