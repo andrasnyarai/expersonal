@@ -4,6 +4,8 @@ import { useGesture } from 'react-use-gesture'
 import { map, lerp, clamp } from '../../math/utils'
 import { SET_FRAME } from './reducer'
 
+const windowGlobal = typeof window !== 'undefined' && window
+
 function getDistanceBetweenPoints(pointA, pointB) {
   return Math.sqrt(Math.pow(pointA.y - pointB.y, 2) + Math.pow(pointA.x - pointB.x, 2))
 }
@@ -103,7 +105,7 @@ export function usePinchZoom(state, dispatch, width, height) {
     },
   }
 
-  const isTouchDevice = 'ontouchstart' in window
+  const isTouchDevice = windowGlobal && 'ontouchstart' in window
 
   const bind = useGesture(
     {
