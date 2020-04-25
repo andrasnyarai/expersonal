@@ -87,7 +87,7 @@ export function useChaoticMapsDraw(
 
     context.globalAlpha = shouldPreservePrevious ? 0.2 : 1
     context.fillStyle = 'white'
-    context.fillRect(0, 0, 1600, 800)
+    context.fillRect(0, 0, width, height)
     context.fillStyle = 'black'
 
     if (['logistic', 'gauss'].includes(state.mapName)) {
