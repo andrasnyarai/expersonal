@@ -17,7 +17,6 @@ export function SceneHelmet() {
             width: 100%;
             height: 100%;
             overscroll-behavior: none;
-            overflow: hidden;
           }
         `,
         },

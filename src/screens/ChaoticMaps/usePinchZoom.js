@@ -62,7 +62,7 @@ function translateDimensions(dimensions, x, y, width, height) {
 
 const startingPinchTransform = { x: 0, y: 0, scale: 1 }
 
-export function usePinchZoom(state, dispatch, width, height) {
+export function usePinchZoom(state, dispatch, width, height, ref) {
   const [pinchTransform, setPinchTransform] = useState(startingPinchTransform)
   const [pinchInitials, setPinchInitials] = useState(null)
   const [newDimensions, setNewDimensions] = useState(null)
@@ -77,7 +77,9 @@ export function usePinchZoom(state, dispatch, width, height) {
   }, [state.dimensions, isPinching])
 
   const desktopHandlers = {
-    onWheel: ({ movement }) => {
+    onWheel: ({ movement, event }) => {
+      event.preventDefault()
+
       const [, y] = movement
       const min = 0
       const max = 2
@@ -176,6 +178,8 @@ export function usePinchZoom(state, dispatch, width, height) {
       },
     },
     {
+      ...(!isTouchDevice && { domTarget: ref }),
+      eventOptions: { passive: false },
       wheel: {
         axis: 'y',
       },

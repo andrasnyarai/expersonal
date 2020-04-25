@@ -22,7 +22,7 @@ export default function ChaoticMaps() {
   const [shouldPreservePrevious, setShouldPreservePrevious] = useState(false)
 
   useChaoticMapsDraw(canvasRef, state, width, height, isMediumScreen, shouldPreservePrevious)
-  const [bind, { pinchTransform }] = usePinchZoom(state, dispatch, width, isMediumScreen ? width : width / 2)
+  const [bind, { pinchTransform }] = usePinchZoom(state, dispatch, width, height, resizeRef)
 
   return (
     <>
