@@ -7,18 +7,18 @@ export function SceneHelmet() {
       style={[
         {
           cssText: `
-            body {
-                margin: 0;
-                width: 100%;
-                height: 100%;
-                overscroll-behavior: none;
-            }
-
-            html {
-                font-size: 16px;
-                font-weight: 400;
-                font-family: 'Inter',sans-serif;
-            }
+          html {
+            font-size: 16px;
+            font-weight: 400;
+            font-family: 'Inter',sans-serif;
+          }
+          body {
+            margin: 0;
+            width: 100%;
+            height: 100%;
+            overscroll-behavior: none;
+            overflow: hidden;
+          }
         `,
         },
       ]}
