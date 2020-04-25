@@ -27,7 +27,7 @@ export default function ChaoticMaps() {
   return (
     <>
       <SceneHelmet />
-      <CanvasWrapper style={{ height: height - 3 }} {...bind()} ref={resizeRef}>
+      <CanvasWrapper style={{ height: height }} {...bind()} ref={resizeRef}>
         <Canvas pinchTransform={pinchTransform} width={width} height={height} ref={canvasRef} />
       </CanvasWrapper>
 
