@@ -82,9 +82,8 @@ export function useChaoticMapsDraw(
     }
 
     context = canvasRef.current.getContext('2d')
-    console.log(canvasWidth, canvasHeight)
-    width = canvasWidth || 0
-    height = canvasHeight || 0
+    width = Math.floor(canvasWidth)
+    height = Math.floor(canvasHeight)
 
     context.globalAlpha = shouldPreservePrevious ? 0.2 : 1
     context.fillStyle = 'white'
