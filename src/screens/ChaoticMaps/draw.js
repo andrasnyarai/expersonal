@@ -4,8 +4,8 @@ import { map } from '../../math/utils'
 import { plotDefinitions } from './plotDefinitions'
 
 let context
-let width
-let height
+let width = 0
+let height = 0
 
 function plotChaoticMap(xPos, state, iterations) {
   const { getInitial, iterate, parameters } = state
