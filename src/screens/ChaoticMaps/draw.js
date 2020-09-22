@@ -4,8 +4,8 @@ import { map } from '../../math/utils'
 import { plotDefinitions } from './plotDefinitions'
 
 let context
-let width = 0
-let height = 0
+let width
+let height
 
 function plotChaoticMap(xPos, state, iterations) {
   const { getInitial, iterate, parameters } = state
@@ -82,8 +82,9 @@ export function useChaoticMapsDraw(
     }
 
     context = canvasRef.current.getContext('2d')
-    width = canvasWidth
-    height = canvasHeight
+    console.log(canvasWidth, canvasHeight)
+    width = canvasWidth || 0
+    height = canvasHeight || 0
 
     context.globalAlpha = shouldPreservePrevious ? 0.2 : 1
     context.fillStyle = 'white'
