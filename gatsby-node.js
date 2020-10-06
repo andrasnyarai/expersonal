@@ -6,6 +6,16 @@ exports.onCreateWebpackConfig = ({ actions: { replaceWebpackConfig }, getConfig 
     use: { loader: 'worker-loader' },
   })
 
+  config.module.rules.push({
+    test: /\.(frag|vert|glsl)$/,
+    use: [
+      {
+        loader: 'glsl-shader-loader',
+        options: {},
+      },
+    ],
+  })
+
   config.output.globalObject = 'this'
 
   replaceWebpackConfig(config)
