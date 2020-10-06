@@ -68,6 +68,6 @@ export function drawSpaceFillingCurve(width, canvasRef, state) {
 
 export function useSpaceFillingCurveDraw(width, canvasRef, state) {
   useEffect(() => {
-    return drawSpaceFillingCurve(width, canvasRef, state)
+    return drawSpaceFillingCurve(Math.floor(width), canvasRef, state)
   }, [width, canvasRef, state])
 }
