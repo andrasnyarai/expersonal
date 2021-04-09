@@ -21,6 +21,7 @@ import { map, clamp } from '../../math/utils'
 
 import styled from 'styled-components'
 
+const isServer = typeof window === 'undefined'
 
 const Scroller = styled.div`
     top: 0px;
@@ -385,7 +386,7 @@ export default function Dashboard() {
 
       <Canvas  
         className="webglCanvas"
-        pixelRatio={window.devicePixelRatio}
+        pixelRatio={isServer ? 0 : window.devicePixelRatio}
         gl={{ antialias: false  }}
         onCreated={(canvasCtx) => {
           //maybe
