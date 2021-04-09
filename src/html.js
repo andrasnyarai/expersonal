@@ -14,14 +14,7 @@ export default function HTML(props) {
         <noscript key="noscript" id="gatsby-noscript">
           This app works best with JavaScript enabled.
         </noscript>
-        <div className={'light'} key={`body`} id="___gatsby" dangerouslySetInnerHTML={{ __html: props.body }} />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              document.getElementById('___gatsby').classList = localStorage.getItem('theme') || 'light'
-            `,
-          }}
-        />
+        <div key={`body`} id="___gatsby" dangerouslySetInnerHTML={{ __html: props.body }} />
         {props.postBodyComponents}
       </body>
     </html>
