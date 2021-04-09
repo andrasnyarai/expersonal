@@ -384,7 +384,7 @@ export default function Dashboard() {
     <Layout>
       <Scroller ref={scrollerRef}  id="scroller">
 
-      <Canvas  
+      <Canvas 
         className="webglCanvas"
         pixelRatio={isServer ? 0 : window.devicePixelRatio}
         gl={{ antialias: false  }}
@@ -392,7 +392,7 @@ export default function Dashboard() {
           //maybe
           canvasCtx.gl.physicallyCorrectLights = true;
         }}
-        style={{height: isServer ? 0 : window.innerHeight, position: 'sticky', top: 0}}
+        style={{height: '100vh', position: 'sticky', top: 0}}
         camera={{ position: [0, 5, 23*4], fov: 100 }}
       >
         <Camera />
