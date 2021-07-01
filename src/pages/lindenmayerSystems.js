@@ -2,7 +2,7 @@ import React from 'react'
 import SEO from '../globalComponents/seo'
 import LindenmayerSystemsScreen from '../screens/LindenmayerSystems'
 import './../fonts/Inter/inter.css'
-import ogImageUrl from '../images/lindenmayerSystems.png'
+import ogImageUrl from '../images/lindenmayerSystems.jpg'
 
 import spaceFillingCurves from '../screens/LindenmayerSystems/control/spaceFillingCurves'
 

@@ -2,7 +2,7 @@ import React from 'react'
 import SEO from '../globalComponents/seo'
 import DashboardScreen from '../screens/Dashboard'
 import '../fonts/Inter/inter.css'
-import ogImageUrl from '../images/dashboard.png'
+import ogImageUrl from '../images/dashboard.jpg'
 
 export default function Dashboard() {
   return (

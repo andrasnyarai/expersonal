@@ -30,8 +30,9 @@ function AnchorText({ text, size = 1, position }) {
   )
 }
 
-export function Anchor({ position, title, link, backgroundColor }) {
+export function Anchor({ position, title, link, backgroundColor, imageUrl }) {
   const ref = useRef()
+  const texture = useLoader(THREE.TextureLoader, imageUrl)
 
   const [hovered, setHover] = useState(0)
 
@@ -39,7 +40,7 @@ export function Anchor({ position, title, link, backgroundColor }) {
     spring: hovered,
   })
 
-  const color = spring.to([0, 1], [backgroundColor, '#00fa9a'])
+  const color = spring.to([0, 1], [backgroundColor, '#237051'])
 
   return (
     <group position={position}>
@@ -60,7 +61,7 @@ export function Anchor({ position, title, link, backgroundColor }) {
         }}
       >
         <planeBufferGeometry args={[1, 1, 1, 1]} />
-        <a.meshBasicMaterial transparent opacity={0.7} color={color} />
+        <a.meshBasicMaterial transparent opacity={0.9} color={color} map={texture} />
       </mesh>
 
       <Suspense fallback={null}>

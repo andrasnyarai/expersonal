@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, Suspense } from 'react'
 import { Canvas, useFrame, useLoader } from 'react-three-fiber'
 import * as THREE from 'three'
 import styled, { createGlobalStyle } from 'styled-components'
@@ -20,6 +20,7 @@ const GlobalStyle = createGlobalStyle`
     font-size: 16px;
     margin: 0;
     background-color: black;
+    user-select: none;
   }
 `
 
@@ -36,7 +37,7 @@ const Scroller = styled.div`
 `
 
 const cameraAdjustedZRows = cubeZRows - 1
-const scrollerHeight = 15000
+const scrollerHeight = 10000
 const scrollerYBottom = 1000
 const scrollerYSlow = 0.07
 const scrollerZSlow = 0.005
@@ -57,18 +58,14 @@ function Camera({ scrollerRef }) {
   return null
 }
 
+//
+// react-three-fiber -> @react-three/fiber
+// upgrading breaks effectcomposer with suspense components
+// and messes up SMAAPass
+//
 export default function Dashboard() {
   const scrollerRef = useRef()
 
-  //
-  // react-three-fiber -> @react-three/fiber
-  // upgrading breaks effectcomposer with suspense components
-  // and messes up sMAAPass
-  //
-  // scrolling reminder
-  // iframe gallery
-  // 2d canvas plane links
-  // social links
   //
   // strange attractors
   // steinmetz solids
@@ -93,16 +90,18 @@ export default function Dashboard() {
           <Bloom />
           <fog attach="fog" args={['black', 30, 40]} />
 
-          {links.map((link, i) => {
-            const offset = i * 2 + 1
-            return (
-              <Anchor
-                key={link.title}
-                {...link}
-                position={[0, -(scrollerYBottom * scrollerYSlow), (cameraAdjustedZRows - offset) * cubeGap]}
-              />
-            )
-          })}
+          <Suspense fallback={null}>
+            {links.map((link, i) => {
+              const offset = i * 2 + 1
+              return (
+                <Anchor
+                  key={link.title}
+                  {...link}
+                  position={[0, -(scrollerYBottom * scrollerYSlow), (cameraAdjustedZRows - offset) * cubeGap]}
+                />
+              )
+            })}
+          </Suspense>
         </Canvas>
         <div style={{ height: scrollerHeight }} />
       </Scroller>
