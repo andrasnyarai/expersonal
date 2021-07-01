@@ -19,8 +19,7 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'Inter', sans-serif;
     font-size: 16px;
     margin: 0;
-    --black: black;
-    --white: #fff;
+    background-color: black;
   }
 `
 
@@ -70,6 +69,12 @@ export default function Dashboard() {
   // iframe gallery
   // 2d canvas plane links
   // social links
+  //
+  // strange attractors
+  // steinmetz solids
+  //
+  // get final domain
+  // expersonal finish
   //
 
   return (
