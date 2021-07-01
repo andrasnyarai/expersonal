@@ -1,11 +1,10 @@
 import React, { useRef } from 'react'
 import { Canvas, useFrame, useLoader } from 'react-three-fiber'
 import * as THREE from 'three'
-import styled from 'styled-components'
+import styled, { createGlobalStyle } from 'styled-components'
 
 import { links } from './links'
 import { cubeGap, cubeZRows } from './constants'
-import { Layout } from './components/Layout'
 import { Bloom } from './components/Bloom'
 import { Cubes } from './components/Cubes'
 import { Anchor } from './components/Anchor'
@@ -14,6 +13,16 @@ import { Logo } from './components/Logo'
 const isServer = typeof window === 'undefined'
 
 useLoader.preload(THREE.FontLoader, '/Relative_Book.json')
+
+const GlobalStyle = createGlobalStyle`
+  body {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    margin: 0;
+    --black: black;
+    --white: #fff;
+  }
+`
 
 const Scroller = styled.div`
   top: 0px;
@@ -57,9 +66,15 @@ export default function Dashboard() {
   // upgrading breaks effectcomposer with suspense components
   // and messes up sMAAPass
   //
+  // scrolling reminder
+  // iframe gallery
+  // 2d canvas plane links
+  // social links
+  //
 
   return (
-    <Layout>
+    <>
+      <GlobalStyle />
       <Scroller ref={scrollerRef}>
         <Canvas
           pixelRatio={isServer ? 1 : window.devicePixelRatio}
@@ -86,6 +101,6 @@ export default function Dashboard() {
         </Canvas>
         <div style={{ height: scrollerHeight }} />
       </Scroller>
-    </Layout>
+    </>
   )
 }
