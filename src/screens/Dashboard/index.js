@@ -66,14 +66,6 @@ function Camera({ scrollerRef }) {
 export default function Dashboard() {
   const scrollerRef = useRef()
 
-  //
-  // strange attractors
-  // steinmetz solids
-  //
-  // get final domain
-  // expersonal finish
-  //
-
   return (
     <>
       <GlobalStyle />
