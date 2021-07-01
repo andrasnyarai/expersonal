@@ -9,7 +9,16 @@ export default function Dashboard() {
     <>
       <SEO
         title="expersonal"
-        keywords={['generative art', 'visual experiments', 'javascript', 'andras nyarai', 'fractal', 'react', 'three.js', 'react-three-fiber']}
+        keywords={[
+          'generative art',
+          'visual experiments',
+          'javascript',
+          'andras nyarai',
+          'fractal',
+          'react',
+          'three.js',
+          'react-three-fiber',
+        ]}
         ogImageUrl={ogImageUrl}
       />
       <DashboardScreen />

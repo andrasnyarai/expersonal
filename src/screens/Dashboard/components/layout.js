@@ -12,8 +12,7 @@ const GlobalStyle = createGlobalStyle`
   }
 `
 
-export default function Layout({ children }) {
-
+export function Layout({ children }) {
   return (
     <StaticQuery
       query={graphql`
@@ -25,7 +24,7 @@ export default function Layout({ children }) {
           }
         }
       `}
-      render={data => (
+      render={_ => (
         <>
           <GlobalStyle />
           {children}
