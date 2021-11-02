@@ -6,9 +6,13 @@
 
 ---
 
-## Chaotic Maps & Attractors
+## Strange Attractors
 
-An exploration through the abstract world of chaotic maps, attractors and bifurcation diagrams. The initial conditions, constants can be adjusted via knobs, and the canvas can handle zoom, for fine grained details.
+A 3d visualisation of deterministic equations.
+
+## Chaotic Maps
+
+An exploration through the abstract world of chaotic maps and bifurcation diagrams. The initial conditions, constants can be adjusted via knobs, the canvas can handle zooming and panning for fine grained details.
 
 ## Lindenmayer Systems
 
