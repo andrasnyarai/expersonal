@@ -37,6 +37,14 @@ const MenuButtonWrapper = styled.div`
   }
 `
 
+const Text = styled.div`
+  width: 100%;
+  transition: ${({ delay, arrayLength, isOpen }) =>
+    `transform 0.1s ease-in-out ${(isOpen ? delay : arrayLength - delay) * 0.025}s`};
+
+  transform: translateY(-100%);
+`
+
 const ItemsWrapper = styled.div`
   padding-left: 15px;
   display: grid;
@@ -46,14 +54,6 @@ const ItemsWrapper = styled.div`
   height: ${({ isOpen }) => (isOpen ? '175px' : '0')};
   transition: ${({ isOpen, arrayLength }) => `height 0s linear ${isOpen ? '0s' : `${(arrayLength - 1) * 0.05}s`}`};
   ${({ isOpen }) => isOpen && `${Text} { transform: translateY(0%); }`}
-`
-
-const Text = styled.div`
-  width: 100%;
-  transition: ${({ delay, arrayLength, isOpen }) =>
-    `transform 0.1s ease-in-out ${(isOpen ? delay : arrayLength - delay) * 0.025}s`};
-
-  transform: translateY(-100%);
 `
 
 const ItemWrapper = styled.div`
