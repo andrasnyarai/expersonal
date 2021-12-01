@@ -19,22 +19,55 @@ const GlobalStyle = createGlobalStyle`
     overflow: hidden;
     background-color: black;
     user-select: none;
+    /* disable left swipe history go back on desktop */
+    overscroll-behavior-x: none;
   }
 `
 
 const { lorenz } = attractorDefinitions
 
+export const multipleCount = 15
+
+export const drawOptions = {
+  trajectory: 'trajectory',
+  multiple: 'multiple',
+  particles: 'particles',
+}
+
+export const particleVariablesDefinition = {
+  phase: { startingValue: 4, range: [2.5, 10], step: 0.1 },
+  spin: { startingValue: 2, range: [0, 20], step: 0.1 },
+  stability: { startingValue: 1, range: [1, 4], step: 1 },
+}
+
 export default function StrangeAttractors() {
-  const [{ points, scale, name }, setAttractor] = useState({
-    scale: lorenz.scale,
-    points: lorenz.createPoints(),
-    name: 'lorenz',
+  const [drawOption, setDrawOption] = useState(drawOptions.multiple)
+  const [particleVariables, setParticleVariables] = useState({
+    ...Object.entries(particleVariablesDefinition).reduce(
+      (acc, [variableName, { startingValue }]) => ({ ...acc, [variableName]: startingValue }),
+      {},
+    ),
   })
+
+  const [attractors, setAttractor] = useState(
+    new Array(drawOption === drawOptions.trajectory ? 1 : multipleCount).fill('').map(() => ({
+      scale: lorenz.scale,
+      points: lorenz.createPoints(),
+      name: 'lorenz',
+    })),
+  )
 
   return (
     <>
       <GlobalStyle />
-      <ControlPanel setAttractor={setAttractor} activeAttractorName={name} />
+      <ControlPanel
+        setAttractor={setAttractor}
+        activeAttractorName={attractors[0].name}
+        drawOption={drawOption}
+        setDrawOption={setDrawOption}
+        particleVariables={particleVariables}
+        setParticleVariables={setParticleVariables}
+      />
 
       <Canvas
         style={{ height: '100vh' }}
@@ -43,7 +76,16 @@ export default function StrangeAttractors() {
         gl={{ antialias: false }}
       >
         <CameraControls />
-        <Attractor points={points} scale={scale} />
+        {attractors.map(({ points, scale }, i) => (
+          <Attractor
+            key={i}
+            points={points}
+            scale={scale}
+            i={i}
+            drawOption={drawOption}
+            particleVariables={particleVariables}
+          />
+        ))}
         <Effects />
       </Canvas>
     </>

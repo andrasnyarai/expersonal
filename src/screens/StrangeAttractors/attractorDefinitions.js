@@ -228,4 +228,60 @@ export const attractorDefinitions = {
       return points
     },
   },
+
+  dadras: {
+    scale: 3,
+    createPoints: () => {
+      const points = []
+
+      const dt = 0.005
+
+      let x = 1 * Math.random()
+      let y = 1 * Math.random()
+      let z = 1 * Math.random()
+
+      let current = 1
+      while (current < steps) {
+        const dx = y - 3.0 * x + 2.7 * y * z
+        const dy = 1.7 * y - x * z + z
+        const dz = 2.0 * x * y - 9.0 * z
+
+        x += dx * dt
+        y += dy * dt
+        z += dz * dt
+
+        current++
+        points.push(new THREE.Vector3(x, y, z))
+      }
+      return points
+    },
+  },
+
+  bouali: {
+    scale: 5,
+    createPoints: () => {
+      const points = []
+
+      const dt = 0.005
+
+      let x = 1 * Math.random()
+      let y = 1 * Math.random()
+      let z = 1 * Math.random()
+
+      let current = 1
+      while (current < steps) {
+        const dx = x * (4.0 - y) + 0.3 * z
+        const dy = -y * (1.0 - x * x)
+        const dz = -x * (1.5 - z) - 0.05 * z
+
+        x += dx * dt
+        y += dy * dt
+        z += dz * dt
+
+        current++
+        points.push(new THREE.Vector3(x, y, z))
+      }
+      return points
+    },
+  },
 }
