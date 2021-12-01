@@ -95,7 +95,8 @@ const Input = styled.input`
     border-radius: 0px;
     background: #ffffff;
     height: 17px;
-    width: 5px;
+    width: 15px;
+    border-radius: 2px;
     -webkit-appearance: none;
     appearance: none;
   }
@@ -103,7 +104,8 @@ const Input = styled.input`
     border-radius: 0px;
     background: #ffffff;
     height: 17px;
-    width: 5px;
+    width: 15px;
+    border-radius: 2px;
     -moz-appearance: none;
     appearance: none;
   }
@@ -111,7 +113,8 @@ const Input = styled.input`
     border-radius: 0px;
     background: #ffffff;
     height: 17px;
-    width: 5px;
+    width: 15px;
+    border-radius: 2px;
     -ms-appearance: none;
     appearance: none;
   }
