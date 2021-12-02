@@ -21,6 +21,8 @@ const colors = [
 
 const drawSpeed = 5
 
+const moveDecimalLeft = (n, power) => n / 10 ** power
+
 export function Attractor({ points, scale, i, drawOption, particleVariables }) {
   const solidRef = useRef()
   const trajectoryRef = useRef()
@@ -50,19 +52,22 @@ export function Attractor({ points, scale, i, drawOption, particleVariables }) {
 
       solid.material.dashOffset = i * 2 + clock.elapsedTime * 0.001 * spin
 
+      const phaseMin = moveDecimalLeft(0.5, phase)
+      const phaseMax = moveDecimalLeft(0.7, phase)
+
       if (stability === 1) {
-        solid.material.dashArray = 0.5 / 10 ** phase
+        solid.material.dashArray = phaseMin
       } else if (stability > 1 && stability < 4) {
         if (clock.elapsedTime % Math.random() < 0.005) {
-          if (stability === 2) solid.material.dashArray = lerp(Math.random(), 0.5 / 10 ** phase, 0.7 / 10 ** phase)
-          if (stability === 3) solid.material.dashArray = lerp(Math.random(), 0.5 / 10 ** phase, 0.00000007)
+          if (stability === 2) solid.material.dashArray = lerp(Math.random(), phaseMin, phaseMax)
+          if (stability === 3) solid.material.dashArray = lerp(Math.random(), phaseMin, 0.00000007)
         }
       }
       if (stability === 4) {
-        solid.material.dashArray = 0.5 / 10 ** phase
+        solid.material.dashArray = phaseMin
 
         if (clock.elapsedTime % Math.random() < 0.005) {
-          solid.material.dashArray = lerp(Math.random(), 0.5 / 10 ** phase, 0.7 / 10 ** phase)
+          solid.material.dashArray = lerp(Math.random(), phaseMin, phaseMax)
         }
       }
     }
