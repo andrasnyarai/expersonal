@@ -80,13 +80,6 @@ const ItemWrapper = styled.div`
   animation: 0.1s ${fadeIn} ease-out;
 `
 
-const Separator = styled.div`
-  position: absolute;
-  background-color: #525252;
-  height: 1px;
-  margin-top: 2px;
-`
-
 const thumbCommonCss = `
   border-radius: 0px;
   background: #ffffff;
@@ -166,8 +159,6 @@ export function ControlPanel({
         <MenuButton />
       </MenuButtonWrapper>
       <ItemsWrapper isOpen={isOpen} arrayLength={items.length}>
-        <Separator />
-        <Separator />
         {items.map(([itemName, itemDescription], i, array) => {
           if (itemName === '-') {
             // empty line
