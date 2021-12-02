@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import { drawOptions, multipleCount, particleVariablesDefinition } from '..'
 
 import { attractorDefinitions } from '../attractorDefinitions'
@@ -62,11 +62,22 @@ const ItemsWrapper = styled.div`
   ${({ isOpen }) => isOpen && `${Text} { transform: translateY(0%); }`}
 `
 
+const fadeIn = keyframes`
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+`
+
 const ItemWrapper = styled.div`
   cursor: pointer;
   color: ${({ isActive }) => (isActive ? 'white' : '#525252')};
   transition: color 0.1s linear;
   overflow-y: hidden;
+
+  animation: 0.1s ${fadeIn} ease-out;
 `
 
 const Separator = styled.div`
@@ -74,6 +85,16 @@ const Separator = styled.div`
   background-color: #525252;
   height: 1px;
   margin-top: 2px;
+`
+
+const thumbCommonCss = `
+  border-radius: 0px;
+  background: #ffffff;
+  height: 16px;
+  width: 15px;
+  border-radius: 2px;
+  -webkit-appearance: none;
+  appearance: none;
 `
 
 const Input = styled.input`
@@ -84,6 +105,8 @@ const Input = styled.input`
   top: 3px;
   opacity: 0.5;
 
+  right: 0;
+
   background: transparent;
   cursor: ew-resize;
 
@@ -92,31 +115,13 @@ const Input = styled.input`
 
   /* Thumb */
   ::-webkit-slider-thumb {
-    border-radius: 0px;
-    background: #ffffff;
-    height: 17px;
-    width: 15px;
-    border-radius: 2px;
-    -webkit-appearance: none;
-    appearance: none;
+    ${thumbCommonCss}
   }
   ::-moz-range-thumb {
-    border-radius: 0px;
-    background: #ffffff;
-    height: 17px;
-    width: 15px;
-    border-radius: 2px;
-    -moz-appearance: none;
-    appearance: none;
+    ${thumbCommonCss}
   }
   ::-ms-thumb {
-    border-radius: 0px;
-    background: #ffffff;
-    height: 17px;
-    width: 15px;
-    border-radius: 2px;
-    -ms-appearance: none;
-    appearance: none;
+    ${thumbCommonCss}
   }
 
   /* Track */
@@ -131,7 +136,13 @@ const Input = styled.input`
   }
 `
 
-// thumbs will stay there when animating away
+const createAttractors = (drawOption, { scale, createPoints, name }) => {
+  return new Array(drawOption === drawOptions.trajectory ? 1 : multipleCount).fill('').map(() => ({
+    scale,
+    points: createPoints(),
+    name,
+  }))
+}
 
 export function ControlPanel({
   setAttractor,
@@ -144,9 +155,9 @@ export function ControlPanel({
   const [isOpen, setIsOpen] = useState(false)
 
   const items = Object.entries(attractorDefinitions)
-    .concat([['-', {}]])
+    .concat([['-']])
     .concat(Object.entries(drawOptions))
-    .concat(drawOption === drawOptions.particles ? [['-', {}]] : [])
+    .concat(drawOption === drawOptions.particles ? [['-']] : [])
     .concat(drawOption === drawOptions.particles ? Object.entries(particleVariables) : [])
 
   return (
@@ -162,13 +173,27 @@ export function ControlPanel({
             // empty line
             return (
               <ItemWrapper key={i} style={{ cursor: 'default' }}>
+                <Text delay={i} isOpen={isOpen} arrayLength={array.length} />
+              </ItemWrapper>
+            )
+          } else if (attractorDefinitions[itemName]) {
+            // attractor
+            const { scale, createPoints } = itemDescription
+            return (
+              <ItemWrapper
+                key={itemName}
+                isActive={activeAttractorName === itemName}
+                onClick={() => {
+                  setAttractor(createAttractors(drawOption, { scale, createPoints, name: itemName }))
+                }}
+              >
                 <Text delay={i} isOpen={isOpen} arrayLength={array.length}>
-                  {''}
+                  {itemName}
                 </Text>
               </ItemWrapper>
             )
           } else if (drawOptions[itemName]) {
-            // drawOPtion setter
+            // draw option
             const option = itemName
             return (
               <ItemWrapper
@@ -176,14 +201,7 @@ export function ControlPanel({
                 isActive={option === drawOption}
                 onClick={() => {
                   const { scale, createPoints } = attractorDefinitions[activeAttractorName]
-                  setAttractor(
-                    //  i have to factor this into a reducer
-                    new Array(option === drawOptions.trajectory ? 1 : multipleCount).fill('').map(() => ({
-                      scale: scale,
-                      points: createPoints(),
-                      name: activeAttractorName,
-                    })),
-                  )
+                  setAttractor(createAttractors(option, { scale, createPoints, name: activeAttractorName }))
                   setDrawOption(option)
                 }}
               >
@@ -193,7 +211,7 @@ export function ControlPanel({
               </ItemWrapper>
             )
           } else if (particleVariablesDefinition[itemName]) {
-            // particle variable setter
+            // particle variable
             const name = itemName
             const value = itemDescription
 
@@ -209,33 +227,11 @@ export function ControlPanel({
               <ItemWrapper key={name} style={{ position: 'relative' }}>
                 <Text delay={i} isOpen={isOpen} arrayLength={array.length}>
                   {name}
+                  <Input type="range" step={step} min={min} max={max} value={value} onChange={onChange} />
                 </Text>
-                <Input type="range" step={step} min={min} max={max} value={value} onChange={onChange} />
               </ItemWrapper>
             )
           }
-          // attractor setter
-          const { scale, createPoints } = itemDescription
-          return (
-            <ItemWrapper
-              key={itemName}
-              isActive={activeAttractorName === itemName}
-              onClick={() => {
-                setAttractor(
-                  //  i have to factor this into a reducer
-                  new Array(drawOption === drawOptions.trajectory ? 1 : multipleCount).fill('').map(() => ({
-                    scale: scale,
-                    points: createPoints(),
-                    name: itemName,
-                  })),
-                )
-              }}
-            >
-              <Text delay={i} isOpen={isOpen} arrayLength={array.length}>
-                {itemName}
-              </Text>
-            </ItemWrapper>
-          )
         })}
       </ItemsWrapper>
     </Wrapper>

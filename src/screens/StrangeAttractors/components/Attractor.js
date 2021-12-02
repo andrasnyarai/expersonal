@@ -54,13 +54,8 @@ export function Attractor({ points, scale, i, drawOption, particleVariables }) {
         solid.material.dashArray = 0.5 / 10 ** phase
       } else if (stability > 1 && stability < 4) {
         if (clock.elapsedTime % Math.random() < 0.005) {
-          // if () ()
-          if (stability === 2) {
-            solid.material.dashArray = lerp(Math.random(), 0.5 / 10 ** phase, 0.00000007)
-          }
-          if (stability === 3) {
-            solid.material.dashArray = lerp(Math.random(), 0.5 / 10 ** phase, 0.7 / 10 ** phase)
-          }
+          if (stability === 2) solid.material.dashArray = lerp(Math.random(), 0.5 / 10 ** phase, 0.7 / 10 ** phase)
+          if (stability === 3) solid.material.dashArray = lerp(Math.random(), 0.5 / 10 ** phase, 0.00000007)
         }
       }
       if (stability === 4) {

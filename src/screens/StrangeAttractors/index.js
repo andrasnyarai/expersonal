@@ -24,7 +24,8 @@ const GlobalStyle = createGlobalStyle`
   }
 `
 
-const { lorenz } = attractorDefinitions
+const defaultAttractorName = 'lorenz'
+const defaultAttractor = attractorDefinitions[defaultAttractorName]
 
 export const multipleCount = 15
 
@@ -41,7 +42,7 @@ export const particleVariablesDefinition = {
 }
 
 export default function StrangeAttractors() {
-  const [drawOption, setDrawOption] = useState(drawOptions.multiple)
+  const [drawOption, setDrawOption] = useState(drawOptions.trajectory)
   const [particleVariables, setParticleVariables] = useState({
     ...Object.entries(particleVariablesDefinition).reduce(
       (acc, [variableName, { startingValue }]) => ({ ...acc, [variableName]: startingValue }),
@@ -51,9 +52,9 @@ export default function StrangeAttractors() {
 
   const [attractors, setAttractor] = useState(
     new Array(drawOption === drawOptions.trajectory ? 1 : multipleCount).fill('').map(() => ({
-      scale: lorenz.scale,
-      points: lorenz.createPoints(),
-      name: 'lorenz',
+      scale: defaultAttractor.scale,
+      points: defaultAttractor.createPoints(),
+      name: defaultAttractorName,
     })),
   )
 
@@ -79,9 +80,9 @@ export default function StrangeAttractors() {
         {attractors.map(({ points, scale }, i) => (
           <Attractor
             key={i}
+            i={i}
             points={points}
             scale={scale}
-            i={i}
             drawOption={drawOption}
             particleVariables={particleVariables}
           />
