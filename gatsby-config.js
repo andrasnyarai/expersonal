@@ -2,7 +2,7 @@ module.exports = {
   siteMetadata: {
     title: 'ėxpersonal',
     description: '..',
-    author: '@andrasai',
+    author: 'andrasnyarai',
   },
   plugins: [
     {
