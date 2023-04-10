@@ -1,4 +1,4 @@
-![lambda](/src/images/expr.png?raw=true 'expersonal')
+![lambda](/src/images/expr.png?raw=true 'experson.ai')
 
 # Visual Experiments
 

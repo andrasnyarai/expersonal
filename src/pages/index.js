@@ -2,13 +2,13 @@ import React from 'react'
 import SEO from '../globalComponents/seo'
 import DashboardScreen from '../screens/Dashboard'
 import '../fonts/Inter/inter.css'
-import ogImageUrl from '../images/dashboard.jpg'
+import ogImageUrl from '../images/dashboardv2.jpg'
 
 export default function Dashboard() {
   return (
     <>
       <SEO
-        title="expersonal"
+        title="experson.ai"
         keywords={[
           'generative art',
           'visual experiments',
