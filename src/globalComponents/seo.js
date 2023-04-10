@@ -47,7 +47,7 @@ export default function SEO({ description, lang = 'en', meta = [], keywords = []
           ? [
               {
                 property: 'og:image',
-                content: `https://spreadbow.com${ogImageUrl}`,
+                content: `https://experson.ai${ogImageUrl}`,
               },
             ]
           : []),

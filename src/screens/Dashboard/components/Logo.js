@@ -52,7 +52,7 @@ export function Logo() {
   return (
     <group position={[isSmallScreen ? -15 : -25, 10, (cubeZRows - 8) * cubeGap]}>
       <Suspense fallback={null}>
-        <HeaderText text="expersonal" size={isSmallScreen ? 1.5 : 2} />
+        <HeaderText text="experson.ai" size={isSmallScreen ? 1.5 : 2} />
       </Suspense>
     </group>
   )
